@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli", "src\WeightTracker.Cli\WeightTracker.Cli.csproj", "{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli", "cli\WeightTracker.Cli.csproj", "{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{546D536D-0A82-4F09-81DD-286C26DE12AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{66EB359F-26F8-481D-835F-4AA860E485E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cli", "cli", "{151B772E-29E8-42E7-99C6-D892BFB499D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "tests\TestProject1\TestProject1.csproj", "{F55F8369-EAD1-4DBD-B996-2E30E18196F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Web", "src\WeightTracker.Web\WeightTracker.Web.csproj", "{60B00A25-884C-4699-A3C6-B53C5A679E9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,8 +28,18 @@ Global
 		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F55F8369-EAD1-4DBD-B996-2E30E18196F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F55F8369-EAD1-4DBD-B996-2E30E18196F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F55F8369-EAD1-4DBD-B996-2E30E18196F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F55F8369-EAD1-4DBD-B996-2E30E18196F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
+		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D} = {151B772E-29E8-42E7-99C6-D892BFB499D3}
+		{F55F8369-EAD1-4DBD-B996-2E30E18196F9} = {66EB359F-26F8-481D-835F-4AA860E485E1}
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
 	EndGlobalSection
 EndGlobal

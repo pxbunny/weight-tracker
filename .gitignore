@@ -1,6 +1,4 @@
-﻿# Common IntelliJ Platform excludes
-
-.idea/
+﻿.idea/
 
 *.suo
 *.user
@@ -13,3 +11,5 @@ _UpgradeReport_Files/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+**/*.Development.json
