@@ -32,6 +32,6 @@ jobs:
     - name: Upload an ARM template artifact
       uses: actions/upload-artifact@v3
       with:
-        name: infrastructure
-        path: infrastructure/**
+        name: infra
+        path: infra/**
         if-no-files-found: error
