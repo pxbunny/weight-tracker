@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Build and test .NET
-      uses: .github/workflows/build.yml
+      uses: ./.github/workflows/build.yml
     - name: Publish .NET app and upload artifact
-      uses: .github/actions/publish-and-upload
+      uses: ./.github/actions/publish-and-upload
       with:
         project-path: src/WeightTracker.Web/WeightTracker.Web.csproj
   
   deploy-dev:
-    uses: .github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy.yml
     secrets: inherit
     needs: build
     with:
@@ -27,7 +27,7 @@ jobs:
       parameters-path: infra/parameters.dev.json
 
   deploy-prod:
-    uses: .github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy.yml
     secrets: inherit
     needs: deploy-dev
     with:
