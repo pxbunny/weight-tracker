@@ -8,10 +8,10 @@ on:
 
 jobs:
   build:
-    uses: .github/workflows/build.yml
+    uses: ./.github/workflows/build.yml
   
   deploy-dev:
-    uses: .github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy.yml
     secrets: inherit
     needs: build
     with:
@@ -20,7 +20,7 @@ jobs:
       arm-parameters-path: infra/parameters.dev.json
 
   deploy-prod:
-    uses: .github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy.yml
     secrets: inherit
     needs: deploy-dev
     with:
