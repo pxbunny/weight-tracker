@@ -4,10 +4,10 @@ inputs:
   project-path: 
     required: true
   webapp-artifact-name: 
-    required: false
+    required: true
     default: webapp
   infrastructure-artifact-name: 
-    required: false
+    required: true
     default: infrastructure
 
 runs:
