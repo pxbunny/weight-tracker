@@ -1,4 +1,4 @@
-namespace WeightTracker.Web;
+namespace WeightTracker.Api;
 
 public class WeatherForecast
 {

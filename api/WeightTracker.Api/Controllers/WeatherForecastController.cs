@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 
-namespace WeightTracker.Web.Controllers;
+namespace WeightTracker.Api.Controllers;
 
 // [Authorize]
 [ApiController]
