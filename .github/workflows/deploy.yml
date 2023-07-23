@@ -53,6 +53,5 @@ jobs:
         with:
           app-name: ${{ vars.APP_NAME }}
           package: ${{ inputs.webapp-artifact-name }}
-          publish-profile: ${{ vars.PUBLISH_PROFILE }}
       - name: Logout via Azure CLI
         run: az logout
