@@ -12,30 +12,23 @@ on:
       arm-parameters-path:
         type: string
         required: true
-      webapp-artifact-name:
+      artifact-name:
         type: string
         required: false
         default: webapp
-      infrastructure-artifact-name:
-        type: string
-        required: false
-        default: infra
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Download a build artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.webapp-artifact-name }}
-          path: ${{ inputs.webapp-artifact-name }}
-      - name: Download an ARM template artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ inputs.infrastructure-artifact-name }}
-          path: ${{ inputs.infrastructure-artifact-name }}
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-name }}
       - name: Login via Azure CLI
         uses: azure/login@v1
         with:
@@ -52,6 +45,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ vars.APP_NAME }}
-          package: ${{ inputs.webapp-artifact-name }}
+          package: ${{ inputs.artifact-name }}
       - name: Logout via Azure CLI
         run: az logout
