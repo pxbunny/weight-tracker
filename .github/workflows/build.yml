@@ -21,3 +21,17 @@ jobs:
       run: dotnet build --no-restore --configuration Release
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal
+    - name: Publish
+      run: dotnet publish app/WeightTracker.Web/WeightTracker.Web.csproj --configuration Release --output webapp
+    - name: Upload a build artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: webapp
+        path: webapp/**
+        if-no-files-found: error
+    - name: Upload an ARM template artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: infrastructure
+        path: infrastructure/**
+        if-no-files-found: error

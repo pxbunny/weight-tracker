@@ -8,29 +8,22 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build and test .NET
-      uses: ./.github/workflows/build.yml
-    - name: Publish .NET app and upload artifact
-      uses: ./.github/actions/publish-and-upload
-      with:
-        project-path: src/WeightTracker.Web/WeightTracker.Web.csproj
+    uses: .github/workflows/build.yml
   
   deploy-dev:
-    uses: ./.github/workflows/deploy.yml
+    uses: .github/workflows/deploy.yml
     secrets: inherit
     needs: build
     with:
       environment: dev
-      template-path: infra/main.bicep
-      parameters-path: infra/parameters.dev.json
+      arm-path: infra/main.bicep
+      arm-parameters-path: infra/parameters.dev.json
 
   deploy-prod:
-    uses: ./.github/workflows/deploy.yml
+    uses: .github/workflows/deploy.yml
     secrets: inherit
     needs: deploy-dev
     with:
       environment: prod
-      template-path: infra/main.bicep
-      parameters-path: infra/parameters.prod.json
+      arm-path: infra/main.bicep
+      arm-parameters-path: infra/parameters.prod.json

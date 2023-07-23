@@ -6,10 +6,10 @@ on:
       environment:
         type: string
         required: true
-      template-path:
+      arm-path:
         type: string
         required: true
-      parameters-path:
+      arm-parameters-path:
         type: string
         required: true
       webapp-artifact-name:
@@ -45,8 +45,8 @@ jobs:
         with:
           subscriptionId: ${{ vars.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ${{ inputs.template-path }}
-          parameters: ${{ inputs.parameters-path }}
+          template: ${{ inputs.arm-path }}
+          parameters: ${{ inputs.arm-parameters-path }}
           failOnStdErr: false
       - name: Deploy Azure web app
         uses: azure/webapps-deploy@v2
