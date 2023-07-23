@@ -16,10 +16,10 @@ inputs:
   publish-profile:
     required: true
   webapp-artifact-name: 
-    required: true
+    required: false
     default: webapp
   infrastructure-artifact-name: 
-    required: true
+    required: false
     default: infrastructure
 
 runs:
