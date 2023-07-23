@@ -19,7 +19,7 @@ on:
       infrastructure-artifact-name:
         type: string
         required: false
-        default: infrastructure
+        default: infra
 
 jobs:
   deploy:
