@@ -1,7 +1,7 @@
 ﻿using Azure;
 using Azure.Data.Tables;
 
-namespace WeightTracker.Infrastructure.Data;
+namespace WeightTracker.Api.Models;
 
 internal sealed class WeightDataEntity : ITableEntity
 {

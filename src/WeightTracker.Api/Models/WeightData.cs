@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Application.Models;
+﻿namespace WeightTracker.Api.Models;
 
 public class WeightData
 {

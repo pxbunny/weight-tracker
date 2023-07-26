@@ -1,16 +1,16 @@
 ﻿using Azure.Data.Tables;
-using WeightTracker.Application.Interfaces;
-using WeightTracker.Application.Models;
+using WeightTracker.Api.Interfaces;
+using WeightTracker.Api.Models;
 
-namespace WeightTracker.Infrastructure.Data;
+namespace WeightTracker.Api.Services;
 
-internal sealed class WeightDataRepository : IWeightDataRepository
+internal sealed class WeightDataService : IWeightDataService
 {
     private const string TableName = "WeightData";
     
     private readonly TableServiceClient _tableServiceClient;
     
-    public WeightDataRepository(TableServiceClient tableServiceClient)
+    public WeightDataService(TableServiceClient tableServiceClient)
     {
         _tableServiceClient = tableServiceClient;
     }

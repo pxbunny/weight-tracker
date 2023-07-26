@@ -1,8 +1,8 @@
-﻿using WeightTracker.Application.Models;
+﻿using WeightTracker.Api.Models;
 
-namespace WeightTracker.Application.Interfaces;
+namespace WeightTracker.Api.Interfaces;
 
-public interface IWeightDataRepository
+public interface IWeightDataService
 {
     Task AddAsync(WeightData weightData);
     

@@ -1,7 +1,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using WeightTracker.Application.Interfaces;
-using WeightTracker.Application.Models;
+using WeightTracker.Api.Interfaces;
+using WeightTracker.Api.Models;
 
 namespace WeightTracker.Api.Controllers;
 
@@ -13,11 +13,11 @@ public class WeightController : ControllerBase
 {
     private const string UserId = "123456789";
     
-    private readonly IWeightDataRepository _weightDataRepository;
+    private readonly IWeightDataService _weightDataService;
 
-    public WeightController(IWeightDataRepository weightDataRepository)
+    public WeightController(IWeightDataService weightDataService)
     {
-        _weightDataRepository = weightDataRepository;
+        _weightDataService = weightDataService;
     }
     
     [HttpPost]
@@ -29,14 +29,14 @@ public class WeightController : ControllerBase
             Date = DateOnly.Parse(request.Date),
             Weight = request.Weight
         };
-        await _weightDataRepository.AddAsync(data);
+        await _weightDataService.AddAsync(data);
         return Ok();
     }
 
     [HttpGet]
     public async Task<ActionResult<WeightDataResponse>> Get([FromQuery] string date)
     {
-        var data = await _weightDataRepository.GetAsync(UserId, DateOnly.Parse(date));
+        var data = await _weightDataService.GetAsync(UserId, DateOnly.Parse(date));
         var dto = data.Adapt<WeightDataResponse>();
         return Ok(dto);
     }
@@ -50,7 +50,7 @@ public class WeightController : ControllerBase
             Date = DateOnly.Parse(date),
             Weight = request.Weight
         };
-        await _weightDataRepository.UpdateAsync(data);
+        await _weightDataService.UpdateAsync(data);
         return Ok();
     }
 }
