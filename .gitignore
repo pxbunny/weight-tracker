@@ -1,8 +1,9 @@
 ﻿.idea/
+.vs/
+.vscode/
 
 *.suo
 *.user
-.vs/
 [Bb]in/
 [Oo]bj/
 _UpgradeReport_Files/
@@ -13,3 +14,4 @@ Desktop.ini
 .DS_Store
 
 **/*.Development.json
+**/*.dev.json

@@ -3,12 +3,14 @@ name: CI/CD
 on:
   push:
     branches:
-    - main
+      - main
   workflow_dispatch:
 
 jobs:
   build:
     uses: ./.github/workflows/build.yml
+    with:
+      project-path: src/WeightTracker.Api/WeightTracker.Api.csproj
   
   deploy-dev:
     uses: ./.github/workflows/deploy.yml
