@@ -2,9 +2,9 @@
 
 public class WeightData
 {
-    public string UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
     
     public DateOnly Date { get; set; }
     
-    public double Weight { get; set; }
+    public decimal Weight { get; set; }
 }

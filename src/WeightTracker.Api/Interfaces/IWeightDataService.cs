@@ -8,7 +8,7 @@ public interface IWeightDataService
     
     // Task<IEnumerable<WeightData>> GetAsync(string userId);
     
-    Task<WeightData> GetAsync(string userId, DateOnly date);
+    Task<IEnumerable<WeightData>> GetAsync(WeightDataFilter filter);
     
     Task UpdateAsync(WeightData weightData);
     

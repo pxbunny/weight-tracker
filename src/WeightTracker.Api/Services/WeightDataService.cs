@@ -1,4 +1,6 @@
 ﻿using Azure.Data.Tables;
+using Mapster;
+using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
 
@@ -18,48 +20,28 @@ internal sealed class WeightDataService : IWeightDataService
     public async Task AddAsync(WeightData weightData)
     {
         var tableClient = await GetTableClientAsync();
-        // var entity = weightData.Adapt<WeightDataEntity>();
-        var entity = new WeightDataEntity
-        {
-            PartitionKey = weightData.UserId,
-            RowKey = weightData.Date.ToString("yyyy.MM.dd"),
-            Weight = weightData.Weight
-        };
+        var entity = weightData.Adapt<WeightDataEntity>();
         await tableClient.AddEntityAsync(entity);
     }
 
-    // public async Task<IEnumerable<WeightData>> GetAsync(string userId)
-    // {
-    //     var tableClient = await GetTableClientAsync();
-    //     var x = tableClient.Query<WeightDataEntity>(a => a.RowKey == userId);
-    //     
-    // }
-
-    public async Task<WeightData> GetAsync(string userId, DateOnly date)
+    public async Task<IEnumerable<WeightData>> GetAsync(WeightDataFilter dataFilter)
     {
         var tableClient = await GetTableClientAsync();
-        var result = tableClient
-            .Query<WeightDataEntity>(w => w.PartitionKey == userId && w.RowKey == date.ToString("yyyy.MM.dd"))
-            .FirstOrDefault();
-        // return result.Adapt<WeightData>();
-        return new WeightData
-        {
-            UserId = result.PartitionKey,
-            Date = DateOnly.Parse(result.RowKey),
-            Weight = result.Weight
-        };
+        var (userId, dateFrom, dateTo) = dataFilter;
+        
+        var from = (dateFrom ?? DateOnly.MinValue).ToFormattedString();
+        var to = (dateTo ?? DateOnly.MaxValue).ToFormattedString();
+
+        var filter = $"PartitionKey eq '{userId}' and RowKey ge '{from}' and RowKey le '{to}'";
+        var result = tableClient.Query<WeightDataEntity>(filter).ToList();
+        
+        return result.Adapt<IEnumerable<WeightData>>();
     }
 
     public async Task UpdateAsync(WeightData weightData)
     {
         var tableClient = await GetTableClientAsync();
-        // var entity = weightData.Adapt<WeightDataEntity>();
-        var entity = new WeightDataEntity
-        {
-            PartitionKey = weightData.UserId,
-            RowKey = weightData.Date.ToString("yyyy.MM.dd"),
-            Weight = weightData.Weight
-        };
+        var entity = weightData.Adapt<WeightDataEntity>();
         await tableClient.UpsertEntityAsync(entity, TableUpdateMode.Replace);
     }
 

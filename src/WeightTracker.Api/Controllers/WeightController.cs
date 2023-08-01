@@ -11,7 +11,7 @@ namespace WeightTracker.Api.Controllers;
 // [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class WeightController : ControllerBase
 {
-    private const string UserId = "123456789";
+    private const string UserId = "1234";
     
     private readonly IWeightDataService _weightDataService;
 
@@ -23,53 +23,56 @@ public class WeightController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] AddWeightDataRequest request)
     {
-        var data = new WeightData
-        {
-            UserId = UserId,
-            Date = DateOnly.Parse(request.Date),
-            Weight = request.Weight
-        };
+        var data = (UserId, request).Adapt<WeightData>();
         await _weightDataService.AddAsync(data);
-        return Ok();
+        return Ok(); // TODO: correct response
     }
 
     [HttpGet]
-    public async Task<ActionResult<WeightDataResponse>> Get([FromQuery] string date)
+    public async Task<ActionResult<IEnumerable<GetWeightDataResponse>>> Get([FromQuery] GetWeightDataFilter filter)
     {
-        var data = await _weightDataService.GetAsync(UserId, DateOnly.Parse(date));
-        var dto = data.Adapt<WeightDataResponse>();
+        var domainFilter = (UserId, filter).Adapt<WeightDataFilter>();
+        var data = await _weightDataService.GetAsync(domainFilter);
+        var dto = data.Adapt<IEnumerable<GetWeightDataResponse>>();
         return Ok(dto);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update([FromQuery] string date, [FromBody] UpdateWeightDataRequest request)
-    {
-        var data = new WeightData
-        {
-            UserId = UserId,
-            Date = DateOnly.Parse(date),
-            Weight = request.Weight
-        };
-        await _weightDataService.UpdateAsync(data);
-        return Ok();
-    }
+    // [HttpPut]
+    // public async Task<IActionResult> Update([FromRoute] string date, [FromBody] UpdateWeightDataRequest request)
+    // {
+    //     var data = new WeightData
+    //     {
+    //         UserId = UserId,
+    //         Date = DateOnly.Parse(date),
+    //         Weight = request.Weight
+    //     };
+    //     await _weightDataService.UpdateAsync(data);
+    //     return Ok();
+    // }
 }
 
 public sealed class AddWeightDataRequest
 {
-    public double Weight { get; set; }
+    public decimal Weight { get; init; }
     
-    public string Date { get; set; }
+    public string? Date { get; init; }
+}
+
+public sealed class GetWeightDataFilter
+{
+    public string? DateFrom { get; init; }
+
+    public string? DateTo { get; init; }
 }
 
 public sealed class UpdateWeightDataRequest
 {
-    public double Weight { get; set; }
+    public decimal Weight { get; init; }
 }
 
-public sealed class WeightDataResponse
+public sealed class GetWeightDataResponse
 {
-    public double Weight { get; set; }
+    public decimal Weight { get; init; }
     
-    public string Date { get; set; }
+    public string Date { get; init; }
 }

@@ -1,8 +1,11 @@
+using System.Reflection;
+using Mapster;
 using Microsoft.Extensions.Azure;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
 
 builder.Services.AddAzureClients(clientBuilder =>
 {

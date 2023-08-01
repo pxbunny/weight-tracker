@@ -6,7 +6,7 @@ namespace WeightTracker.Api.Models;
 internal sealed class WeightDataEntity : ITableEntity
 {
     public double Weight { get; set; }
-    
+
     public string PartitionKey { get; set; }
     
     public string RowKey { get; set; }
