@@ -37,18 +37,20 @@ public class WeightController : ControllerBase
         return Ok(dto);
     }
 
-    // [HttpPut]
-    // public async Task<IActionResult> Update([FromRoute] string date, [FromBody] UpdateWeightDataRequest request)
-    // {
-    //     var data = new WeightData
-    //     {
-    //         UserId = UserId,
-    //         Date = DateOnly.Parse(date),
-    //         Weight = request.Weight
-    //     };
-    //     await _weightDataService.UpdateAsync(data);
-    //     return Ok();
-    // }
+    [HttpPut("/{date}")]
+    public async Task<IActionResult> Update([FromRoute] string date, [FromBody] UpdateWeightDataRequest request)
+    {
+        var data = (UserId, date, request).Adapt<WeightData>();
+        await _weightDataService.UpdateAsync(data);
+        return Ok();
+    }
+    
+    [HttpDelete("/{date}")]
+    public async Task<IActionResult> Delete([FromRoute] string date)
+    {
+        await _weightDataService.DeleteAsync(UserId, DateOnly.Parse(date));
+        return Ok();
+    }
 }
 
 public sealed class AddWeightDataRequest

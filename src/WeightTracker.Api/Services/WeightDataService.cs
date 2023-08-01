@@ -45,11 +45,11 @@ internal sealed class WeightDataService : IWeightDataService
         await tableClient.UpsertEntityAsync(entity, TableUpdateMode.Replace);
     }
 
-    // public async Task DeleteAsync(string userId, DateOnly date)
-    // {
-    //     var tableClient = await GetTableClientAsync();
-    //     await tableClient.DeleteEntityAsync(userId, date.ToString());
-    // }
+    public async Task DeleteAsync(string userId, DateOnly date)
+    {
+        var tableClient = await GetTableClientAsync();
+        await tableClient.DeleteEntityAsync(userId, date.ToFormattedString());
+    }
     
     private async Task<TableClient> GetTableClientAsync()
     {

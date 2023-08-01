@@ -29,5 +29,10 @@ public sealed class MappingRegistration : IRegister
         config.ForType<(string UserId, GetWeightDataFilter Filter), WeightDataFilter>()
             .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest, src => src.Filter);
+        
+        config.ForType<(string UserId, string Date, UpdateWeightDataRequest request), WeightData>()
+            .Map(dest => dest.UserId, src => src.UserId)
+            .Map(dest => dest.Date, src => src.Date)
+            .Map(dest => dest, src => src.request);
     }
 }
