@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Contracts", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli.UnitTests", "tests\WeightTracker.Cli.UnitTests\WeightTracker.Cli.UnitTests.csproj", "{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.ApiClient", "src\WeightTracker.ApiClient\WeightTracker.ApiClient.csproj", "{AC39323C-21D4-480F-B02F-116E097810C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC39323C-21D4-480F-B02F-116E097810C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC39323C-21D4-480F-B02F-116E097810C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC39323C-21D4-480F-B02F-116E097810C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC39323C-21D4-480F-B02F-116E097810C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F55F8369-EAD1-4DBD-B996-2E30E18196F9} = {66EB359F-26F8-481D-835F-4AA860E485E1}
@@ -53,5 +59,6 @@ Global
 		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
 		{9C1DF010-D686-4011-BAC7-C19C28DB8B9C} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
 		{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23} = {66EB359F-26F8-481D-835F-4AA860E485E1}
+		{AC39323C-21D4-480F-B02F-116E097810C9} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
 	EndGlobalSection
 EndGlobal

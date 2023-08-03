@@ -1,7 +1,8 @@
 ﻿using Mapster;
-using WeightTracker.Api.Controllers;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Models;
+using WeightTracker.Contracts.Filters;
+using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
 

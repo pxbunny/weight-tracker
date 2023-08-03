@@ -2,6 +2,9 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
+using WeightTracker.Contracts.Filters;
+using WeightTracker.Contracts.Requests;
+using WeightTracker.Contracts.Responses;
 
 namespace WeightTracker.Api.Controllers;
 
@@ -37,7 +40,7 @@ public class WeightController : ControllerBase
         return Ok(dto);
     }
 
-    [HttpPut("/{date}")]
+    [HttpPut("{date}")]
     public async Task<IActionResult> Update([FromRoute] string date, [FromBody] UpdateWeightDataRequest request)
     {
         var data = (UserId, date, request).Adapt<WeightData>();
@@ -45,36 +48,10 @@ public class WeightController : ControllerBase
         return Ok();
     }
     
-    [HttpDelete("/{date}")]
+    [HttpDelete("{date}")]
     public async Task<IActionResult> Delete([FromRoute] string date)
     {
         await _weightDataService.DeleteAsync(UserId, DateOnly.Parse(date));
         return Ok();
     }
-}
-
-public sealed class AddWeightDataRequest
-{
-    public decimal Weight { get; init; }
-    
-    public string? Date { get; init; }
-}
-
-public sealed class GetWeightDataFilter
-{
-    public string? DateFrom { get; init; }
-
-    public string? DateTo { get; init; }
-}
-
-public sealed class UpdateWeightDataRequest
-{
-    public decimal Weight { get; init; }
-}
-
-public sealed class GetWeightDataResponse
-{
-    public decimal Weight { get; init; }
-    
-    public string Date { get; init; }
 }
