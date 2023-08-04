@@ -2,15 +2,14 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
-using WeightTracker.Contracts.Filters;
+using WeightTracker.Contracts.Dto;
 using WeightTracker.Contracts.Requests;
-using WeightTracker.Contracts.Responses;
 
 namespace WeightTracker.Api.Controllers;
 
 // [Authorize]
 [ApiController]
-[Route("[controller]")]
+[Route("weight")]
 // [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public class WeightController : ControllerBase
 {
@@ -32,11 +31,11 @@ public class WeightController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<GetWeightDataResponse>>> Get([FromQuery] GetWeightDataFilter filter)
+    public async Task<ActionResult<IEnumerable<WeightDataGroupDto>>> Get([FromQuery] GetWeightDataFilter filter)
     {
-        var domainFilter = (UserId, filter).Adapt<WeightDataFilter>();
+        var domainFilter = (UserId, filter).Adapt<DataFilter>();
         var data = await _weightDataService.GetAsync(domainFilter);
-        var dto = data.Adapt<IEnumerable<GetWeightDataResponse>>();
+        var dto = data.Adapt<WeightDataGroupDto>();
         return Ok(dto);
     }
 

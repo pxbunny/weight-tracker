@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Contracts.Filters;
+﻿namespace WeightTracker.Contracts.Requests;
 
 public sealed class GetWeightDataFilter
 {

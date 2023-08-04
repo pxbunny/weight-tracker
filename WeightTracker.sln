@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Contracts", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli.UnitTests", "tests\WeightTracker.Cli.UnitTests\WeightTracker.Cli.UnitTests.csproj", "{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.ApiClient", "src\WeightTracker.ApiClient\WeightTracker.ApiClient.csproj", "{AC39323C-21D4-480F-B02F-116E097810C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Client", "src\WeightTracker.Client\WeightTracker.Client.csproj", "{AC39323C-21D4-480F-B02F-116E097810C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

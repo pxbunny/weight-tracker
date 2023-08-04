@@ -1,5 +1,6 @@
 ﻿using Azure.Data.Tables;
 using Mapster;
+using WeightTracker.Api.Entities;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
@@ -24,7 +25,7 @@ internal sealed class WeightDataService : IWeightDataService
         await tableClient.AddEntityAsync(entity);
     }
 
-    public async Task<IEnumerable<WeightData>> GetAsync(WeightDataFilter dataFilter)
+    public async Task<WeightDataGroup> GetAsync(DataFilter dataFilter)
     {
         var tableClient = await GetTableClientAsync();
         var (userId, dateFrom, dateTo) = dataFilter;
@@ -35,7 +36,8 @@ internal sealed class WeightDataService : IWeightDataService
         var filter = $"PartitionKey eq '{userId}' and RowKey ge '{from}' and RowKey le '{to}'";
         var result = tableClient.Query<WeightDataEntity>(filter).ToList();
         
-        return result.Adapt<IEnumerable<WeightData>>();
+        var data = result.Adapt<IEnumerable<WeightData>>();
+        return WeightDataGroup.Create(userId, data);
     }
 
     public async Task UpdateAsync(WeightData weightData)

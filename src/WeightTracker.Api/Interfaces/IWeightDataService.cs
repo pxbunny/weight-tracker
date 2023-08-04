@@ -6,7 +6,7 @@ public interface IWeightDataService
 {
     Task AddAsync(WeightData weightData);
 
-    Task<IEnumerable<WeightData>> GetAsync(WeightDataFilter filter);
+    Task<WeightDataGroup> GetAsync(DataFilter filter);
     
     Task UpdateAsync(WeightData weightData);
     

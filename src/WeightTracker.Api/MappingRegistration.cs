@@ -1,7 +1,7 @@
 ﻿using Mapster;
+using WeightTracker.Api.Entities;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Models;
-using WeightTracker.Contracts.Filters;
 using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
@@ -17,7 +17,8 @@ public sealed class MappingRegistration : IRegister
             .Map(dest => dest.RowKey, src => src.Date.ToFormattedString());
 
         config.ForType<WeightDataEntity, WeightData>()
-            .Map(dest => dest.UserId, src => src.PartitionKey);
+            .Map(dest => dest.UserId, src => src.PartitionKey)
+            .Map(dest => dest.Date, src => DateOnly.Parse(src.RowKey));
 
         config.ForType<(string UserId, AddWeightDataRequest Request), WeightData>()
             .Map(dest => dest.UserId, src => src.UserId)
@@ -27,7 +28,7 @@ public sealed class MappingRegistration : IRegister
                     ? DateOnly.FromDateTime(DateTime.Today.Date)
                     : DateOnly.Parse(src.Request.Date));
 
-        config.ForType<(string UserId, GetWeightDataFilter Filter), WeightDataFilter>()
+        config.ForType<(string UserId, GetWeightDataFilter Filter), DataFilter>()
             .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest, src => src.Filter);
         
@@ -35,5 +36,8 @@ public sealed class MappingRegistration : IRegister
             .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest.Date, src => src.Date)
             .Map(dest => dest, src => src.request);
+
+        // config.ForType<WeightData, GetWeightDataItemResponse>()
+        //     .Map(dest => dest.Date, src => src.Date.ToFormattedString());
     }
 }
