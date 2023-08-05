@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Contracts;
 
-public sealed class Routes
+public static class Routes
 {
     public const string AddWeightData = "/api/weight";
     public const string GetWeightData = "/api/weight";
