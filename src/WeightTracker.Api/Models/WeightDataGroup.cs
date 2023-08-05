@@ -23,10 +23,10 @@ public sealed class WeightDataGroup
     {
         var dataList = data.ToList();
         
-        var dataGroup = new WeightDataGroup()
+        var dataGroup = new WeightDataGroup
         {
             UserId = userId,
-            Data = dataList,
+            Data = dataList
         };
 
         if (!dataList.Any())
