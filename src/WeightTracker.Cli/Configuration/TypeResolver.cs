@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Cli.Registrar;
+﻿namespace WeightTracker.Cli.Configuration;
 
 public sealed class TypeResolver : ITypeResolver, IDisposable
 {

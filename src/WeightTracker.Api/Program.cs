@@ -1,7 +1,6 @@
 using System.Reflection;
 using Mapster;
 using Microsoft.Extensions.Azure;
-using WeightTracker.Api.Conventions;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Services;
 
@@ -20,12 +19,7 @@ builder.Services.AddScoped<IWeightDataService, WeightDataService>();
 // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-builder.Services.AddControllers(options =>
-{
-    options.Conventions.Add(new KebabCaseRouteConvention());
-    options.Conventions.Add(new RoutePrefixConvention("api"));
-});
-
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

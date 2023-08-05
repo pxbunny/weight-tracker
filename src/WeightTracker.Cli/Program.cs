@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using WeightTracker.Cli;
 using WeightTracker.Cli.Configuration;
 using WeightTracker.Cli.Extensions;
-using WeightTracker.Cli.Global;
 using WeightTracker.Cli.Services;
 
 var app = new Application();

@@ -2,6 +2,7 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
+using WeightTracker.Contracts;
 using WeightTracker.Contracts.DTOs;
 using WeightTracker.Contracts.QueryStrings;
 using WeightTracker.Contracts.Requests;
@@ -10,9 +11,8 @@ namespace WeightTracker.Api.Controllers;
 
 // [Authorize]
 [ApiController]
-[Route("[controller]")]
 // [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-public class WeightController : ControllerBase
+public sealed class WeightController : ControllerBase
 {
     private const string UserId = "1234";
     
@@ -23,16 +23,18 @@ public class WeightController : ControllerBase
         _weightDataService = weightDataService;
     }
     
-    [HttpPost]
-    public async Task<IActionResult> Add(AddWeightDataRequest request)
+    [HttpPost(Routes.AddWeightData)]
+    public async Task<IActionResult> Add(
+        [FromBody] AddWeightDataRequest request)
     {
         var data = (UserId, request).Adapt<WeightData>();
         await _weightDataService.AddAsync(data);
         return Ok(); // TODO: correct response
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<WeightDataGroupDto>>> Get([FromQuery] GetWeightDataQueryString queryString)
+    [HttpGet(Routes.GetWeightData)]
+    public async Task<ActionResult<IEnumerable<WeightDataGroupDto>>> Get(
+        [FromQuery] GetWeightDataQueryString queryString)
     {
         var domainFilter = (UserId, queryString).Adapt<DataFilter>();
         var data = await _weightDataService.GetAsync(domainFilter);
@@ -40,18 +42,19 @@ public class WeightController : ControllerBase
         return Ok(dto);
     }
 
-    [HttpPut("{date}")]
+    [HttpPut(Routes.UpdateWeightData)]
     public async Task<IActionResult> Update(
-        string date,
-        UpdateWeightDataRequest request)
+        [FromRoute] string date,
+        [FromBody] UpdateWeightDataRequest request)
     {
         var data = (UserId, date, request).Adapt<WeightData>();
         await _weightDataService.UpdateAsync(data);
         return Ok();
     }
     
-    [HttpDelete("{date}")]
-    public async Task<IActionResult> Delete(string date)
+    [HttpDelete(Routes.DeleteWeightData)]
+    public async Task<IActionResult> Delete(
+        [FromRoute] string date)
     {
         await _weightDataService.DeleteAsync(UserId, DateOnly.Parse(date));
         return Ok();

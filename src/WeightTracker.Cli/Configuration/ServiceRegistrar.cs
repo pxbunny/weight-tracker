@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace WeightTracker.Cli.Registrar;
+namespace WeightTracker.Cli.Configuration;
 
 public sealed class ServiceRegistrar : ITypeRegistrar
 {

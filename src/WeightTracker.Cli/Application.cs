@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WeightTracker.Cli.Global;
+using WeightTracker.Cli.Configuration;
 
 namespace WeightTracker.Cli;
 
@@ -14,7 +14,7 @@ public class Application
     public Application()
     {
         _services = new ServiceCollection();
-        var registrar = new Registrar.ServiceRegistrar(_services);
+        var registrar = new ServiceRegistrar(_services);
         _app = new CommandApp(registrar);
     }
 
