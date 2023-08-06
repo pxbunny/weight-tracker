@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Cli.Configuration;
+﻿namespace WeightTracker.Cli.Authentication;
 
 public sealed class AuthOptions
 {

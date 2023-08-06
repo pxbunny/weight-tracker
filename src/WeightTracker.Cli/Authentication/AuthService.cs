@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
-using WeightTracker.Cli.Configuration;
 
-namespace WeightTracker.Cli.Services;
+namespace WeightTracker.Cli.Authentication;
 
 public class AuthService : IAuthService
 {

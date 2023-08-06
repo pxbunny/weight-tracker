@@ -1,17 +1,19 @@
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
 using WeightTracker.Contracts;
 using WeightTracker.Contracts.DTOs;
-using WeightTracker.Contracts.QueryStrings;
+using WeightTracker.Contracts.QueryParams;
 using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api.Controllers;
 
-// [Authorize]
+[Authorize]
 [ApiController]
-// [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
+[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public sealed class WeightController : ControllerBase
 {
     private const string UserId = "1234";
@@ -34,9 +36,9 @@ public sealed class WeightController : ControllerBase
 
     [HttpGet(Routes.GetWeightData)]
     public async Task<ActionResult<IEnumerable<WeightDataGroupDto>>> Get(
-        [FromQuery] GetWeightDataQueryString queryString)
+        [FromQuery] GetWeightDataQueryParams queryParams)
     {
-        var domainFilter = (UserId, queryString).Adapt<DataFilter>();
+        var domainFilter = (UserId, queryParams).Adapt<DataFilter>();
         var data = await _weightDataService.GetAsync(domainFilter);
         var dto = data.Adapt<WeightDataGroupDto>();
         return Ok(dto);

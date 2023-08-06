@@ -1,30 +1,27 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using WeightTracker.Cli;
-using WeightTracker.Cli.Configuration;
+using WeightTracker.Cli.Authentication;
 using WeightTracker.Cli.Extensions;
-using WeightTracker.Cli.Services;
+using WeightTracker.Cli.Infrastructure;
+using WeightTracker.Client.Configuration;
 
 var app = new Application();
 app.BuildConfiguration("ENV");
 
 app.ConfigureServices((services, configuration) =>
 {
-    services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.Position));
+    var baseUrl = configuration.GetSection("Api:BaseUrl").Value;
     
-    services.AddScoped<IAuthService, AuthService>();
-
-    services.AddHttpClient<IApiService, ApiService>(client =>
+    if (string.IsNullOrWhiteSpace(baseUrl))
     {
-        var baseUrl = configuration.GetSection("Api:BaseUrl").Value;
-        
-        if (string.IsNullOrEmpty(baseUrl))
-        {
-            throw new InvalidOperationException("Base URL must be configured.");
-        }
-        
-        client.BaseAddress = new Uri(baseUrl);
-    });
+        throw new InvalidOperationException("Base URL must be configured.");
+    }
+    
+    services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.Position));
+    services.AddScoped<IAuthService, AuthService>();
+    
+    services.AddApiClient(baseUrl);
 });
 
 app.ConfigureCli(config =>

@@ -3,7 +3,7 @@ using WeightTracker.Api.Entities;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Models;
 using WeightTracker.Contracts.DTOs;
-using WeightTracker.Contracts.QueryStrings;
+using WeightTracker.Contracts.QueryParams;
 using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
@@ -30,7 +30,7 @@ public sealed class MappingRegistration : IRegister
                     ? DateOnly.FromDateTime(DateTime.Today.Date)
                     : DateOnly.Parse(src.Request.Date));
 
-        config.ForType<(string UserId, GetWeightDataQueryString Filter), DataFilter>()
+        config.ForType<(string UserId, GetWeightDataQueryParams Filter), DataFilter>()
             .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest, src => src.Filter);
         

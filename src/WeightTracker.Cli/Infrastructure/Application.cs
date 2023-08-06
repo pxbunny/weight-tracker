@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WeightTracker.Cli.Configuration;
 
-namespace WeightTracker.Cli;
+namespace WeightTracker.Cli.Infrastructure;
 
 public class Application
 {

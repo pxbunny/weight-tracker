@@ -34,7 +34,7 @@ public sealed class WeightDataGroup
             return dataGroup;
         }
 
-        dataGroup.AverageWeight = dataList.Average(x => x.Weight);
+        dataGroup.AverageWeight = Math.Round(dataList.Average(x => x.Weight), 2);
         dataGroup.MaxWeight = dataList.Max(x => x.Weight);
         dataGroup.MinWeight = dataList.Min(x => x.Weight);
 

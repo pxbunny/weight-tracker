@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Cli.Interfaces;
+﻿namespace WeightTracker.Cli.Authentication;
 
 public interface IAuthService
 {

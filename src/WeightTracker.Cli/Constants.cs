@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Cli.Configuration;
+﻿namespace WeightTracker.Cli;
 
 public static class Constants
 {
