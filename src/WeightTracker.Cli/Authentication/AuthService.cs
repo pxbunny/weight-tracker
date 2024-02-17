@@ -11,7 +11,7 @@ public class AuthService : IAuthService
     {
         _authOptions = authOptions.Value;
     }
-    
+
     public async Task AcquireTokenAsync()
     {
         var (tenantId, clientId, redirectUrl) = _authOptions;

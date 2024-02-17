@@ -9,10 +9,10 @@ public sealed class WeightDataGroupDto
 
     [JsonPropertyName("average_weight")]
     public decimal? AverageWeight { get; init; }
-    
+
     [JsonPropertyName("max_weight")]
     public decimal? MaxWeight { get; init; }
-    
+
     [JsonPropertyName("min_weight")]
     public decimal? MinWeight { get; init; }
 

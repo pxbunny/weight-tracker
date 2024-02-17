@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using WeightTracker.Api.Entities;
-using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Models;
 using WeightTracker.Contracts.DTOs;
 using WeightTracker.Contracts.QueryParams;
@@ -33,7 +32,7 @@ public sealed class MappingRegistration : IRegister
         config.ForType<(string UserId, GetWeightDataQueryParams Filter), DataFilter>()
             .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest, src => src.Filter);
-        
+
         config.ForType<(string UserId, string Date, UpdateWeightDataRequest request), WeightData>()
             .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest.Date, src => src.Date)

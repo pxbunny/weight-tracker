@@ -1,7 +1,5 @@
-using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Web.Resource;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
 using WeightTracker.Contracts;
@@ -17,14 +15,14 @@ namespace WeightTracker.Api.Controllers;
 public sealed class WeightController : ControllerBase
 {
     private const string UserId = "1234";
-    
+
     private readonly IWeightDataService _weightDataService;
 
     public WeightController(IWeightDataService weightDataService)
     {
         _weightDataService = weightDataService;
     }
-    
+
     [HttpPost(Routes.AddWeightData)]
     public async Task<IActionResult> Add(
         [FromBody] AddWeightDataRequest request)
@@ -53,7 +51,7 @@ public sealed class WeightController : ControllerBase
         await _weightDataService.UpdateAsync(data);
         return Ok();
     }
-    
+
     [HttpDelete(Routes.DeleteWeightData)]
     public async Task<IActionResult> Delete(
         [FromRoute] string date)

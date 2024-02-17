@@ -6,7 +6,7 @@ public sealed class AddWeightDataRequest
 {
     [JsonPropertyName("weight")]
     public decimal Weight { get; init; }
-    
+
     [JsonPropertyName("date")]
     public string? Date { get; init; }
 }

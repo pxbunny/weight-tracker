@@ -2,7 +2,6 @@ using System.Reflection;
 using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Azure;
-using Microsoft.Identity.Web;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Services;
 

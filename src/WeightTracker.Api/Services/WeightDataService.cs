@@ -1,5 +1,4 @@
 ﻿using Azure.Data.Tables;
-using Mapster;
 using WeightTracker.Api.Entities;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Interfaces;
