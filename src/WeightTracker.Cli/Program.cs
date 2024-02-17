@@ -7,6 +7,7 @@ using WeightTracker.Cli.Infrastructure;
 using WeightTracker.Client.Configuration;
 
 var app = new Application();
+
 app.BuildConfiguration("ENV");
 
 app.ConfigureServices((services, configuration) =>
@@ -19,6 +20,7 @@ app.ConfigureServices((services, configuration) =>
     }
 
     services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.Position));
+
     services.AddScoped<IAuthService, AuthService>();
 
     services.AddApiClient(baseUrl);
