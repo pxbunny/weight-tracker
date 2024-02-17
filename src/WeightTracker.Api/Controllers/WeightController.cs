@@ -11,9 +11,9 @@ using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api.Controllers;
 
-[Authorize]
+// [Authorize]
+// [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 [ApiController]
-[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 public sealed class WeightController : ControllerBase
 {
     private const string UserId = "1234";

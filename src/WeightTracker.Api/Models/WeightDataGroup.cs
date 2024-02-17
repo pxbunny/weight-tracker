@@ -16,9 +16,7 @@ public sealed class WeightDataGroup
 
     public IEnumerable<WeightData> Data { get; set; } = Enumerable.Empty<WeightData>();
 
-    public static WeightDataGroup Create(
-        string userId,
-        IEnumerable<WeightData> data)
+    public static WeightDataGroup Create(string userId, IEnumerable<WeightData> data)
     {
         var dataList = data.ToList();
 
@@ -28,7 +26,7 @@ public sealed class WeightDataGroup
             Data = dataList
         };
 
-        if (!dataList.Any())
+        if (dataList.Count == 0)
         {
             return dataGroup;
         }

@@ -19,8 +19,12 @@ builder.Services.AddAzureClients(clientBuilder =>
 
 builder.Services.AddScoped<IWeightDataService, WeightDataService>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+#pragma warning disable SA1512 // TODO: remove pragma after adding authentication
+
+// builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+#pragma warning restore SA1512
 
 builder.Services.AddControllers();
 
@@ -38,7 +42,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+#pragma warning disable SA1512 // TODO: remove pragma after adding authentication
+
+// app.UseAuthorization();
+
+#pragma warning restore SA1512
 
 app.MapControllers();
 
