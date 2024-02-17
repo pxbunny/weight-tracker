@@ -1,5 +1,7 @@
+﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
 using WeightTracker.Contracts;

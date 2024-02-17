@@ -1,4 +1,4 @@
-namespace WeightTracker.Cli.UnitTests;
+﻿namespace WeightTracker.Cli.UnitTests;
 
 public class UnitTest1
 {

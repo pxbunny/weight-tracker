@@ -13,7 +13,7 @@ public static class ConfigureServices
             {
                 throw new InvalidOperationException("Base URL must be configured.");
             }
-            
+
             client.BaseAddress = new Uri(baseUrl);
         });
 

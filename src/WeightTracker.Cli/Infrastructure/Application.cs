@@ -7,7 +7,7 @@ public class Application
 {
     private readonly CommandApp _app;
     private readonly IServiceCollection _services;
-    
+
     private IConfiguration? _configuration;
 
     public Application()

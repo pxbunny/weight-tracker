@@ -1,4 +1,5 @@
 ﻿using Azure.Data.Tables;
+using Mapster;
 using WeightTracker.Api.Entities;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Interfaces;
@@ -9,9 +10,9 @@ namespace WeightTracker.Api.Services;
 internal sealed class WeightDataService : IWeightDataService
 {
     private const string TableName = "WeightData";
-    
+
     private readonly TableServiceClient _tableServiceClient;
-    
+
     public WeightDataService(TableServiceClient tableServiceClient)
     {
         _tableServiceClient = tableServiceClient;
@@ -28,13 +29,13 @@ internal sealed class WeightDataService : IWeightDataService
     {
         var tableClient = await GetTableClientAsync();
         var (userId, dateFrom, dateTo) = dataFilter;
-        
+
         var from = (dateFrom ?? DateOnly.MinValue).ToFormattedString();
         var to = (dateTo ?? DateOnly.MaxValue).ToFormattedString();
 
         var filter = $"PartitionKey eq '{userId}' and RowKey ge '{from}' and RowKey le '{to}'";
         var result = tableClient.Query<WeightDataEntity>(filter).ToList();
-        
+
         var data = result.Adapt<IEnumerable<WeightData>>();
         return WeightDataGroup.Create(userId, data);
     }
@@ -51,7 +52,7 @@ internal sealed class WeightDataService : IWeightDataService
         var tableClient = await GetTableClientAsync();
         await tableClient.DeleteEntityAsync(userId, date.ToFormattedString());
     }
-    
+
     private async Task<TableClient> GetTableClientAsync()
     {
         var tableClient = _tableServiceClient.GetTableClient(tableName: TableName);

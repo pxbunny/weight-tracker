@@ -4,15 +4,14 @@ public sealed class WeightDataGroup
 {
     private WeightDataGroup()
     {
-        
     }
-    
+
     public string UserId { get; set; } = string.Empty;
 
     public decimal? AverageWeight { get; set; }
-    
+
     public decimal? MaxWeight { get; set; }
-    
+
     public decimal? MinWeight { get; set; }
 
     public IEnumerable<WeightData> Data { get; set; } = Enumerable.Empty<WeightData>();
@@ -22,7 +21,7 @@ public sealed class WeightDataGroup
         IEnumerable<WeightData> data)
     {
         var dataList = data.ToList();
-        
+
         var dataGroup = new WeightDataGroup
         {
             UserId = userId,

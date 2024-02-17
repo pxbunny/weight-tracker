@@ -23,6 +23,7 @@ public class AuthService : IAuthService
          .Build();
 
         var authResult = await client.AcquireTokenInteractive(scopes).ExecuteAsync();
+
         // TODO: persist token
     }
 }
