@@ -8,10 +8,6 @@ using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
 
-// TODO: Update authorization and scopes
-// [Authorize]
-// [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
-
 internal static class Endpoints
 {
     private const string TmpUserId = "1234";
@@ -21,15 +17,19 @@ internal static class Endpoints
     public static void RegisterEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapPost(Routes.AddWeightData, AddWeightDataAsync)
+            .RequireAuthorization()
             .WithTags(TagName);
 
         app.MapGet(Routes.GetWeightData, GetWeightDataAsync)
+            .RequireAuthorization()
             .WithTags(TagName);
 
         app.MapPut(Routes.UpdateWeightData, UpdateWeightDataAsync)
+            .RequireAuthorization()
             .WithTags(TagName);
 
         app.MapDelete(Routes.DeleteWeightData, DeleteWeightDataAsync)
+            .RequireAuthorization()
             .WithTags(TagName);
     }
 
