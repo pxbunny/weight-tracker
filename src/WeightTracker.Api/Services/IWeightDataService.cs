@@ -6,7 +6,7 @@ using WeightTracker.Api.Models;
 
 namespace WeightTracker.Api.Services;
 
-public interface IWeightDataService
+internal interface IWeightDataService
 {
     Task AddAsync(WeightData weightData);
 

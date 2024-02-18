@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.Models;
 
-public sealed class WeightDataGroup
+internal sealed class WeightDataGroup
 {
     private WeightDataGroup()
     {

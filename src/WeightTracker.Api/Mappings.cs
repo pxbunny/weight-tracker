@@ -10,7 +10,7 @@ using WeightTracker.Contracts.Requests;
 namespace WeightTracker.Api;
 
 [UsedImplicitly]
-public sealed class Mapping : IRegister
+internal sealed class Mappings : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

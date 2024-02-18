@@ -12,9 +12,9 @@ namespace WeightTracker.Api;
 // [Authorize]
 // [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
 
-public static class Endpoints
+internal static class Endpoints
 {
-    private const string UserId = "1234";
+    private const string TmpUserId = "1234";
 
     private const string TagName = "Weight";
 
@@ -37,7 +37,7 @@ public static class Endpoints
         [FromBody] AddWeightDataRequest request,
         [FromServices] IWeightDataService weightDataService)
     {
-        var data = (UserId, request).Adapt<WeightData>();
+        var data = (TmpUserId, request).Adapt<WeightData>();
         await weightDataService.AddAsync(data);
         return Results.Ok(); // TODO: correct response
     }
@@ -48,7 +48,7 @@ public static class Endpoints
         // var domainFilter = (UserId, queryParams).Adapt<DataFilter>();
         var domainFilter = new DataFilter
         {
-            UserId = UserId,
+            UserId = TmpUserId,
             DateFrom = DateOnly.MinValue,
             DateTo = DateOnly.MaxValue
         };
@@ -63,7 +63,7 @@ public static class Endpoints
         [FromBody] UpdateWeightDataRequest request,
         [FromServices] IWeightDataService weightDataService)
     {
-        var data = (UserId, date, request).Adapt<WeightData>();
+        var data = (TmpUserId, date, request).Adapt<WeightData>();
         await weightDataService.UpdateAsync(data);
         return Results.Ok();
     }
@@ -72,7 +72,7 @@ public static class Endpoints
         [FromRoute] string date,
         [FromServices] IWeightDataService weightDataService)
     {
-        await weightDataService.DeleteAsync(UserId, DateOnly.Parse(date));
+        await weightDataService.DeleteAsync(TmpUserId, DateOnly.Parse(date));
         return Results.Ok();
     }
 }

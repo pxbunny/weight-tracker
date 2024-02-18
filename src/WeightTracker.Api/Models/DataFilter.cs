@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.Models;
 
-public sealed class DataFilter
+internal sealed class DataFilter
 {
     public string UserId { get; set; } = string.Empty;
 
