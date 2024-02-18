@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli", "src\WeightTracker.Cli\WeightTracker.Cli.csproj", "{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{546D536D-0A82-4F09-81DD-286C26DE12AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{66EB359F-26F8-481D-835F-4AA860E485E1}"
@@ -31,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{DD94C2D3
 		global.json = global.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli", "src\WeightTracker.Cli\WeightTracker.Cli.csproj", "{9A4C9353-5421-4173-AB13-59F3302064D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,10 +40,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F55F8369-EAD1-4DBD-B996-2E30E18196F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F55F8369-EAD1-4DBD-B996-2E30E18196F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F55F8369-EAD1-4DBD-B996-2E30E18196F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,13 +60,17 @@ Global
 		{AC39323C-21D4-480F-B02F-116E097810C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC39323C-21D4-480F-B02F-116E097810C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC39323C-21D4-480F-B02F-116E097810C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A4C9353-5421-4173-AB13-59F3302064D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A4C9353-5421-4173-AB13-59F3302064D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A4C9353-5421-4173-AB13-59F3302064D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A4C9353-5421-4173-AB13-59F3302064D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F55F8369-EAD1-4DBD-B996-2E30E18196F9} = {66EB359F-26F8-481D-835F-4AA860E485E1}
 		{60B00A25-884C-4699-A3C6-B53C5A679E9B} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
-		{42DF10CA-E8CE-4F1F-A7FB-B729A2EF437D} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
 		{9C1DF010-D686-4011-BAC7-C19C28DB8B9C} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
 		{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23} = {66EB359F-26F8-481D-835F-4AA860E485E1}
 		{AC39323C-21D4-480F-B02F-116E097810C9} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
+		{9A4C9353-5421-4173-AB13-59F3302064D9} = {546D536D-0A82-4F09-81DD-286C26DE12AD}
 	EndGlobalSection
 EndGlobal

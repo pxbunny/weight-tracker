@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Web;
 
-namespace WeightTracker.Client.Internal;
+namespace WeightTracker.Client.Client;
 
 internal static class ObjectExtensions
 {

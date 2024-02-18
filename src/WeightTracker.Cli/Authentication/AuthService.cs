@@ -3,27 +3,31 @@ using Microsoft.Identity.Client;
 
 namespace WeightTracker.Cli.Authentication;
 
-public class AuthService : IAuthService
+internal class AuthService(IOptions<AuthOptions> authOptions)
 {
-    private readonly AuthOptions _authOptions;
-
-    public AuthService(IOptions<AuthOptions> authOptions)
-    {
-        _authOptions = authOptions.Value;
-    }
-
     public async Task AcquireTokenAsync()
     {
-        var (tenantId, clientId, redirectUrl) = _authOptions;
+        var (clientId, tenantId, redirectUrl) = authOptions.Value;
         var scopes = new[] { "User.Read" };
 
         var client = PublicClientApplicationBuilder.Create(clientId)
-         .WithAuthority($"https://login.microsoftonline.com/{tenantId}")
-         .WithRedirectUri(redirectUrl)
-         .Build();
+            .WithAuthority($"https://login.microsoftonline.com/{tenantId}")
+            .WithRedirectUri(redirectUrl)
+            .Build();
 
-        var authResult = await client.AcquireTokenInteractive(scopes).ExecuteAsync();
+        var authResult = await client
+            .AcquireTokenInteractive(scopes)
+            .ExecuteAsync();
 
-        // TODO: persist token
+#if DEBUG
+        Console.WriteLine($"Token: {authResult.AccessToken}");
+#endif
+
+        Environment.SetEnvironmentVariable("AUTH_TOKEN", authResult.AccessToken, EnvironmentVariableTarget.User);
+    }
+
+    public void ForgetToken()
+    {
+        Environment.SetEnvironmentVariable("AUTH_TOKEN", null, EnvironmentVariableTarget.User);
     }
 }

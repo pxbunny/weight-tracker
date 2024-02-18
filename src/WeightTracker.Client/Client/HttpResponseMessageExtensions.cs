@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace WeightTracker.Client.Internal;
+namespace WeightTracker.Client.Client;
 
 internal static class HttpResponseMessageExtensions
 {

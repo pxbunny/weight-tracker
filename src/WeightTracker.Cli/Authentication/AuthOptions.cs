@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Cli.Authentication;
 
-public sealed class AuthOptions
+internal sealed class AuthOptions
 {
     public const string Position = "Auth";
 

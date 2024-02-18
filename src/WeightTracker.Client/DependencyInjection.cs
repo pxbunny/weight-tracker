@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using WeightTracker.Client.Internal;
+using WeightTracker.Client.Client;
 
-namespace WeightTracker.Client.Configuration;
+namespace WeightTracker.Client;
 
-public static class ConfigureServices
+public static class DependencyInjection
 {
     public static IServiceCollection AddApiClient(this IServiceCollection services, string baseUrl)
     {

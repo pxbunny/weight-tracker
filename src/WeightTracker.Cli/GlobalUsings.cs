@@ -1,1 +1,1 @@
-﻿global using Spectre.Console.Cli;
+﻿global using Cocona;

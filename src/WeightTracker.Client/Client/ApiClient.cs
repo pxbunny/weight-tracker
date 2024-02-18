@@ -2,7 +2,7 @@
 using WeightTracker.Contracts.DTOs;
 using WeightTracker.Contracts.QueryParams;
 
-namespace WeightTracker.Client.Internal;
+namespace WeightTracker.Client.Client;
 
 internal sealed class ApiClient : IApiClient
 {

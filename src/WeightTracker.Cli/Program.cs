@@ -1,49 +1,27 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using WeightTracker.Cli;
-using WeightTracker.Cli.Authentication;
-using WeightTracker.Cli.Extensions;
-using WeightTracker.Cli.Infrastructure;
-using WeightTracker.Client.Configuration;
+﻿using WeightTracker.Cli.Authentication;
+using WeightTracker.Client;
 
-var app = new Application();
+var builder = CoconaApp.CreateBuilder();
 
-app.BuildConfiguration("ENV");
+builder.Services.AddAuthentication(builder.Configuration);
+builder.Services.AddApiClient(string.Empty);
 
-app.ConfigureServices((services, configuration) =>
+var app = builder.Build();
+
+app.AddCommand("login", async (AuthService authService) =>
 {
-    var baseUrl = configuration.GetSection("Api:BaseUrl").Value;
-
-    if (string.IsNullOrWhiteSpace(baseUrl))
-    {
-        throw new InvalidOperationException("Base URL must be configured.");
-    }
-
-    services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.Position));
-
-    services.AddScoped<IAuthService, AuthService>();
-
-    services.AddApiClient(baseUrl);
+    await authService.AcquireTokenAsync();
 });
 
-app.ConfigureCli(config =>
+app.AddCommand("logout", (AuthService authService) =>
 {
-    var commands = Assembly.GetExecutingAssembly()
-        .GetCommandTypesFromAssembly()
-        .OrderBy(t => t.Name);
-
-    foreach (var command in commands)
-    {
-        config.RegisterCommands(
-            command,
-            command.GetCommandName(Constants.CommandPostfix));
-    }
-
-    config.SetExceptionHandler(ex =>
-    {
-        // TODO: update this
-        // AnsiConsole.WriteException(ex, ExceptionFormats.ShortenEverything);
-    });
+    authService.ForgetToken();
 });
 
-return await app.RunAsync(args);
+app.AddCommand("test", () =>
+{
+    var authToken = Environment.GetEnvironmentVariable("AUTH_TOKEN", EnvironmentVariableTarget.User);
+    Console.WriteLine($"Token: {authToken}");
+});
+
+app.Run();
