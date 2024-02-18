@@ -2,21 +2,24 @@
 using Mapster;
 using WeightTracker.Api.Entities;
 using WeightTracker.Api.Extensions;
-using WeightTracker.Api.Interfaces;
 using WeightTracker.Api.Models;
 
 namespace WeightTracker.Api.Services;
 
-internal sealed class WeightDataService : IWeightDataService
+public interface IWeightDataService
+{
+    Task AddAsync(WeightData weightData);
+
+    Task<WeightDataGroup> GetAsync(DataFilter filter);
+
+    Task UpdateAsync(WeightData weightData);
+
+    Task DeleteAsync(string userId, DateOnly date);
+}
+
+internal sealed class WeightDataService(TableServiceClient tableServiceClient) : IWeightDataService
 {
     private const string TableName = "WeightData";
-
-    private readonly TableServiceClient _tableServiceClient;
-
-    public WeightDataService(TableServiceClient tableServiceClient)
-    {
-        _tableServiceClient = tableServiceClient;
-    }
 
     public async Task AddAsync(WeightData weightData)
     {
@@ -55,7 +58,7 @@ internal sealed class WeightDataService : IWeightDataService
 
     private async Task<TableClient> GetTableClientAsync()
     {
-        var tableClient = _tableServiceClient.GetTableClient(tableName: TableName);
+        var tableClient = tableServiceClient.GetTableClient(tableName: TableName);
         await tableClient.CreateIfNotExistsAsync();
         return tableClient;
     }

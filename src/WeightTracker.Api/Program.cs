@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using Mapster;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Azure;
-using Microsoft.Identity.Web;
-using WeightTracker.Api.Interfaces;
+using WeightTracker.Api;
 using WeightTracker.Api.Services;
 
 TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
@@ -26,8 +24,6 @@ builder.Services.AddScoped<IWeightDataService, WeightDataService>();
 
 #pragma warning restore SA1512
 
-builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
@@ -42,12 +38,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-#pragma warning disable SA1512 // TODO: remove pragma after adding authentication
-
 // app.UseAuthorization();
 
-#pragma warning restore SA1512
-
-app.MapControllers();
+app.RegisterEndpoints();
 
 app.Run();

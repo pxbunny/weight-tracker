@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using JetBrains.Annotations;
+using Mapster;
 using WeightTracker.Api.Entities;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Models;
@@ -8,7 +9,8 @@ using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
 
-public sealed class MappingRegistration : IRegister
+[UsedImplicitly]
+public sealed class Mapping : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
@@ -25,9 +27,8 @@ public sealed class MappingRegistration : IRegister
         config.ForType<(string UserId, AddWeightDataRequest Request), WeightData>()
             .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest, src => src.Request)
-            .Map(
-                dest => dest.Date,
-                src => string.IsNullOrEmpty(src.Request.Date)
+            .Map(dest => dest.Date, src =>
+                string.IsNullOrEmpty(src.Request.Date)
                     ? DateOnly.FromDateTime(DateTime.Today.Date)
                     : DateOnly.Parse(src.Request.Date));
 

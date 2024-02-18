@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" />
+    <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Mapster" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
