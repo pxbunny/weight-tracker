@@ -10,8 +10,6 @@ namespace WeightTracker.Api;
 
 internal static class Endpoints
 {
-    private const string TmpUserId = "1234";
-
     private const string TagName = "Weight";
 
     public static void RegisterEndpoints(this IEndpointRouteBuilder app)
@@ -35,20 +33,32 @@ internal static class Endpoints
 
     private static async Task<IResult> AddWeightDataAsync(
         [FromBody] AddWeightDataRequest request,
-        [FromServices] IWeightDataService weightDataService)
+        [FromServices] IWeightDataService weightDataService,
+        [FromServices] ICurrentUserService currentUser)
     {
-        var data = (TmpUserId, request).Adapt<WeightData>();
+        if (currentUser.UserId is null)
+        {
+            return Results.Unauthorized();
+        }
+
+        var data = (currentUser.UserId, request).Adapt<WeightData>();
         await weightDataService.AddAsync(data);
         return Results.Ok(); // TODO: correct response
     }
 
     private static async Task<IResult> GetWeightDataAsync(// [FromQuery] GetWeightDataQueryParams queryParams,
-        [FromServices] IWeightDataService weightDataService)
+        [FromServices] IWeightDataService weightDataService,
+        [FromServices] ICurrentUserService currentUser)
     {
+        if (currentUser.UserId is null)
+        {
+            return Results.Unauthorized();
+        }
+
         // var domainFilter = (UserId, queryParams).Adapt<DataFilter>();
         var domainFilter = new DataFilter
         {
-            UserId = TmpUserId,
+            UserId = currentUser.UserId,
             DateFrom = DateOnly.MinValue,
             DateTo = DateOnly.MaxValue
         };
@@ -61,18 +71,30 @@ internal static class Endpoints
     private static async Task<IResult> UpdateWeightDataAsync(
         [FromRoute] string date,
         [FromBody] UpdateWeightDataRequest request,
-        [FromServices] IWeightDataService weightDataService)
+        [FromServices] IWeightDataService weightDataService,
+        [FromServices] ICurrentUserService currentUser)
     {
-        var data = (TmpUserId, date, request).Adapt<WeightData>();
+        if (currentUser.UserId is null)
+        {
+            return Results.Unauthorized();
+        }
+
+        var data = (currentUser.UserId, date, request).Adapt<WeightData>();
         await weightDataService.UpdateAsync(data);
         return Results.Ok();
     }
 
     private static async Task<IResult> DeleteWeightDataAsync(
         [FromRoute] string date,
-        [FromServices] IWeightDataService weightDataService)
+        [FromServices] IWeightDataService weightDataService,
+        [FromServices] ICurrentUserService currentUser)
     {
-        await weightDataService.DeleteAsync(TmpUserId, DateOnly.Parse(date));
+        if (currentUser.UserId is null)
+        {
+            return Results.Unauthorized();
+        }
+
+        await weightDataService.DeleteAsync(currentUser.UserId, DateOnly.Parse(date));
         return Results.Ok();
     }
 }

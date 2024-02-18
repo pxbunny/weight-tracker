@@ -16,6 +16,7 @@ builder.Services.AddAzureClients(clientBuilder =>
 });
 
 builder.Services.AddScoped<IWeightDataService, WeightDataService>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
