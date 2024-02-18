@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Mapster;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Azure;
 using Microsoft.Identity.Web;
 using WeightTracker.Api;
@@ -18,12 +17,11 @@ builder.Services.AddAzureClients(clientBuilder =>
 
 builder.Services.AddScoped<IWeightDataService, WeightDataService>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(Swagger.Configure);
 
 var app = builder.Build();
 
@@ -34,6 +32,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.RegisterEndpoints();
 

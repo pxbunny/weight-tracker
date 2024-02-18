@@ -7,12 +7,19 @@ internal class AuthService(IOptions<AuthOptions> authOptions)
 {
     public async Task AcquireTokenAsync()
     {
-        var (clientId, tenantId, redirectUrl) = authOptions.Value;
-        var scopes = new[] { "User.Read" };
+        var (clientId, tenantId, redirectUri) = authOptions.Value;
 
-        var client = PublicClientApplicationBuilder.Create(clientId)
-            .WithAuthority($"https://login.microsoftonline.com/{tenantId}")
-            .WithRedirectUri(redirectUrl)
+        var scopes = new[] { $"api://{clientId}/access_as_user" };
+
+        var options = new PublicClientApplicationOptions
+        {
+            ClientId = clientId,
+            TenantId = tenantId,
+            RedirectUri = redirectUri
+        };
+
+        var client = PublicClientApplicationBuilder
+            .CreateWithApplicationOptions(options)
             .Build();
 
         var authResult = await client
