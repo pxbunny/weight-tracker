@@ -4,6 +4,7 @@ using WeightTracker.Api.Models;
 using WeightTracker.Api.Services;
 using WeightTracker.Contracts;
 using WeightTracker.Contracts.DTOs;
+using WeightTracker.Contracts.QueryParams;
 using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
@@ -36,33 +37,31 @@ internal static class Endpoints
         [FromServices] IWeightDataService weightDataService,
         [FromServices] ICurrentUserService currentUser)
     {
-        if (currentUser.UserId is null)
+        var userId = currentUser.UserId;
+
+        if (string.IsNullOrWhiteSpace(userId))
         {
             return Results.Unauthorized();
         }
 
-        var data = (currentUser.UserId, request).Adapt<WeightData>();
+        var data = (userId, request).Adapt<WeightData>();
         await weightDataService.AddAsync(data);
         return Results.Ok(); // TODO: correct response
     }
 
-    private static async Task<IResult> GetWeightDataAsync(// [FromQuery] GetWeightDataQueryParams queryParams,
+    private static async Task<IResult> GetWeightDataAsync(
+        [AsParameters] GetWeightDataQueryParams queryParams,
         [FromServices] IWeightDataService weightDataService,
         [FromServices] ICurrentUserService currentUser)
     {
-        if (currentUser.UserId is null)
+        var userId = currentUser.UserId;
+
+        if (string.IsNullOrWhiteSpace(userId))
         {
             return Results.Unauthorized();
         }
 
-        // var domainFilter = (UserId, queryParams).Adapt<DataFilter>();
-        var domainFilter = new DataFilter
-        {
-            UserId = currentUser.UserId,
-            DateFrom = DateOnly.MinValue,
-            DateTo = DateOnly.MaxValue
-        };
-
+        var domainFilter = (userId, queryParams).Adapt<DataFilter>();
         var data = await weightDataService.GetAsync(domainFilter);
         var dto = data.Adapt<WeightDataGroupDto>();
         return Results.Ok(dto);
@@ -74,12 +73,14 @@ internal static class Endpoints
         [FromServices] IWeightDataService weightDataService,
         [FromServices] ICurrentUserService currentUser)
     {
-        if (currentUser.UserId is null)
+        var userId = currentUser.UserId;
+
+        if (string.IsNullOrWhiteSpace(userId))
         {
             return Results.Unauthorized();
         }
 
-        var data = (currentUser.UserId, date, request).Adapt<WeightData>();
+        var data = (userId, date, request).Adapt<WeightData>();
         await weightDataService.UpdateAsync(data);
         return Results.Ok();
     }
@@ -89,12 +90,14 @@ internal static class Endpoints
         [FromServices] IWeightDataService weightDataService,
         [FromServices] ICurrentUserService currentUser)
     {
-        if (currentUser.UserId is null)
+        var userId = currentUser.UserId;
+
+        if (string.IsNullOrWhiteSpace(userId))
         {
             return Results.Unauthorized();
         }
 
-        await weightDataService.DeleteAsync(currentUser.UserId, DateOnly.Parse(date));
+        await weightDataService.DeleteAsync(userId, DateOnly.Parse(date));
         return Results.Ok();
     }
 }

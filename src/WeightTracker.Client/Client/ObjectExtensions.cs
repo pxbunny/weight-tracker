@@ -1,12 +1,13 @@
 ﻿using System.Reflection;
 using System.Web;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WeightTracker.Client.Client;
 
 internal static class ObjectExtensions
 {
-    private const string AttributeName = "ModelBinderAttribute";
-    private const string AttributePropertyName = "Name";
+    private const string AttributeName = nameof(FromQueryAttribute);
+    private const string AttributePropertyName = nameof(FromQueryAttribute.Name);
 
     public static string BuildQueryString<T>(this T obj)
         where T : class
