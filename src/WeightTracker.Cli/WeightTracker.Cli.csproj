@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Cocona" />
     <PackageReference Include="Microsoft.Identity.Client" />
+    <PackageReference Include="Spectre.Console" />
   </ItemGroup>
 
   <ItemGroup>

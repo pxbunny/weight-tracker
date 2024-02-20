@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
+using Spectre.Console;
 using WeightTracker.Cli.Authentication;
 using WeightTracker.Client;
 using WeightTracker.Contracts.QueryParams;
@@ -10,29 +12,43 @@ internal static class Commands
 {
     public static void RegisterCommands(this CoconaApp app)
     {
-        app.AddCommand("login", LoginAsync);
+        app.AddCommand("login", LoginAsync)
+            .WithDescription("Login to the application");
 
-        app.AddCommand("logout", Logout);
+        app.AddCommand("logout", LogoutAsync)
+            .WithDescription("Logout from the application");
 
-        app.AddCommand("get", GetWeightDataAsync);
+        app.AddCommand("get", GetWeightDataAsync)
+            .WithDescription("Get weight data");
 
-        app.AddCommand("add", AddWeightDataAsync);
+        app.AddCommand("add", AddWeightDataAsync)
+            .WithDescription("Add weight data");
 
-        app.AddCommand("update", UpdateWeightDataAsync);
+        app.AddCommand("update", UpdateWeightDataAsync)
+            .WithDescription("Update weight data");
 
-        app.AddCommand("delete", DeleteWeightDataAsync);
+        app.AddCommand("delete", DeleteWeightDataAsync)
+            .WithDescription("Delete weight data");
     }
 
     private static async Task LoginAsync(
         [FromServices] AuthService authService)
     {
-        await authService.AcquireTokenAsync();
+        await StartAsync("Logging in...", async ctx =>
+        {
+            await authService.AcquireTokenAsync();
+            AnsiConsole.MarkupLine("Successfully logged in.");
+        });
     }
 
-    private static void Logout(
+    private static async Task LogoutAsync(
         [FromServices] AuthService authService)
     {
-        authService.ForgetToken();
+        await StartAsync("Logging out...", async ctx =>
+        {
+            await authService.ForgetTokenAsync();
+            AnsiConsole.MarkupLine("Successfully logged out.");
+        });
     }
 
     private static async Task GetWeightDataAsync(
@@ -41,17 +57,40 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        var accessToken = authService.GetToken();
-
-        if (string.IsNullOrWhiteSpace(accessToken))
+        await StartAsync("Fetching data...", authService, async (ctx, accessToken) =>
         {
-            Console.WriteLine("Please login first.");
-            return;
-        }
+            var queryParams = new GetWeightDataQueryParams(from, to);
+            var response = await apiClient.GetWeightDataAsync(queryParams, accessToken);
 
-        var queryParams = new GetWeightDataQueryParams(from, to);
-        var data = await apiClient.GetWeightDataAsync(queryParams, accessToken);
-        Console.WriteLine(data.AverageWeight);
+            var table = new Table();
+
+            table.AddColumn("Date");
+            table.AddColumn("Weight");
+            table.AddColumn("+/-");
+
+            for (var i = 0; i < response.Data.Count(); i++)
+            {
+                var current = response.Data.ElementAt(i);
+                var previous = i > 0
+                    ? response.Data.ElementAt(i - 1)
+                    : current;
+                var diff = current.Weight - previous.Weight;
+
+                var diffString = diff switch
+                {
+                    > 0 => $"[green]+{diff}[/]",
+                    < 0 => $"[red]{diff}[/]",
+                    _ => "0"
+                };
+
+                table.AddRow(
+                    current.Date,
+                    current.Weight.ToString(CultureInfo.InvariantCulture),
+                    diffString);
+            }
+
+            AnsiConsole.Write(table);
+        });
     }
 
     private static async Task AddWeightDataAsync(
@@ -60,16 +99,12 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        var accessToken = authService.GetToken();
-
-        if (string.IsNullOrWhiteSpace(accessToken))
+        await StartAsync("Adding data...", authService, async (ctx, accessToken) =>
         {
-            Console.WriteLine("Please login first.");
-            return;
-        }
-
-        var request = new AddWeightDataRequest(weight, date);
-        await apiClient.AddWeightDataAsync(request, accessToken);
+            var request = new AddWeightDataRequest(weight, date);
+            await apiClient.AddWeightDataAsync(request, accessToken);
+            AnsiConsole.MarkupLine("Successfully added data.");
+        });
     }
 
     private static async Task UpdateWeightDataAsync(
@@ -78,16 +113,12 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        var accessToken = authService.GetToken();
-
-        if (string.IsNullOrWhiteSpace(accessToken))
+        await StartAsync("Updating data...", authService, async (ctx, accessToken) =>
         {
-            Console.WriteLine("Please login first.");
-            return;
-        }
-
-        var request = new UpdateWeightDataRequest(weight);
-        await apiClient.UpdateWeightDataAsync(date, request, accessToken);
+            var request = new UpdateWeightDataRequest(weight);
+            await apiClient.UpdateWeightDataAsync(date, request, accessToken);
+            AnsiConsole.MarkupLine("Successfully updated data.");
+        });
     }
 
     private static async Task DeleteWeightDataAsync(
@@ -95,14 +126,43 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        var accessToken = authService.GetToken();
-
-        if (string.IsNullOrWhiteSpace(accessToken))
+        await StartAsync("Deleting data...", authService, async (ctx, accessToken) =>
         {
-            Console.WriteLine("Please login first.");
-            return;
-        }
+            await apiClient.DeleteWeightDataAsync(date, accessToken);
+            AnsiConsole.MarkupLine("Successfully deleted data.");
+        });
+    }
 
-        await apiClient.DeleteWeightDataAsync(date, accessToken);
+    private static async Task StartAsync(
+        string message,
+        Func<StatusContext, Task> action)
+    {
+        await AnsiConsole.Status()
+            .SpinnerStyle(Style.Plain)
+            .StartAsync(message, async ctx =>
+            {
+                await action(ctx);
+            });
+    }
+
+    private static async Task StartAsync(
+        string message,
+        AuthService authService,
+        Func<StatusContext, string, Task> action)
+    {
+        await AnsiConsole.Status()
+            .SpinnerStyle(Style.Plain)
+            .StartAsync(message, async ctx =>
+            {
+                var accessToken = authService.GetToken();
+
+                if (string.IsNullOrWhiteSpace(accessToken))
+                {
+                    AnsiConsole.MarkupLine("Please [bold red]login[/] first.");
+                    return;
+                }
+
+                await action(ctx, accessToken);
+            });
     }
 }

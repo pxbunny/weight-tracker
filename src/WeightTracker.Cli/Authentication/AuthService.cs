@@ -26,10 +26,6 @@ internal class AuthService(IOptions<AuthOptions> authOptions)
             .AcquireTokenInteractive(scopes)
             .ExecuteAsync(cancellationToken);
 
-#if DEBUG
-        Console.WriteLine($"Token: {authResult.AccessToken}");
-#endif
-
         Environment.SetEnvironmentVariable("AUTH_TOKEN", authResult.AccessToken, EnvironmentVariableTarget.User);
     }
 
@@ -38,8 +34,9 @@ internal class AuthService(IOptions<AuthOptions> authOptions)
         return Environment.GetEnvironmentVariable("AUTH_TOKEN", EnvironmentVariableTarget.User);
     }
 
-    public void ForgetToken()
+    public Task ForgetTokenAsync()
     {
         Environment.SetEnvironmentVariable("AUTH_TOKEN", null, EnvironmentVariableTarget.User);
+        return Task.CompletedTask;
     }
 }
