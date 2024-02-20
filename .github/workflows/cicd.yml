@@ -11,20 +11,11 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       project-path: src/WeightTracker.Api/WeightTracker.Api.csproj
-  
-  deploy-dev:
-    uses: ./.github/workflows/deploy.yml
-    secrets: inherit
-    needs: build
-    with:
-      environment: dev
-      arm-path: infra/main.bicep
-      arm-parameters-path: infra/parameters.dev.json
 
   deploy-prod:
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
-    needs: deploy-dev
+    needs: build
     with:
       environment: prod
       arm-path: infra/main.bicep

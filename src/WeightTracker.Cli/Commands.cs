@@ -62,6 +62,12 @@ internal static class Commands
             var queryParams = new GetWeightDataQueryParams(from, to);
             var response = await apiClient.GetWeightDataAsync(queryParams, accessToken);
 
+            if (!response.Data.Any())
+            {
+                AnsiConsole.MarkupLine("No data found.");
+                return;
+            }
+
             var table = new Table();
 
             table.AddColumn("Date");
@@ -90,6 +96,10 @@ internal static class Commands
             }
 
             AnsiConsole.Write(table);
+
+            AnsiConsole.MarkupLine($"Average weight: [bold]{response.AverageWeight}[/]");
+            AnsiConsole.MarkupLine($"Max weight: [bold]{response.MaxWeight}[/]");
+            AnsiConsole.MarkupLine($"Min weight: [bold]{response.MinWeight}[/]");
         });
     }
 
@@ -158,7 +168,7 @@ internal static class Commands
 
                 if (string.IsNullOrWhiteSpace(accessToken))
                 {
-                    AnsiConsole.MarkupLine("Please [bold red]login[/] first.");
+                    AnsiConsole.MarkupLine("Please login first.");
                     return;
                 }
 

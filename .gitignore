@@ -14,4 +14,3 @@ Desktop.ini
 .DS_Store
 
 **/*.Development.json
-**/*.dev.json

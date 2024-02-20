@@ -6,13 +6,21 @@ on:
       environment:
         type: string
         required: true
+
       arm-path:
         type: string
         required: true
+
       arm-parameters-path:
         type: string
         required: true
-      artifact-name:
+
+      infra-artifact-name:
+        type: string
+        required: false
+        default: infra
+
+      webapp-artifact-name:
         type: string
         required: false
         default: webapp
@@ -22,17 +30,23 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: Download a build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{ inputs.artifact-name }}
-          path: ${{ inputs.artifact-name }}
       - name: Login via Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download an infra artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.infra-artifact-name }}
+          path: ${{ inputs.infra-artifact-name }}
+
+      - name: Download a web app artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.webapp-artifact-name }}
+          path: ${{ inputs.webapp-artifact-name }}
+
       - name: Deploy ARM template
         uses: azure/arm-deploy@v1
         with:
@@ -41,10 +55,12 @@ jobs:
           template: ${{ inputs.arm-path }}
           parameters: ${{ inputs.arm-parameters-path }}
           failOnStdErr: false
+
       - name: Deploy Azure web app
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ vars.APP_NAME }}
-          package: ${{ inputs.artifact-name }}
+          package: ${{ inputs.webapp-artifact-name }}
+
       - name: Logout via Azure CLI
         run: az logout

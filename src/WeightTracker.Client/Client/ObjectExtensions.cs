@@ -12,8 +12,8 @@ internal static class ObjectExtensions
     public static string BuildQueryString<T>(this T obj)
         where T : class
     {
-        var parametersData = obj.GetType().GetProperties(BindingFlags.Public)
-            .Where(p => p.CustomAttributes.Any(a => a.GetType().Name == AttributeName))
+        var parametersData = obj.GetType().GetProperties()
+            .Where(p => p.CustomAttributes.Any(a => a.AttributeType.Name == AttributeName))
             .Select(p => (GetPropertyName(p), p.GetValue(obj)?.ToString()));
 
         var query = HttpUtility.ParseQueryString(string.Empty);
@@ -32,6 +32,6 @@ internal static class ObjectExtensions
     }
 
     private static string GetPropertyName(MemberInfo property) =>
-        property.CustomAttributes.First(a => a.GetType().Name == AttributeName).NamedArguments
+        property.CustomAttributes.First(a => a.AttributeType.Name == AttributeName).NamedArguments
             .First(na => na.MemberName == AttributePropertyName).TypedValue.Value as string ?? property.Name;
 }
