@@ -5,6 +5,8 @@ namespace WeightTracker.Cli.Authentication;
 
 internal class AuthService(IOptions<AuthOptions> authOptions)
 {
+    private const string EnvVariableName = "AUTH_TOKEN";
+
     public async Task AcquireTokenAsync(CancellationToken cancellationToken = default)
     {
         var (clientId, tenantId, redirectUri) = authOptions.Value;
@@ -26,17 +28,17 @@ internal class AuthService(IOptions<AuthOptions> authOptions)
             .AcquireTokenInteractive(scopes)
             .ExecuteAsync(cancellationToken);
 
-        Environment.SetEnvironmentVariable("AUTH_TOKEN", authResult.AccessToken, EnvironmentVariableTarget.User);
+        Environment.SetEnvironmentVariable(EnvVariableName, authResult.AccessToken, EnvironmentVariableTarget.User);
     }
 
     public string? GetToken()
     {
-        return Environment.GetEnvironmentVariable("AUTH_TOKEN", EnvironmentVariableTarget.User);
+        return Environment.GetEnvironmentVariable(EnvVariableName, EnvironmentVariableTarget.User);
     }
 
     public Task ForgetTokenAsync()
     {
-        Environment.SetEnvironmentVariable("AUTH_TOKEN", null, EnvironmentVariableTarget.User);
+        Environment.SetEnvironmentVariable(EnvVariableName, null, EnvironmentVariableTarget.User);
         return Task.CompletedTask;
     }
 }

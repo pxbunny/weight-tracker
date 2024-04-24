@@ -5,7 +5,7 @@ namespace WeightTracker.Client;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApiClient(this IServiceCollection services, string baseUrl)
+    public static IServiceCollection AddApiClient(this IServiceCollection services, string? baseUrl)
     {
         services.AddHttpClient<IApiClient, ApiClient>(client =>
         {
