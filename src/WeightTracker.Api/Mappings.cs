@@ -9,6 +9,24 @@ using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
 
+/// <summary>
+/// Represents the mapping's configuration.
+/// </summary>
+/// <remarks>
+/// This class is used by <see cref="TypeAdapterConfig"/> to register the mappings.
+/// </remarks>
+/// <example>
+/// This example shows how to register the mappings.
+/// <code>
+/// TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
+/// </code>
+/// And this is how to use it:
+/// <code>
+/// var weightData = new WeightData();
+/// var entity = weightData.Adapt&lt;WeightDataEntity&gt;();
+/// </code>
+/// </example>
+/// <seealso cref="IRegister" />
 [UsedImplicitly]
 internal sealed class Mappings : IRegister
 {

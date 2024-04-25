@@ -53,6 +53,7 @@ public sealed class WeightDataGroupDto
     /// <value>
     /// Full list of weight data for the specified period.
     /// </value>
+    /// <seealso cref="WeightDataListItemDto"/>
     [JsonPropertyName("data")]
     public IEnumerable<WeightDataListItemDto> Data { get; init; } = null!;
 }

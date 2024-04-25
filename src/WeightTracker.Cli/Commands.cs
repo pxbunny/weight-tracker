@@ -8,8 +8,15 @@ using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Cli;
 
+/// <summary>
+/// Contains the CLI commands.
+/// </summary>
 internal static class Commands
 {
+    /// <summary>
+    /// An extension method to register CLI commands to the Cocona application.
+    /// </summary>
+    /// <param name="app">The Cocona application.</param>
     public static void RegisterCommands(this CoconaApp app)
     {
         app.AddCommand("login", LoginAsync)
@@ -19,16 +26,16 @@ internal static class Commands
             .WithDescription("Logout from the application");
 
         app.AddCommand("get", GetWeightDataAsync)
-            .WithDescription("Get weight data");
+            .WithDescription("Get weight data for the specified date range");
 
         app.AddCommand("add", AddWeightDataAsync)
-            .WithDescription("Add weight data");
+            .WithDescription("Add weight data for the specified date");
 
         app.AddCommand("update", UpdateWeightDataAsync)
-            .WithDescription("Update weight data");
+            .WithDescription("Update weight data for the specified date");
 
-        app.AddCommand("delete", DeleteWeightDataAsync)
-            .WithDescription("Delete weight data");
+        app.AddCommand("remove", RemoveWeightDataAsync)
+            .WithDescription("Remove weight data for the specified date");
     }
 
     private static async Task LoginAsync(
@@ -70,9 +77,9 @@ internal static class Commands
 
             var table = new Table();
 
-            table.AddColumn("Date");
-            table.AddColumn("Weight");
-            table.AddColumn("+/-");
+            table.AddColumn("[bold]Date[/]");
+            table.AddColumn("[bold]Weight[/]");
+            table.AddColumn("[bold]+/-[/]");
 
             for (var i = 0; i < response.Data.Count(); i++)
             {
@@ -84,8 +91,8 @@ internal static class Commands
 
                 var diffString = diff switch
                 {
-                    > 0 => $"[green]+{diff}[/]",
-                    < 0 => $"[red]{diff}[/]",
+                    > 0 => $"[red]+{diff}[/]",
+                    < 0 => $"[green]{diff}[/]",
                     _ => "0"
                 };
 
@@ -96,15 +103,18 @@ internal static class Commands
             }
 
             AnsiConsole.Write(table);
+            AnsiConsole.WriteLine();
 
             AnsiConsole.MarkupLine($"Average weight: [bold]{response.AverageWeight}[/]");
-            AnsiConsole.MarkupLine($"Max weight: [bold]{response.MaxWeight}[/]");
-            AnsiConsole.MarkupLine($"Min weight: [bold]{response.MinWeight}[/]");
+            AnsiConsole.MarkupLine($"Max weight:     [bold]{response.MaxWeight}[/]");
+            AnsiConsole.MarkupLine($"Min weight:     [bold]{response.MinWeight}[/]");
+
+            AnsiConsole.WriteLine();
         });
     }
 
     private static async Task AddWeightDataAsync(
-        [Option('d', Description = "Date in format yyyy-MM-dd")] string date,
+        [Option('d', Description = "Date in format yyyy-MM-dd")] string? date,
         [Option('w', Description = "Weight value")] decimal weight,
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
@@ -123,7 +133,7 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        var confirm = AnsiConsole.Confirm("Are you sure you want to update the data? This action cannot be undone.");
+        var confirm = AnsiConsole.Confirm("Are you sure you want to update the data?");
 
         if (!confirm)
         {
@@ -138,12 +148,12 @@ internal static class Commands
         });
     }
 
-    private static async Task DeleteWeightDataAsync(
+    private static async Task RemoveWeightDataAsync(
         [Option('d', Description = "Date in format yyyy-MM-dd")] string date,
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        var confirm = AnsiConsole.Confirm("Are you sure you want to delete the data?");
+        var confirm = AnsiConsole.Confirm("Are you sure you want to remove the data?");
 
         if (!confirm)
         {

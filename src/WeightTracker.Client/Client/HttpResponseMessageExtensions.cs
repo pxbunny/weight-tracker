@@ -26,12 +26,6 @@ internal static class HttpResponseMessageExtensions
 
         var content = await response.Content.ReadAsStringAsync(cancellationToken);
         var data = JsonSerializer.Deserialize<T>(content);
-
-        if (data is null)
-        {
-            throw new InvalidOperationException("Failed to deserialize response.");
-        }
-
-        return data;
+        return data ?? throw new InvalidOperationException("Failed to deserialize response.");
     }
 }

@@ -13,15 +13,16 @@ internal static class ObjectExtensions
     private const string AttributePropertyName = nameof(FromQueryAttribute.Name);
 
     /// <summary>
-    /// Builds a query string from the object properties that have the <see cref="FromQueryAttribute"/>.
+    /// Builds a query string from object properties that have the <see cref="FromQueryAttribute"/>.
     /// </summary>
     /// <param name="obj">The object to build the query string from.</param>
     /// <typeparam name="T">The type of the object.</typeparam>
     /// <returns>The query string.</returns>
     /// <example>
     /// <code>
-    /// var queryParams = new GetWeightDataQueryParams { Date = "2021-01-01" };
+    /// var queryParams = new QueryParams { Date = "2021-01-01" };
     /// var queryString = queryParams.BuildQueryString();
+    /// var uri = new Uri($"https://example.com/api/weights?{queryString}");
     /// </code>
     /// </example>
     public static string BuildQueryString<T>(this T obj)
