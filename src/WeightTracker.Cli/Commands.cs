@@ -34,7 +34,7 @@ internal static class Commands
     private static async Task LoginAsync(
         [FromServices] AuthService authService)
     {
-        await StartAsync("Logging in...", async ctx =>
+        await StartAsync("Logging in...", async _ =>
         {
             await authService.AcquireTokenAsync();
             AnsiConsole.MarkupLine("Successfully logged in.");
@@ -44,7 +44,7 @@ internal static class Commands
     private static async Task LogoutAsync(
         [FromServices] AuthService authService)
     {
-        await StartAsync("Logging out...", async ctx =>
+        await StartAsync("Logging out...", async _ =>
         {
             await authService.ForgetTokenAsync();
             AnsiConsole.MarkupLine("Successfully logged out.");
@@ -57,7 +57,7 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        await StartAsync("Fetching data...", authService, async (ctx, accessToken) =>
+        await StartAsync("Fetching data...", authService, async (_, accessToken) =>
         {
             var queryParams = new GetWeightDataQueryParams(from, to);
             var response = await apiClient.GetWeightDataAsync(queryParams, accessToken);
@@ -109,7 +109,7 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        await StartAsync("Adding data...", authService, async (ctx, accessToken) =>
+        await StartAsync("Adding data...", authService, async (_, accessToken) =>
         {
             var request = new AddWeightDataRequest(weight, date);
             await apiClient.AddWeightDataAsync(request, accessToken);
@@ -123,7 +123,14 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        await StartAsync("Updating data...", authService, async (ctx, accessToken) =>
+        var confirm = AnsiConsole.Confirm("Are you sure you want to update the data? This action cannot be undone.");
+
+        if (!confirm)
+        {
+            return;
+        }
+
+        await StartAsync("Updating data...", authService, async (_, accessToken) =>
         {
             var request = new UpdateWeightDataRequest(weight);
             await apiClient.UpdateWeightDataAsync(date, request, accessToken);
@@ -136,7 +143,14 @@ internal static class Commands
         [FromServices] IApiClient apiClient,
         [FromServices] AuthService authService)
     {
-        await StartAsync("Deleting data...", authService, async (ctx, accessToken) =>
+        var confirm = AnsiConsole.Confirm("Are you sure you want to delete the data?");
+
+        if (!confirm)
+        {
+            return;
+        }
+
+        await StartAsync("Deleting data...", authService, async (_, accessToken) =>
         {
             await apiClient.DeleteWeightDataAsync(date, accessToken);
             AnsiConsole.MarkupLine("Successfully deleted data.");
