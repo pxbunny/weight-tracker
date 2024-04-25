@@ -11,8 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAzureClients(clientBuilder =>
 {
-    var storageConnectionString = builder.Configuration.GetSection("AzureWebJobsStorage").Value;
-    clientBuilder.AddTableServiceClient(storageConnectionString);
+    clientBuilder.AddTableServiceClient(builder.Configuration["AzureWebJobsStorage"]);
 });
 
 builder.Services.AddScoped<IWeightDataService, WeightDataService>();
