@@ -8,8 +8,23 @@ using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Client.Client;
 
+/// <inheritdoc />
 internal sealed class ApiClient(HttpClient client) : IApiClient
 {
+    /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the response content cannot be deserialized or the requestUri is invalid.
+    /// </exception>
+    /// <exception cref="HttpRequestException">
+    /// The request failed due to an underlying issue such as network connectivity,
+    /// DNS failure, server certificate validation or timeout.
+    /// </exception>
+    /// <exception cref="TaskCanceledException">
+    /// The request was canceled due to the provided <paramref name="cancellationToken"/>.
+    /// </exception>
+    /// <exception cref="UriFormatException">
+    /// Thrown when the provided request URI is not valid.
+    /// </exception>
     public async Task<WeightDataGroupDto> GetWeightDataAsync(
         GetWeightDataQueryParams queryParams,
         string accessToken,
@@ -22,6 +37,20 @@ internal sealed class ApiClient(HttpClient client) : IApiClient
         return await response.ReadContentAsAsync<WeightDataGroupDto>(cancellationToken);
     }
 
+    /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the requestUri is invalid.
+    /// </exception>
+    /// <exception cref="HttpRequestException">
+    /// The request failed due to an underlying issue such as network connectivity,
+    /// DNS failure, server certificate validation or timeout.
+    /// </exception>
+    /// <exception cref="TaskCanceledException">
+    /// The request was canceled due to the provided <paramref name="cancellationToken"/>.
+    /// </exception>
+    /// <exception cref="UriFormatException">
+    /// Thrown when the provided request URI is not valid.
+    /// </exception>
     public async Task AddWeightDataAsync(
         AddWeightDataRequest request,
         string accessToken,
@@ -33,6 +62,20 @@ internal sealed class ApiClient(HttpClient client) : IApiClient
         await client.PostAsync(Routes.AddWeightData, content, cancellationToken);
     }
 
+    /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the requestUri is invalid.
+    /// </exception>
+    /// <exception cref="HttpRequestException">
+    /// The request failed due to an underlying issue such as network connectivity,
+    /// DNS failure, server certificate validation or timeout.
+    /// </exception>
+    /// <exception cref="TaskCanceledException">
+    /// The request was canceled due to the provided <paramref name="cancellationToken"/>.
+    /// </exception>
+    /// <exception cref="UriFormatException">
+    /// Thrown when the provided request URI is not valid.
+    /// </exception>
     public async Task UpdateWeightDataAsync(
         string date,
         UpdateWeightDataRequest request,
@@ -46,6 +89,20 @@ internal sealed class ApiClient(HttpClient client) : IApiClient
         await client.PutAsync(uri, content, cancellationToken);
     }
 
+    /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the requestUri is invalid.
+    /// </exception>
+    /// <exception cref="HttpRequestException">
+    /// The request failed due to an underlying issue such as network connectivity,
+    /// DNS failure, server certificate validation or timeout.
+    /// </exception>
+    /// <exception cref="TaskCanceledException">
+    /// The request was canceled due to the provided <paramref name="cancellationToken"/>.
+    /// </exception>
+    /// <exception cref="UriFormatException">
+    /// Thrown when the provided request URI is not valid.
+    /// </exception>
     public async Task DeleteWeightDataAsync(
         string date,
         string accessToken,
