@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{546D536D-0A8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{66EB359F-26F8-481D-835F-4AA860E485E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "tests\TestProject1\TestProject1.csproj", "{F55F8369-EAD1-4DBD-B996-2E30E18196F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Api.UnitTests", "tests\WeightTracker.Api.UnitTests\WeightTracker.Api.UnitTests.csproj", "{F55F8369-EAD1-4DBD-B996-2E30E18196F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Api", "src\WeightTracker.Api\WeightTracker.Api.csproj", "{60B00A25-884C-4699-A3C6-B53C5A679E9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Contracts", "src\WeightTracker.Contracts\WeightTracker.Contracts.csproj", "{9C1DF010-D686-4011-BAC7-C19C28DB8B9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli.UnitTests", "tests\WeightTracker.Cli.UnitTests\WeightTracker.Cli.UnitTests.csproj", "{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Client.UnitTests", "tests\WeightTracker.Client.UnitTests\WeightTracker.Client.UnitTests.csproj", "{7FC7BB22-D1C1-4BA0-BC4C-CFE110C93C23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Client", "src\WeightTracker.Client\WeightTracker.Client.csproj", "{AC39323C-21D4-480F-B02F-116E097810C9}"
 EndProject

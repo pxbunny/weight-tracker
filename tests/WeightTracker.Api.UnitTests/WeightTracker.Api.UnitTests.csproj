@@ -14,4 +14,8 @@
     <PackageReference Include="coverlet.collector" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WeightTracker.Api\WeightTracker.Api.csproj" />
+  </ItemGroup>
+
 </Project>

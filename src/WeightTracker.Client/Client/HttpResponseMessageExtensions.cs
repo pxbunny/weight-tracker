@@ -14,6 +14,7 @@ internal static class HttpResponseMessageExtensions
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <typeparam name="T">The type to deserialize the content to.</typeparam>
     /// <returns>The deserialized content.</returns>
+    /// <exception cref="JsonException">Thrown when the response content is not a valid JSON.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the response content cannot be deserialized.</exception>
     /// <example>
     /// <code>
