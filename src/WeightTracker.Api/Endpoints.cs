@@ -9,10 +9,17 @@ using WeightTracker.Contracts.Requests;
 
 namespace WeightTracker.Api;
 
+/// <summary>
+/// Contains the API endpoints.
+/// </summary>
 internal static class Endpoints
 {
     private const string TagName = "Weight";
 
+    /// <summary>
+    /// Registers the API endpoints to the specified route builder.
+    /// </summary>
+    /// <param name="app">The endpoint route builder.</param>
     public static void RegisterEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapPost(Routes.AddWeightData, AddWeightDataAsync)

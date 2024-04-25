@@ -30,6 +30,11 @@ namespace WeightTracker.Api;
 [UsedImplicitly]
 internal sealed class Mappings : IRegister
 {
+    /// <summary>
+    /// Registers the mappings using the specified configuration.
+    /// </summary>
+    /// <param name="config">The configuration.</param>
+    /// <seealso cref="TypeAdapterConfig"/>
     public void Register(TypeAdapterConfig config)
     {
         config.Default.MapToConstructor(true);
