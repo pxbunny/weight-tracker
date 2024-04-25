@@ -10,6 +10,8 @@ builder.Configuration
     .SetBasePath(AppContext.BaseDirectory)
     .AddJsonFile("wtrack.config.json", optional: false);
 
+// Clear the default logging providers to avoid logging to the console.
+// This is done to keep the output clean.
 builder.Logging.ClearProviders();
 
 builder.Services.AddAuthentication(builder.Configuration);

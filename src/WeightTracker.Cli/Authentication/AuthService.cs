@@ -3,7 +3,7 @@ using Microsoft.Identity.Client;
 
 namespace WeightTracker.Cli.Authentication;
 
-internal class AuthService(IOptions<AuthOptions> authOptions)
+internal sealed class AuthService(IOptions<AuthOptions> authOptions)
 {
     private const string EnvVariableName = "AUTH_TOKEN";
 
