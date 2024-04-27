@@ -8,8 +8,20 @@ param webAppSkuName string = 'F1'
 param functionAppSkuName string = 'Y1'
 
 param storageAccountName string
+param keyVaultName string
+
+param notificationEmailHost string
+param notificationEmailPort string
+param notificationSenderEmail string
+param notificationSenderName string
 
 param location string = resourceGroup().location
+
+var storageConnectionStringSecretName   = 'storage-connection-string'
+var notificationEmailPasswordSecretName = 'notification-email-password'
+
+var storageConnectionStringReference   = '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${storageConnectionStringSecretName})'
+var notificationEmailPasswordReference = '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${notificationEmailPasswordSecretName})'
 
 module webAppPlan 'modules/appServicePlan.bicep' = {
   name: 'appServicePlanDeployment'
@@ -37,30 +49,65 @@ module storageAccount 'modules/storageAccount.bicep' = {
   }
 }
 
-module appService 'modules/appService.bicep' = {
+module webApp 'modules/appService.bicep' = {
   name: 'appServiceDeployment'
   params: {
     appName: webAppServiceName
-    appServicePlanName: webAppServicePlanName
-    storageAccountName: storageAccountName
+    appServicePlanId: webAppPlan.outputs.appServicePlanId
     location: location
+    customAppSettings: [
+      {
+        name: 'AzureWebJobsStorage'
+        value: storageConnectionStringReference
+      }
+    ]
   }
-  dependsOn: [
-    webAppPlan
-    storageAccount
-  ]
 }
 
 module functionApp 'modules/functionApp.bicep' = {
   name: 'functionAppDeployment'
   params: {
     appName: functionAppServiceName
-    appServicePlanName: functionAppServicePlanName
-    storageAccountName: storageAccountName
+    appServicePlanId: functionAppPlan.outputs.appServicePlanId
     location: location
+    customAppSettings: [
+      {
+        name: 'AzureWebJobsStorage'
+        value: storageConnectionStringReference
+      }
+      {
+        name: 'Notifications:EmailHost'
+        value: notificationEmailHost
+      }
+      {
+        name: 'Notifications:EmailPort'
+        value: notificationEmailPort
+      }
+      {
+        name: 'Notifications:SenderEmail'
+        value: notificationSenderEmail
+      }
+      {
+        name: 'Notifications:SenderName'
+        value: notificationSenderName
+      }
+      {
+        name: 'Notifications:EmailPassword'
+        value: notificationEmailPasswordReference
+      }
+    ]
+  }
+}
+
+module keyVault 'modules/keyVault.bicep' = {
+  name: 'keyVaultDeployment'
+  params: {
+    keyVaultName: keyVaultName
+    webAppIdentityPrincipalId: webApp.outputs.identityPrincipalId
+    functionAppIdentityPrincipalId: functionApp.outputs.identityPrincipalId
+    storageAccountName: storageAccountName
   }
   dependsOn: [
-    functionAppPlan
     storageAccount
   ]
 }

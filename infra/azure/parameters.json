@@ -16,6 +16,21 @@
     },
     "storageAccountName": {
       "value": "stweighttrackerprod"
+    },
+    "keyVaultName": {
+      "value": "kv-weighttracker-prod"
+    },
+    "notificationEmailHost": {
+      "value": "smtp.gmail.com"
+    },
+    "notificationEmailPort": {
+      "value": "587"
+    },
+    "notificationSenderEmail": {
+      "value": "rafalcz29@gmail.com"
+    },
+    "notificationSenderName": {
+      "value": "Test"
     }
   }
 }
