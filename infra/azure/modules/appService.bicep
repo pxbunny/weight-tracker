@@ -1,12 +1,7 @@
 param appName string
-param appServicePlanName string
-param keyVaultName string
-param storageConnectionStringSecretName string
+param appServicePlanId string
 param location string
-
-resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' existing = {
-  name: appServicePlanName
-}
+param customAppSettings array = []
 
 resource webApp 'Microsoft.Web/sites@2023-01-01' = {
   name: appName
@@ -15,15 +10,12 @@ resource webApp 'Microsoft.Web/sites@2023-01-01' = {
     type: 'SystemAssigned'
   }
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: appServicePlanId
     httpsOnly: true
     siteConfig: {
-      appSettings: [
-        {
-          name: 'AzureWebJobsStorage'
-          value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${storageConnectionStringSecretName})'
-        }
-      ]
+      appSettings: customAppSettings
     }
   }
 }
+
+output identityPrincipalId string = webApp.identity.principalId

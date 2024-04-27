@@ -10,3 +10,5 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' = {
   }
   properties: {}
 }
+
+output appServicePlanId string = appServicePlan.id

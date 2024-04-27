@@ -1,18 +1,10 @@
 param keyVaultName string
-param webAppName string
-param functionAppName string
+param webAppIdentityPrincipalId string
+param functionAppIdentityPrincipalId string
 param storageAccountName string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
   name: keyVaultName
-}
-
-resource webApp 'Microsoft.Web/sites@2023-01-01' existing = {
-  name: webAppName
-}
-
-resource functionApp 'Microsoft.Web/sites@2023-01-01' existing = {
-  name: functionAppName
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
@@ -34,7 +26,7 @@ resource accessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2023-07-01' = 
     accessPolicies: [
       {
         tenantId: subscription().tenantId
-        objectId: webApp.identity.principalId
+        objectId: webAppIdentityPrincipalId
         permissions: {
           keys: []
           secrets: ['get']
@@ -43,7 +35,7 @@ resource accessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2023-07-01' = 
       }
       {
         tenantId: subscription().tenantId
-        objectId: functionApp.identity.principalId
+        objectId: functionAppIdentityPrincipalId
         permissions: {
           keys: []
           secrets: ['get']
