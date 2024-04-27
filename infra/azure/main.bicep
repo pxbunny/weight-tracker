@@ -8,6 +8,7 @@ param webAppSkuName string = 'F1'
 param functionAppSkuName string = 'Y1'
 
 param storageAccountName string
+param keyVaultName string
 
 param location string = resourceGroup().location
 
@@ -68,7 +69,7 @@ module functionApp 'modules/functionApp.bicep' = {
 module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVaultDeployment'
   params: {
-    keyVaultName: 'myKeyVault'
+    keyVaultName: keyVaultName
     functionAppName: functionAppServiceName
   }
   dependsOn: [

@@ -16,6 +16,9 @@
     },
     "storageAccountName": {
       "value": "stweighttrackerprod"
+    },
+    "keyVaultName": {
+      "value": "kv-weighttracker-prod"
     }
   }
 }
