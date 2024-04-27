@@ -11,6 +11,11 @@ on:
         type: string
         required: true
 
+      external-call:
+        type: boolean
+        required: false
+        default: true
+
   workflow_dispatch:
 
 jobs:
@@ -33,11 +38,11 @@ jobs:
         run: dotnet test --no-build --configuration Release --verbosity normal
 
       - name: Publish
-        if: ${{ github.event_name == 'workflow_call' }}
+        if: ${{ inputs.external-call }}
         run: dotnet publish --no-build ${{ inputs.project-path }} --configuration Release --output webapp
 
       - name: Upload a build artifact
-        if: ${{ github.event_name == 'workflow_call' }}
+        if: ${{ inputs.external-call }}
         uses: actions/upload-artifact@v4
         with:
           name: webapp
@@ -45,7 +50,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload an ARM template artifact
-        if: ${{ github.event_name == 'workflow_call' }}
+        if: ${{ inputs.external-call }}
         uses: actions/upload-artifact@v4
         with:
           name: infra
