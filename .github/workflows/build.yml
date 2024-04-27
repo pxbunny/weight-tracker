@@ -39,7 +39,7 @@ jobs:
 
       - name: Publish
         if: ${{ inputs.external-call }}
-        run: dotnet publish --no-build ${{ inputs.project-path }} --configuration Release --output webapp
+        run: dotnet publish ${{ inputs.project-path }} --no-build --configuration Release --output webapp
 
       - name: Upload a build artifact
         if: ${{ inputs.external-call }}
