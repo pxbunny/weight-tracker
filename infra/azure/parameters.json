@@ -2,11 +2,17 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "appServiceName": {
+    "webAppServiceName": {
       "value": "app-weighttracker-prod"
     },
-    "appServicePlanName": {
-      "value": "asp-weighttracker-prod"
+    "functionAppServiceName": {
+      "value": "func-weighttracker-prod"
+    },
+    "webAppServicePlanName": {
+      "value": "asp-weighttracker-webapp-prod"
+    },
+    "functionAppServicePlanName": {
+      "value": "asp-weighttracker-functions-prod"
     },
     "storageAccountName": {
       "value": "stweighttrackerprod"
