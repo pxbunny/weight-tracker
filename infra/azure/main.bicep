@@ -71,4 +71,7 @@ module keyVault 'modules/keyVault.bicep' = {
     keyVaultName: 'myKeyVault'
     functionAppName: functionAppServiceName
   }
+  dependsOn: [
+    functionApp
+  ]
 }

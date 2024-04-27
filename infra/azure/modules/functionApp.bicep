@@ -40,7 +40,7 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'Test2'
-          value: '@Microsoft.KeyVault(SecretUri=https://rg-weighttracker.vault.azure.net/secrets/test)'
+          value: '@Microsoft.KeyVault(SecretUri=https://kv-weighttracker-prod.vault.azure.net/secrets/test)'
         }
       ]
     }
