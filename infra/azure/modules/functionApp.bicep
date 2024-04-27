@@ -1,14 +1,16 @@
 param appName string
 param appServicePlanName string
-param storageAccountName string
+param keyVaultName string
+param notificationEmailHost string
+param notificationEmailPort string
+param notificationSenderEmail string
+param notificationSenderName string
+param storageConnectionStringSecretName string
+param notificationEmailPasswordSecretName string
 param location string
 
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-09-01' existing = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2023-01-01' existing = {
   name: appServicePlanName
-}
-
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
-  name: storageAccountName
 }
 
 resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
@@ -36,11 +38,27 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
         }
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+          value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${storageConnectionStringSecretName})'
         }
         {
-          name: 'Test2'
-          value: '@Microsoft.KeyVault(SecretUri=https://kv-weighttracker-prod.vault.azure.net/secrets/test)'
+          name: 'Notifications:EmailHost'
+          value: notificationEmailHost
+        }
+        {
+          name: 'Notifications:EmailPort'
+          value: notificationEmailPort
+        }
+        {
+          name: 'Notifications:SenderEmail'
+          value: notificationSenderEmail
+        }
+        {
+          name: 'Notifications:SenderName'
+          value: notificationSenderName
+        }
+        {
+          name: 'Notifications:EmailPassword'
+          value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${notificationEmailPasswordSecretName})'
         }
       ]
     }

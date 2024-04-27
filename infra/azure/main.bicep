@@ -10,7 +10,15 @@ param functionAppSkuName string = 'Y1'
 param storageAccountName string
 param keyVaultName string
 
+param notificationEmailHost string
+param notificationEmailPort string
+param notificationSenderEmail string
+param notificationSenderName string
+
 param location string = resourceGroup().location
+
+var storageConnectionStringSecretName   = 'storage-connection-string'
+var notificationEmailPasswordSecretName = 'notification-email-password'
 
 module webAppPlan 'modules/appServicePlan.bicep' = {
   name: 'appServicePlanDeployment'
@@ -38,12 +46,13 @@ module storageAccount 'modules/storageAccount.bicep' = {
   }
 }
 
-module appService 'modules/appService.bicep' = {
+module webApp 'modules/appService.bicep' = {
   name: 'appServiceDeployment'
   params: {
     appName: webAppServiceName
     appServicePlanName: webAppServicePlanName
-    storageAccountName: storageAccountName
+    keyVaultName: keyVaultName
+    storageConnectionStringSecretName: storageConnectionStringSecretName
     location: location
   }
   dependsOn: [
@@ -57,7 +66,13 @@ module functionApp 'modules/functionApp.bicep' = {
   params: {
     appName: functionAppServiceName
     appServicePlanName: functionAppServicePlanName
-    storageAccountName: storageAccountName
+    keyVaultName: keyVaultName
+    notificationEmailHost: notificationEmailHost
+    notificationEmailPort: notificationEmailPort
+    notificationSenderEmail: notificationSenderEmail
+    notificationSenderName: notificationSenderName
+    storageConnectionStringSecretName: storageConnectionStringSecretName
+    notificationEmailPasswordSecretName: notificationEmailPasswordSecretName
     location: location
   }
   dependsOn: [
@@ -70,9 +85,13 @@ module keyVault 'modules/keyVault.bicep' = {
   name: 'keyVaultDeployment'
   params: {
     keyVaultName: keyVaultName
+    webAppName: webAppServiceName
     functionAppName: functionAppServiceName
+    storageAccountName: storageAccountName
   }
   dependsOn: [
+    webApp
     functionApp
+    storageAccount
   ]
 }
