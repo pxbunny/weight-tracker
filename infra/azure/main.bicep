@@ -64,3 +64,11 @@ module functionApp 'modules/functionApp.bicep' = {
     storageAccount
   ]
 }
+
+module keyVault 'modules/keyVault.bicep' = {
+  name: 'keyVaultDeployment'
+  params: {
+    keyVaultName: 'myKeyVault'
+    functionAppName: functionAppServiceName
+  }
+}

@@ -15,6 +15,9 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
   name: appName
   location: location
   kind: 'functionapp'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
@@ -36,7 +39,7 @@ resource functionApp 'Microsoft.Web/sites@2023-01-01' = {
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
         }
         {
-          name: 'Test'
+          name: 'Test2'
           value: '@Microsoft.KeyVault(SecretUri=https://rg-weighttracker.vault.azure.net/secrets/test)'
         }
       ]
