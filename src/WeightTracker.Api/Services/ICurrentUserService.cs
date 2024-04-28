@@ -8,7 +8,7 @@ namespace WeightTracker.Api.Services;
 internal interface ICurrentUserService
 {
     /// <summary>
-    /// Gets the ID of the currently logged in user.
+    /// Gets the ID of the currently logged-in user.
     /// </summary>
     /// <value>The user ID.</value>
     public string? UserId { get; }
