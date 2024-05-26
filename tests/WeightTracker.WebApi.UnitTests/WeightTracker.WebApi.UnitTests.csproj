@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\WeightTracker.WebApi\WeightTracker.WebApi.csproj" />
+    <ProjectReference Include="..\..\src\domain\WeightTracker.Domain.csproj" />
   </ItemGroup>
 
 </Project>

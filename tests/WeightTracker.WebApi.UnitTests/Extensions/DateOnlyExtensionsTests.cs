@@ -1,4 +1,4 @@
-﻿using WeightTracker.WebApi.Extensions;
+﻿using WeightTracker.Domain.Common.Extensions;
 
 namespace WeightTracker.WebApi.UnitTests.Extensions;
 

@@ -1,4 +1,4 @@
-﻿using WeightTracker.WebApi.Models;
+﻿using WeightTracker.Domain.Weight.Models;
 
 namespace WeightTracker.WebApi.UnitTests.Models;
 
