@@ -50,19 +50,38 @@ public sealed class GetWeightDataQuery : IRequest<WeightDataGroup>
     }
 }
 
+/// <summary>
+/// Represents the query handler for the <see cref="GetWeightDataQuery"/>.
+/// </summary>
+/// <param name="weightDataService">The weight data service.</param>
+/// <param name="logger">The logger.</param>
 [UsedImplicitly]
 internal sealed class GetWeightDataQueryHandler(
     IWeightDataService weightDataService,
     ILogger<GetWeightDataQueryHandler> logger)
     : IRequestHandler<GetWeightDataQuery, WeightDataGroup>
 {
+    /// <summary>
+    /// Gets the weight data.
+    /// </summary>
+    /// <param name="request">The query to get weight data.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the query completion.</returns>
+    /// <exception cref="NotImplementedException">Thrown when the query fails.</exception>
     public async Task<WeightDataGroup> Handle(GetWeightDataQuery request, CancellationToken cancellationToken)
     {
         var (userId, startDate, endDate) = request;
-        logger.LogInformation("Getting weight data for user {UserId} between {StartDate:d} and {EndDate:d}.", userId, startDate, endDate);
         var filter = request.Adapt<WeightDataFilter>();
-        var result = await weightDataService.GetAsync(filter);
-        logger.LogInformation("Retrieved weight data for user {UserId} between {StartDate:d} and {EndDate:d}.", userId, startDate, endDate);
-        return result;
+        var response = await weightDataService.GetAsync(filter);
+
+        if (response.IsSuccess)
+        {
+            logger.LogInformation("Successfully retrieved weight data for user {UserId} from {StartDate} to {EndDate}", userId, startDate, endDate);
+            return response.Data!;
+        }
+
+        // TODO: handle error
+        logger.LogError("Failed to retrieve weight data for user {UserId} from {StartDate} to {EndDate}", userId, startDate, endDate);
+        throw new NotImplementedException();
     }
 }

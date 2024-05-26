@@ -68,9 +68,17 @@ internal sealed class AddWeightDataCommandHandler(
     public async Task Handle(AddWeightDataCommand request, CancellationToken cancellationToken)
     {
         var (userId, date, _) = request;
-        logger.LogInformation("Adding weight data for user {UserId} on {Date:d}.", userId, date);
         var weightData = request.Adapt<WeightData>();
-        await weightDataService.AddAsync(weightData);
-        logger.LogInformation("Weight data added for user {UserId} on {Date:d}.", userId, date);
+        var response = await weightDataService.AddAsync(weightData);
+
+        if (response.IsSuccess)
+        {
+            logger.LogInformation("Successfully added weight data for user {UserId} on {Date}", userId, date);
+            return;
+        }
+
+        // TODO: Handle the error.
+        logger.LogError("Failed to add weight data for user {UserId} on {Date}", userId, date);
+        throw new NotImplementedException();
     }
 }

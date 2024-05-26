@@ -68,9 +68,17 @@ internal sealed class UpdateWeightDataCommandHandler(
     public async Task Handle(UpdateWeightDataCommand request, CancellationToken cancellationToken)
     {
         var (userId, date, _) = request;
-        logger.LogInformation("Updating weight data for user {UserId} on {Date:d}.", userId, date);
         var weightData = request.Adapt<WeightData>();
-        await weightDataService.UpdateAsync(weightData);
-        logger.LogInformation("Weight data updated for user {UserId} on {Date:d}.", userId, date);
+        var response = await weightDataService.UpdateAsync(weightData);
+
+        if (response.IsSuccess)
+        {
+            logger.LogInformation("Weight data updated for user {UserId} on {Date}", userId, date);
+            return;
+        }
+
+        // TODO: Handle the error response
+        logger.LogError("Failed to update weight data for user {UserId} on {Date}", userId, date);
+        throw new Exception("Failed to update weight data.");
     }
 }

@@ -48,7 +48,7 @@ internal sealed class RemoveWeightDataCommandHandler(
     : IRequestHandler<RemoveWeightDataCommand>
 {
     /// <summary>
-    /// The weight data service.
+    /// Removes the weight data.
     /// </summary>
     /// <param name="request">The command to remove weight data.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -56,8 +56,16 @@ internal sealed class RemoveWeightDataCommandHandler(
     public async Task Handle(RemoveWeightDataCommand request, CancellationToken cancellationToken)
     {
         var (userId, date) = request;
-        logger.LogInformation("Removing weight data for user {UserId} on {Date:d}.", userId, date);
-        await weightDataService.DeleteAsync(userId, date);
-        logger.LogInformation("Weight data removed for user {UserId} on {Date:d}.", userId, date);
+        var response = await weightDataService.DeleteAsync(userId, date);
+
+        if (response.IsSuccess)
+        {
+            logger.LogInformation("Weight data removed for user {UserId} on {Date}", userId, date);
+            return;
+        }
+
+        // TODO: Add error handling
+        logger.LogError("Failed to remove weight data for user {UserId} on {Date}", userId, date);
+        throw new NotImplementedException();
     }
 }

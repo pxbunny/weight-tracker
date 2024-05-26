@@ -1,4 +1,4 @@
-﻿namespace WeightTracker.Domain.Common.Interfaces;
+﻿namespace WeightTracker.Api.Application.Common.Interfaces;
 
 /// <summary>
 /// Represents the currently logged-in user data.

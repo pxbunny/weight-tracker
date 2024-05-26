@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using WeightTracker.Domain.Common.Interfaces;
+using WeightTracker.Api.Application.Common.Interfaces;
 
 namespace WeightTracker.Api.Infrastructure.Http;
 

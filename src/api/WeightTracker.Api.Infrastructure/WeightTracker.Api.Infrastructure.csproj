@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\domain\WeightTracker.Domain.csproj" />
+      <ProjectReference Include="..\WeightTracker.Api.Application\WeightTracker.Api.Application.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WeightTracker.Api.Application.Common.Interfaces;
 using WeightTracker.Api.Application.Weight.Commands.AddWeightData;
 using WeightTracker.Api.Application.Weight.Commands.RemoveWeightData;
 using WeightTracker.Api.Application.Weight.Commands.UpdateWeightData;
@@ -9,7 +10,6 @@ using WeightTracker.Contracts;
 using WeightTracker.Contracts.DTOs;
 using WeightTracker.Contracts.QueryParams;
 using WeightTracker.Contracts.Requests;
-using WeightTracker.Domain.Common.Interfaces;
 
 namespace WeightTracker.Api.Resources.Weight;
 
