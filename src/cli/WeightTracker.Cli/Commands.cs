@@ -39,7 +39,7 @@ internal static class Commands
     }
 
     private static async Task LoginAsync(
-        [FromServices] AuthService authService)
+        [FromServices] IAuthService authService)
     {
         await StartAsync("Logging in...", async _ =>
         {
@@ -49,7 +49,7 @@ internal static class Commands
     }
 
     private static async Task LogoutAsync(
-        [FromServices] AuthService authService)
+        [FromServices] IAuthService authService)
     {
         await StartAsync("Logging out...", async _ =>
         {
@@ -62,7 +62,7 @@ internal static class Commands
         [Option('f', Description = "Date from in format yyyy-MM-dd")] string? from,
         [Option('t', Description = "Date to in format yyyy-MM-dd")] string? to,
         [FromServices] IApiClient apiClient,
-        [FromServices] AuthService authService)
+        [FromServices] IAuthService authService)
     {
         await StartAsync("Fetching data...", authService, async (_, accessToken) =>
         {
@@ -117,7 +117,7 @@ internal static class Commands
         [Option('d', Description = "Date in format yyyy-MM-dd")] string? date,
         [Option('w', Description = "Weight value")] decimal weight,
         [FromServices] IApiClient apiClient,
-        [FromServices] AuthService authService)
+        [FromServices] IAuthService authService)
     {
         await StartAsync("Adding data...", authService, async (_, accessToken) =>
         {
@@ -131,7 +131,7 @@ internal static class Commands
         [Option('d', Description = "Date in format yyyy-MM-dd")] string date,
         [Option('w', Description = "Weight value")] decimal weight,
         [FromServices] IApiClient apiClient,
-        [FromServices] AuthService authService)
+        [FromServices] IAuthService authService)
     {
         var confirm = AnsiConsole.Confirm("Are you sure you want to update the data?");
 
@@ -151,7 +151,7 @@ internal static class Commands
     private static async Task RemoveWeightDataAsync(
         [Option('d', Description = "Date in format yyyy-MM-dd")] string date,
         [FromServices] IApiClient apiClient,
-        [FromServices] AuthService authService)
+        [FromServices] IAuthService authService)
     {
         var confirm = AnsiConsole.Confirm("Are you sure you want to remove the data?");
 
@@ -181,7 +181,7 @@ internal static class Commands
 
     private static async Task StartAsync(
         string message,
-        AuthService authService,
+        IAuthService authService,
         Func<StatusContext, string, Task> action)
     {
         await AnsiConsole.Status()

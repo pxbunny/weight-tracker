@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="Cocona" />
-    <PackageReference Include="Microsoft.Identity.Client" />
     <PackageReference Include="Spectre.Console" />
   </ItemGroup>
 
@@ -24,6 +23,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\shared\WeightTracker.ApiClient\WeightTracker.ApiClient.csproj" />
+    <ProjectReference Include="..\WeightTracker.Cli.Authentication\WeightTracker.Cli.Authentication.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Authentication" />
   </ItemGroup>
 
 </Project>

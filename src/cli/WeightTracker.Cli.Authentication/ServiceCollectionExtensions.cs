@@ -6,7 +6,7 @@ namespace WeightTracker.Cli.Authentication;
 /// <summary>
 /// Contains extension methods for the <see cref="IServiceCollection"/>.
 /// </summary>
-internal static class ServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
     /// <summary>
     /// Adds authentication services to the service collection.
@@ -17,7 +17,7 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.Position));
-        services.AddScoped<AuthService>();
+        services.AddScoped<IAuthService, AuthService>();
         return services;
     }
 }
