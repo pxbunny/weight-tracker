@@ -105,17 +105,17 @@ internal static class Commands
             AnsiConsole.Write(table);
             AnsiConsole.WriteLine();
 
-            AnsiConsole.MarkupLine($"Average weight: [bold]{response.AverageWeight}[/]");
-            AnsiConsole.MarkupLine($"Max weight:     [bold]{response.MaxWeight}[/]");
-            AnsiConsole.MarkupLine($"Min weight:     [bold]{response.MinWeight}[/]");
+            AnsiConsole.MarkupLine($"Avg weight: [bold]{response.AverageWeight}[/]");
+            AnsiConsole.MarkupLine($"Max weight: [bold]{response.MaxWeight}[/]");
+            AnsiConsole.MarkupLine($"Min weight: [bold]{response.MinWeight}[/]");
 
             AnsiConsole.WriteLine();
         });
     }
 
     private static async Task AddWeightDataAsync(
+        [Argument(Description = "Weight value")] decimal weight,
         [Option('d', Description = "Date in format yyyy-MM-dd")] string? date,
-        [Option('w', Description = "Weight value")] decimal weight,
         [FromServices] IApiClient apiClient,
         [FromServices] IAuthService authService)
     {

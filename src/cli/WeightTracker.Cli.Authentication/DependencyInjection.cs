@@ -6,7 +6,7 @@ namespace WeightTracker.Cli.Authentication;
 /// <summary>
 /// Contains extension methods for the <see cref="IServiceCollection"/>.
 /// </summary>
-public static class ServiceCollectionExtensions
+public static class DependencyInjection
 {
     /// <summary>
     /// Adds authentication services to the service collection.
