@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{DD94C2D3
 		Directory.Packages.props = Directory.Packages.props
 		WeightTracker.ruleset = WeightTracker.ruleset
 		global.json = global.json
+		Directory.Build.targets = Directory.Build.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Cli", "src\cli\WeightTracker.Cli\WeightTracker.Cli.csproj", "{9A4C9353-5421-4173-AB13-59F3302064D9}"
