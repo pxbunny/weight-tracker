@@ -1,6 +1,7 @@
 <Project>
-  <Target Name="SetGitHooks" AfterTargets="Build">
+  <Target Name="SetGitHooks" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
     <Exec Command="git config core.hooksPath $(GitHooksPath)" />
   </Target>
 
 </Project>
+
