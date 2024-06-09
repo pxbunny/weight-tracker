@@ -1,3 +1,4 @@
 #!/bin/sh
 
 dotnet test -c Release
+dotnet clean -c Release

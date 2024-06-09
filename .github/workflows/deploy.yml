@@ -15,10 +15,10 @@ on:
         type: string
         required: true
 
-      infra-artifact-name:
+      infrastructure-artifact-name:
         type: string
         required: false
-        default: infra
+        default: infrastructure
 
       webapp-artifact-name:
         type: string
@@ -35,11 +35,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Download an infra artifact
+      - name: Download an infrastructure artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.infra-artifact-name }}
-          path: ${{ inputs.infra-artifact-name }}
+          name: ${{ inputs.infrastructure-artifact-name }}
+          path: ${{ inputs.infrastructure-artifact-name }}
 
       - name: Download a web app artifact
         uses: actions/download-artifact@v4

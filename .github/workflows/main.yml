@@ -19,5 +19,5 @@ jobs:
     needs: build
     with:
       environment: prod
-      arm-path: infra/main.bicep
-      arm-parameters-path: infra/parameters.json
+      arm-path: infrastructure/main.bicep
+      arm-parameters-path: infrastructure/parameters.json
