@@ -51,10 +51,11 @@ internal static class Commands
     private static async Task LogoutAsync(
         [FromServices] IAuthService authService)
     {
-        await StartAsync("Logging out...", async _ =>
+        await StartAsync("Logging out...", _ =>
         {
-            await authService.ForgetTokenAsync();
+            authService.ForgetToken();
             AnsiConsole.MarkupLine("Successfully logged out.");
+            return Task.CompletedTask;
         });
     }
 
@@ -192,7 +193,12 @@ internal static class Commands
 
                 if (string.IsNullOrWhiteSpace(accessToken))
                 {
-                    AnsiConsole.MarkupLine("Please login first.");
+                    accessToken = await authService.AcquireTokenAsync(false);
+                }
+
+                if (string.IsNullOrWhiteSpace(accessToken))
+                {
+                    AnsiConsole.MarkupLine("[red]Login failed.[/]");
                     return;
                 }
 

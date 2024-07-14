@@ -13,7 +13,7 @@ internal sealed class AuthService(IOptions<AuthOptions> authOptions) : IAuthServ
     /// <remarks>
     /// This method uses the interactive authentication flow to acquire the access token.
     /// </remarks>
-    public async Task AcquireTokenAsync(CancellationToken cancellationToken = default)
+    public async Task<string> AcquireTokenAsync(bool persistAccessToken = true, CancellationToken cancellationToken = default)
     {
         var (clientId, tenantId, redirectUri) = authOptions.Value;
 
@@ -34,7 +34,13 @@ internal sealed class AuthService(IOptions<AuthOptions> authOptions) : IAuthServ
             .AcquireTokenInteractive(scopes)
             .ExecuteAsync(cancellationToken);
 
+        if (!persistAccessToken)
+        {
+            return authResult.AccessToken;
+        }
+
         Environment.SetEnvironmentVariable(EnvVariableName, authResult.AccessToken, EnvironmentVariableTarget.User);
+        return authResult.AccessToken;
     }
 
     /// <inheritdoc/>
@@ -42,18 +48,11 @@ internal sealed class AuthService(IOptions<AuthOptions> authOptions) : IAuthServ
     /// This method retrieves the access token from the environment variable.
     /// It uses the user environment variable target, so the access token is stored between sessions.
     /// </remarks>
-    public string? GetToken()
-    {
-        return Environment.GetEnvironmentVariable(EnvVariableName, EnvironmentVariableTarget.User);
-    }
+    public string? GetToken() => Environment.GetEnvironmentVariable(EnvVariableName, EnvironmentVariableTarget.User);
 
     /// <inheritdoc/>
     /// <remarks>
     /// This method removes the access token from the environment variable.
     /// </remarks>
-    public Task ForgetTokenAsync()
-    {
-        Environment.SetEnvironmentVariable(EnvVariableName, null, EnvironmentVariableTarget.User);
-        return Task.CompletedTask;
-    }
+    public void ForgetToken() => Environment.SetEnvironmentVariable(EnvVariableName, null, EnvironmentVariableTarget.User);
 }
