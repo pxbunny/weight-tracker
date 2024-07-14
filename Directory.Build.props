@@ -1,7 +1,7 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <GitHooksPath>.githooks</GitHooksPath>
+    <GitHooksDirName>.githooks</GitHooksDirName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
