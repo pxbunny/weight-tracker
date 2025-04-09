@@ -53,6 +53,6 @@ jobs:
         if: ${{ inputs.external-call }}
         uses: actions/upload-artifact@v4
         with:
-          name: infrastructure
-          path: infrastructure/azure/**
+          name: infra
+          path: infra/azure/**
           if-no-files-found: error

@@ -11,7 +11,7 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
     with:
-      project-path: src/api/WeightTracker.Api/WeightTracker.Api.csproj
+      project-path: server/WeightTracker.Api/WeightTracker.Api.csproj
 
   deploy:
     uses: ./.github/workflows/deploy.yml
@@ -19,5 +19,5 @@ jobs:
     needs: build
     with:
       environment: prod
-      arm-path: infrastructure/main.bicep
-      arm-parameters-path: infrastructure/parameters.json
+      arm-path: infra/main.bicep
+      arm-parameters-path: infra/parameters.json

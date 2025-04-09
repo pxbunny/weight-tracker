@@ -15,10 +15,10 @@ on:
         type: string
         required: true
 
-      infrastructure-artifact-name:
+      infra-artifact-name:
         type: string
         required: false
-        default: infrastructure
+        default: infra
 
       webapp-artifact-name:
         type: string
@@ -38,8 +38,8 @@ jobs:
       - name: Download an infrastructure artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.infrastructure-artifact-name }}
-          path: ${{ inputs.infrastructure-artifact-name }}
+          name: ${{ inputs.infra-artifact-name }}
+          path: ${{ inputs.infra-artifact-name }}
 
       - name: Download a web app artifact
         uses: actions/download-artifact@v4

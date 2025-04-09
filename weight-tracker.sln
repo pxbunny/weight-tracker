@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Api", "server\WeightTracker.Api\WeightTracker.Api.csproj", "{60B00A25-884C-4699-A3C6-B53C5A679E9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Forecast", "server\WeightTracker.Forecast\WeightTracker.Forecast.csproj", "{11D8D3BD-7B9B-4193-AAAD-4479ED0B524C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Data", "server\WeightTracker.Data\WeightTracker.Data.csproj", "{F692DDDD-985B-4F05-9F6F-C274BE48B3F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeightTracker.Core", "server\WeightTracker.Core\WeightTracker.Core.csproj", "{9ABD2F0A-A54F-48AB-ADC6-739E18009CFF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60B00A25-884C-4699-A3C6-B53C5A679E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D8D3BD-7B9B-4193-AAAD-4479ED0B524C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D8D3BD-7B9B-4193-AAAD-4479ED0B524C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D8D3BD-7B9B-4193-AAAD-4479ED0B524C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D8D3BD-7B9B-4193-AAAD-4479ED0B524C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F692DDDD-985B-4F05-9F6F-C274BE48B3F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F692DDDD-985B-4F05-9F6F-C274BE48B3F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F692DDDD-985B-4F05-9F6F-C274BE48B3F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F692DDDD-985B-4F05-9F6F-C274BE48B3F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ABD2F0A-A54F-48AB-ADC6-739E18009CFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ABD2F0A-A54F-48AB-ADC6-739E18009CFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ABD2F0A-A54F-48AB-ADC6-739E18009CFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ABD2F0A-A54F-48AB-ADC6-739E18009CFF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
