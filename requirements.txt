@@ -1,0 +1,6 @@
+isort==6.0.1
+msal==1.32.0
+plotly==6.0.1
+pylint==3.3.6
+requests==2.32.3
+typer==0.15.2
