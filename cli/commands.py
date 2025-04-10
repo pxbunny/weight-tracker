@@ -1,6 +1,6 @@
 from typer import Typer, core
 
-from .auth import acquire_token
+from .auth import acquire_token, delete_tokens, get_tokens, store_tokens
 
 core.rich = None
 
@@ -13,13 +13,20 @@ app = Typer(
 
 @app.command('login')
 def login():
-    token = acquire_token()
-    print(token)
+    tokens = acquire_token()
+    store_tokens(tokens['access_token'], tokens['refresh_token'])
 
 
 @app.command('logout')
 def logout():
-    print('logout')
+    delete_tokens()
+
+
+@app.command('show-tokens')
+def status():
+    tokens = get_tokens()
+    print(tokens['access_token'])
+    print(tokens['refresh_token'])
 
 
 @app.command('add')
