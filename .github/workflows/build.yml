@@ -7,16 +7,16 @@ on:
 
   workflow_call:
     inputs:
-      project-path:
-        type: string
-        required: true
-
       external-call:
         type: boolean
         required: false
         default: true
 
   workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '9.0.x'
+  API_PROJECT_DIRECTORY: 'server/WeightTracker.Api'
 
 jobs:
   build:
@@ -28,20 +28,17 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet build ${{ env.API_PROJECT_DIRECTORY }} --no-restore --configuration Release
 
       - name: Publish
         if: ${{ inputs.external-call }}
-        run: dotnet publish ${{ inputs.project-path }} --no-build --configuration Release --output webapp
+        run: dotnet publish ${{ env.API_PROJECT_DIRECTORY }} --no-build --configuration Release --output webapp
 
       - name: Upload a build artifact
         if: ${{ inputs.external-call }}

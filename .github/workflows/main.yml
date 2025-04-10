@@ -10,8 +10,6 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/build.yml
-    with:
-      project-path: server/WeightTracker.Api/WeightTracker.Api.csproj
 
   deploy:
     uses: ./.github/workflows/deploy.yml
