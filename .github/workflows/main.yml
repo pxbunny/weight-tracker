@@ -4,13 +4,14 @@ on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 jobs:
   build:
     uses: ./.github/workflows/build.yml
     with:
-      project-path: src/WeightTracker.Api/WeightTracker.Api.csproj
+      project-path: server/WeightTracker.Api/WeightTracker.Api.csproj
 
   deploy:
     uses: ./.github/workflows/deploy.yml

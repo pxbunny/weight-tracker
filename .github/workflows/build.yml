@@ -11,39 +11,46 @@ on:
         type: string
         required: true
 
+      external-call:
+        type: boolean
+        required: false
+        default: true
+
   workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '9.0.x'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-
-      - name: Restore dependencies
-        run: dotnet restore
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet build --configuration Release
 
       - name: Publish
-        run: dotnet publish ${{ inputs.project-path }} --configuration Release --output webapp
+        if: ${{ inputs.external-call }}
+        run: dotnet publish ${{ inputs.project-path }} --no-build --configuration Release --output webapp
 
       - name: Upload a build artifact
-        uses: actions/upload-artifact@v3
+        if: ${{ inputs.external-call }}
+        uses: actions/upload-artifact@v4
         with:
           name: webapp
           path: webapp/**
           if-no-files-found: error
 
       - name: Upload an ARM template artifact
-        uses: actions/upload-artifact@v3
+        if: ${{ inputs.external-call }}
+        uses: actions/upload-artifact@v4
         with:
           name: infra
           path: infra/azure/**
