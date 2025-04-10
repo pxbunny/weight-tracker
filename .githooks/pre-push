@@ -2,3 +2,5 @@
 
 # dotnet test -c Release
 # dotnet clean -c Release
+
+pyinstaller -F -n wtrack cli/__main__.py
