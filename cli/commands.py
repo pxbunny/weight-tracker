@@ -1,5 +1,5 @@
 import typer
-from rich import print
+from rich.console import Console
 from rich.table import Table
 from typing_extensions import Annotated
 
@@ -14,16 +14,22 @@ app = typer.Typer(
     epilog="You're not fat, you're fluffy."
 )
 
+console = Console(width=120)
+
 
 @app.command('login')
 def login():
-    tokens = auth.acquire_token()
-    auth.store_tokens(tokens['access_token'], None)
+    with console.status('Signing in...'):
+        tokens = auth.acquire_token()
+        auth.store_tokens(tokens['access_token'], None)
+
+    console.print('Signed in.')
 
 
 @app.command('logout')
 def logout():
     auth.delete_tokens()
+    console.print('Signed out.')
 
 
 @app.command('add')
@@ -40,8 +46,9 @@ def get_weight_data(
     date_from: Annotated[str, typer.Option('--from')] = None,
     date_to: Annotated[str, typer.Option('--to')] = None
 ):
-    access_token = _get_access_token()
-    response = api.get_weight_data(date_from, date_to, access_token)
+    with console.status('Fetching data...'):
+        access_token = _get_access_token()
+        response = api.get_weight_data(date_from, date_to, access_token)
 
     table = Table()
 
@@ -52,7 +59,7 @@ def get_weight_data(
     weight_data = response['data']
 
     if not weight_data:
-        print('No data found.')
+        console.print('No data found.')
         return
 
     for index, item in enumerate(weight_data):
@@ -63,17 +70,17 @@ def get_weight_data(
             diff = f'+{diff:.2f}' if diff > 0 else f'{diff:.2f}'
         table.add_row(item['date'], f'{item['weight']:.2f}', diff)
 
-    print()
-    print(table)
+    console.print()
+    console.print(table)
 
-    print(f"\nMax: {response['max']:>6.2f}")
-    print(f"Min: {response['min']:>6.2f}")
-    print(f"Avg: {response['avg']:>6.2f}")
+    console.print(f"\nMax: {response['max']:>6.2f}")
+    console.print(f"Min: {response['min']:>6.2f}")
+    console.print(f"Avg: {response['avg']:>6.2f}")
 
     min_date = weight_data[0]['date']
     max_date = weight_data[-1]['date']
 
-    print(f"\nDate range: {min_date} - {max_date} | Count: {len(weight_data)}\n")
+    console.print(f"\nDate range: {min_date} - {max_date} | Count: {len(weight_data)}\n")
 
 
 @app.command('update')
