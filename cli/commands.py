@@ -67,10 +67,7 @@ def get_weight_data(
 
     for index, item in enumerate(weight_data):
         diff = item['weight'] - weight_data[index - 1]['weight'] if index > 0 else 0
-        if diff == 0:
-            diff = '-'
-        else:
-            diff = f'+{diff:.2f}' if diff > 0 else f'{diff:.2f}'
+        diff = f'+{diff:.2f}' if diff > 0 else f'{diff:.2f}'
         table.add_row(item['date'], f'{item['weight']:.2f}', diff)
 
     console.print()
