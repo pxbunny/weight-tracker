@@ -432,7 +432,8 @@ confidence=HIGH,
 # --disable=W".
 disable=missing-class-docstring,
         missing-function-docstring,
-        missing-module-docstring
+        missing-module-docstring,
+        redefined-builtin
 
 
 # Enable the message, report, category or checker with the given id(s). You can

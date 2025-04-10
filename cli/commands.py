@@ -1,4 +1,6 @@
 import typer
+from rich import print
+from rich.table import Table
 from typing_extensions import Annotated
 
 from . import api_client as api
@@ -33,20 +35,45 @@ def add_weight_data(
     api.add_weight_data(date, weight, access_token)
 
 
-@app.command('list')
-def list_weight_data(
+@app.command('get')
+def get_weight_data(
     date_from: Annotated[str, typer.Option('--from')] = None,
     date_to: Annotated[str, typer.Option('--to')] = None
 ):
     access_token = _get_access_token()
     response = api.get_weight_data(date_from, date_to, access_token)
 
-    for item in response['data']:
-        print(item['date'], item['weight'])
+    table = Table()
 
-    print(f"Max: {response['max']}")
-    print(f"Min: {response['min']}")
-    print(f"Avg: {response['avg']}")
+    table.add_column('Date')
+    table.add_column('Weight', justify='right')
+    table.add_column('+/-', justify='right')
+
+    weight_data = response['data']
+
+    if not weight_data:
+        print('No data found.')
+        return
+
+    for index, item in enumerate(weight_data):
+        diff = item['weight'] - weight_data[index - 1]['weight'] if index > 0 else 0
+        if diff == 0:
+            diff = '-'
+        else:
+            diff = f'+{diff:.2f}' if diff > 0 else f'{diff:.2f}'
+        table.add_row(item['date'], f'{item['weight']:.2f}', diff)
+
+    print()
+    print(table)
+
+    print(f"\nMax: {response['max']:>6.2f}")
+    print(f"Min: {response['min']:>6.2f}")
+    print(f"Avg: {response['avg']:>6.2f}")
+
+    min_date = weight_data[0]['date']
+    max_date = weight_data[-1]['date']
+
+    print(f"\nDate range: {min_date} - {max_date} | Count: {len(weight_data)}\n")
 
 
 @app.command('update')
