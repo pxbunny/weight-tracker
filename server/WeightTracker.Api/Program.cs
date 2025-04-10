@@ -7,9 +7,10 @@ using WeightTracker.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddFastEndpoints();
 builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
+
+builder.Services.AddFastEndpoints();
 builder.Services.SwaggerDocument();
 
 builder.Services.AddScoped<CurrentUser>();
@@ -17,13 +18,14 @@ builder.Services.AddData(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseFastEndpoints();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerGen();
 }
-
-app.UseFastEndpoints();
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.Run();

@@ -1,10 +1,12 @@
-from typer import Typer, core
+import typer
+from typing_extensions import Annotated
 
-from .auth import acquire_token, delete_tokens, get_tokens, store_tokens
+from . import api_client as api
+from . import auth
 
-core.rich = None
+typer.core.rich = None
 
-app = Typer(
+app = typer.Typer(
     add_completion=False,
     no_args_is_help=True,
     epilog="You're not fat, you're fluffy."
@@ -13,52 +15,71 @@ app = Typer(
 
 @app.command('login')
 def login():
-    tokens = acquire_token()
-    store_tokens(tokens['access_token'], tokens['refresh_token'])
+    tokens = auth.acquire_token()
+    auth.store_tokens(tokens['access_token'], None)
 
 
 @app.command('logout')
 def logout():
-    delete_tokens()
-
-
-@app.command('show-tokens')
-def status():
-    tokens = get_tokens()
-    print(tokens['access_token'])
-    print(tokens['refresh_token'])
+    auth.delete_tokens()
 
 
 @app.command('add')
-def add_weight_data():
-    print('add')
+def add_weight_data(
+    weight: Annotated[float, typer.Argument()],
+    date: Annotated[str, typer.Option('-d', '--date')] = None
+):
+    access_token = _get_access_token()
+    api.add_weight_data(date, weight, access_token)
 
 
 @app.command('list')
-def list_weight_data():
-    print('list')
+def list_weight_data(
+    date_from: Annotated[str, typer.Option('--from')] = None,
+    date_to: Annotated[str, typer.Option('--to')] = None
+):
+    access_token = _get_access_token()
+    response = api.get_weight_data(date_from, date_to, access_token)
+
+    for item in response['data']:
+        print(item['date'], item['weight'])
+
+    print(f"Max: {response['max']}")
+    print(f"Min: {response['min']}")
+    print(f"Avg: {response['avg']}")
 
 
 @app.command('update')
-def update_weight_data():
-    print('update')
+def update_weight_data(
+    weight: Annotated[float, typer.Argument()],
+    date: Annotated[str, typer.Option('-d', '--date')]
+):
+    access_token = _get_access_token()
+    api.update_weight_data(date, weight, access_token)
 
 
 @app.command('remove')
-def remove_weight_data():
-    print('remove')
+def remove_weight_data(
+    date: Annotated[str, typer.Argument()]
+):
+    access_token = _get_access_token()
+    api.delete_weight_data(date, access_token)
 
 
 @app.command('forecast')
 def get_weight_forecast():
-    print('forecast')
+    pass
 
 
 @app.command('show')
 def show_weight_chart():
-    print('show')
+    pass
 
 
 @app.command('ping')
 def ping_server():
-    print('pong')
+    pass
+
+
+def _get_access_token() -> str:
+    return auth.get_tokens()['access_token']

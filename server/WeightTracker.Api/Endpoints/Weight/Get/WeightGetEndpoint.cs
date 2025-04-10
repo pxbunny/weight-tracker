@@ -2,21 +2,15 @@
 
 namespace WeightTracker.Api.Endpoints.Weight.Get;
 
-public class GetWeightEndpoint : Endpoint<GetWeightRequest, Results<Ok<GetWeightResponse>, UnauthorizedHttpResult>>
+public class WeightGetEndpoint : Endpoint<WeightGetRequest, WeightGetResponse>
 {
     public required CurrentUser CurrentUser { get; init; }
 
     public override void Configure() => Get("api/weight");
 
-    public override async Task<Results<Ok<GetWeightResponse>, UnauthorizedHttpResult>> HandleAsync(
-        GetWeightRequest request, CancellationToken ct)
+    public override async Task HandleAsync(WeightGetRequest request, CancellationToken ct)
     {
-        var userId = CurrentUser.Id;
-
-        if (string.IsNullOrWhiteSpace(userId))
-            return TypedResults.Unauthorized();
-
-        var (dateFromStr, dateToStr) = request.QueryParams;
+        var (dateFromStr, dateToStr) = request;
 
         var dateFrom = string.IsNullOrWhiteSpace(dateFromStr)
             ? DateOnly.MinValue
@@ -26,18 +20,18 @@ public class GetWeightEndpoint : Endpoint<GetWeightRequest, Results<Ok<GetWeight
             ? DateOnly.MaxValue
             : DateOnly.Parse(dateToStr);
 
+        var userId = CurrentUser.Id;
+
         var query = new GetWeightDataQuery(userId, dateFrom, dateTo);
         var data = await query.ExecuteAsync(ct);
 
-        var dto = new GetWeightResponse
+        Response = new WeightGetResponse
         {
             UserId = data.UserId,
-            AverageWeight = data.AverageWeight,
-            MaxWeight = data.MaxWeight,
-            MinWeight = data.MinWeight,
+            Avg = data.AverageWeight,
+            Max = data.MaxWeight,
+            Min = data.MinWeight,
             Data = data.Data.Select(d => new WeightDataListItem(d.Date.ToFormattedString(), d.Weight))
         };
-
-        return TypedResults.Ok(dto);
     }
 }

@@ -1,14 +1,14 @@
 ﻿namespace WeightTracker.Api.Endpoints.Weight.Get;
 
-public sealed class GetWeightResponse
+public sealed class WeightGetResponse
 {
     public string UserId { get; init; } = null!;
 
-    public decimal? AverageWeight { get; init; }
+    public decimal? Avg { get; init; }
 
-    public decimal? MaxWeight { get; init; }
+    public decimal? Max { get; init; }
 
-    public decimal? MinWeight { get; init; }
+    public decimal? Min { get; init; }
 
     public IEnumerable<WeightDataListItem> Data { get; init; } = null!;
 }
