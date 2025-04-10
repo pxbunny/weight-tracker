@@ -34,7 +34,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build
-        run: dotnet build . --configuration Release
+        run: dotnet build --configuration Release
 
       - name: Publish
         if: ${{ inputs.external-call }}
