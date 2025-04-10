@@ -37,8 +37,11 @@ def add_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str, typer.Option('-d', '--date')] = None
 ):
-    access_token = _get_access_token()
-    api.add_weight_data(date, weight, access_token)
+    with console.status('Adding data...'):
+        access_token = _get_access_token()
+        api.add_weight_data(date, weight, access_token)
+
+    console.print('Data added.')
 
 
 @app.command('get')
@@ -85,34 +88,40 @@ def get_weight_data(
 
 @app.command('update')
 def update_weight_data(
-    weight: Annotated[float, typer.Argument()],
-    date: Annotated[str, typer.Option('-d', '--date')]
+    date: Annotated[str, typer.Argument()],
+    weight: Annotated[float, typer.Argument()]
 ):
-    access_token = _get_access_token()
-    api.update_weight_data(date, weight, access_token)
+    with console.status('Updating data...'):
+        access_token = _get_access_token()
+        api.update_weight_data(date, weight, access_token)
+
+    console.print('Data updated.')
 
 
 @app.command('remove')
 def remove_weight_data(
     date: Annotated[str, typer.Argument()]
 ):
-    access_token = _get_access_token()
-    api.delete_weight_data(date, access_token)
+    with console.status('Removing data...'):
+        access_token = _get_access_token()
+        api.delete_weight_data(date, access_token)
+
+    console.print('Data removed.')
 
 
 @app.command('forecast')
 def get_weight_forecast():
-    pass
+    console.print('Not implemented yet.')
 
 
 @app.command('show')
 def show_weight_chart():
-    pass
+    console.print('Not implemented yet.')
 
 
 @app.command('ping')
 def ping_server():
-    pass
+    console.print('Not implemented yet.')
 
 
 def _get_access_token() -> str:

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 
 from .config import get_server_config
@@ -13,7 +15,10 @@ def get_weight_forecast(date_from: str, date_to: str, access_token: str):
     return _send_request('GET', 'api/forecast', params=params, access_token=access_token)
 
 
-def add_weight_data(date: str, weight: float, access_token: str):
+def add_weight_data(date: str | None, weight: float, access_token: str):
+    if date is None:
+        date = datetime.now().strftime('%Y-%m-%d')
+
     data = {'date': date, 'weight': weight}
     _send_request('POST', 'api/weight', data=data, access_token=access_token)
 
