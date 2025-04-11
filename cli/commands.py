@@ -56,8 +56,8 @@ def get_weight_data(
     table = Table()
 
     table.add_column('Date')
-    table.add_column('Weight', justify='right')
-    table.add_column('+/-', justify='right')
+    table.add_column('Weight (kg)', justify='right')
+    table.add_column('+/- (kg)', justify='right')
 
     weight_data = response['data']
 
@@ -73,9 +73,9 @@ def get_weight_data(
     console.print()
     console.print(table)
 
-    console.print(f"\nMax: [bright_cyan]{response['max']:>6.2f}[/]")
-    console.print(f"Min: [bright_cyan]{response['min']:>6.2f}[/]")
-    console.print(f"Avg: [bright_cyan]{response['avg']:>6.2f}[/]")
+    console.print(f"\nMax: [bright_cyan]{response['max']:>6.2f}[/] kg")
+    console.print(f"Min: [bright_cyan]{response['min']:>6.2f}[/] kg")
+    console.print(f"Avg: [bright_cyan]{response['avg']:>6.2f}[/] kg")
 
     min_date = weight_data[0]['date']
     max_date = weight_data[-1]['date']
