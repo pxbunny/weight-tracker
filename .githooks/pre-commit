@@ -8,6 +8,7 @@ files=$(git diff --cached --name-only --diff-filter=d "*.py")
 
 if [ -n "$files" ]; then
   echo -e "\n✨ Sorting imports..."
+  pylint $files
   isort $files
   git add $files
 fi

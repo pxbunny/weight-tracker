@@ -26,32 +26,20 @@ def acquire_token() -> dict[str, Any]:
 def store_tokens(access_token: str, refresh_token: str = None) -> None:
     delete_tokens()
 
-    try:
-        _store_token(access_token, 'access_token')
-        # _store_token(refresh_token, 'refresh_token')
-    except Exception:
-        pass
+    _store_token(access_token, 'access_token')
+    _store_token(refresh_token, 'refresh_token')
 
 
 def get_tokens() -> dict[str, str]:
-    try:
-        return {
-            'access_token': _get_token('access_token'),
-            # 'refresh_token': _get_token('refresh_token')
-        }
-    except Exception:
-        return {
-            'access_token': None,
-            'refresh_token': None
-        }
+    return {
+        'access_token': _get_token('access_token'),
+        'refresh_token': _get_token('refresh_token')
+    }
 
 
 def delete_tokens() -> None:
-    try:
-        _delete_token('access_token')
-        # _delete_token('refresh_token')
-    except Exception:
-        pass
+    _delete_token('access_token')
+    _delete_token('refresh_token')
 
 
 def _store_token(token: str, name: str) -> None:
@@ -94,5 +82,5 @@ def _delete_token(name: str) -> None:
 def _get_tokens_from_response(response: dict[str, Any]) -> dict[str, str]:
     return {
         'access_token': response['access_token'],
-        # 'refresh_token': response['refresh_token']
+        'refresh_token': response['refresh_token']
     }
