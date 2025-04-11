@@ -10,7 +10,7 @@ source "$root_dir"/.env
 
 echo "Creating executable..."
 
-pyinstaller "$root_dir"/cli/__main__.py -F \
+pyinstaller "$root_dir"/client/__main__.py -F \
   --name ${CLI_APP_NAME} \
   --distpath "$root_dir"/dist \
   --workpath "$root_dir"/build \
