@@ -16,6 +16,13 @@ pyinstaller "$root_dir"/cli/__main__.py -F \
   --workpath "$root_dir"/build \
   --log-level=WARN
 
+branch_name=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$branch_name" != "main" ]; then
+  echo "Skipping copying executable to $CLI_APP_DIR because it's not on main branch."
+  exit 0
+fi
+
 if [ -z "$CLI_APP_DIR" ]; then
   echo "CLI_APP_DIR is not set."
   exit 1
