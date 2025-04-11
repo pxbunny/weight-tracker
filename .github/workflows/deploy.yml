@@ -44,7 +44,6 @@ jobs:
           # az bicep build-params -f ${{ env.BICEP_PARAMS_FILE }} --stdout
 
       - name: Upload Infrastructure Artifact
-        if: ${{ inputs.external-call }}
         uses: actions/upload-artifact@v4
         with:
           name: infra
@@ -70,13 +69,13 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ${{ env.SERVER_PROJECT_PATH }} --no-build --configuration Release --output server
+        run: dotnet publish ${{ env.SERVER_PROJECT_PATH }} --no-build --configuration Release --output webapp
 
       - name: Upload Server Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: server
-          path: server/**
+          name: webapp
+          path: webapp/**
           if-no-files-found: error
 
   deploy-infrastructure:
@@ -117,11 +116,11 @@ jobs:
       - name: Download Server Artifact
         uses: actions/download-artifact@v4
         with:
-          name: server
-          path: server
+          name: webapp
+          path: webapp
 
       - name: Deploy Server App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ vars.APP_NAME }}
-          package: server
+          package: webapp
