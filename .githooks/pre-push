@@ -6,6 +6,6 @@ echo "🚀 Running pre-push hook 🚀"
 
 echo -e "\n🔧 Creating executable..."
 
-pyinstaller cli/__main__.py -F -n wtrack --log-level=WARN
+./scripts/build_exe.sh
 
 echo -e "\n🎉 Pre-push status: success 🎉\n"
