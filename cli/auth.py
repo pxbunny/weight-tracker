@@ -57,6 +57,8 @@ def _store_token(token: str, name: str) -> None:
 
 
 def _get_token(name: str) -> str:
+    token_parts = keyring.get_password(APP_NAME, f'{name}_parts')
+    token_parts = int(token_parts) if token_parts else 1
     token_parts = int(keyring.get_password(APP_NAME, f'{name}_parts'))
 
     if token_parts == 1:
@@ -66,7 +68,8 @@ def _get_token(name: str) -> str:
 
 
 def _delete_token(name: str) -> None:
-    token_parts = int(keyring.get_password(APP_NAME, f'{name}_parts'))
+    token_parts = keyring.get_password(APP_NAME, f'{name}_parts')
+    token_parts = int(token_parts) if token_parts else 1
 
     if token_parts == 1:
         keyring.delete_password(APP_NAME, name)

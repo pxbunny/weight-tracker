@@ -21,7 +21,7 @@ console = Console(width=120)
 def login():
     with console.status('Signing in...'):
         tokens = auth.acquire_token()
-        auth.store_tokens(tokens['access_token'], None)
+        auth.store_tokens(tokens['access_token'], tokens['refresh_token'])
 
     console.print('Signed in.')
 
