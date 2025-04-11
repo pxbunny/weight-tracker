@@ -21,12 +21,14 @@ env:
   BICEP_FILE: infra/azure/main.bicep
   BICEP_PARAMS_FILE: infra/azure/parameters.json
   DOTNET_VERSION: '9.0.x'
+  ENVIRONMENT: prod
   SERVER_PROJECT_PATH: server/WeightTracker.Api/WeightTracker.Api.csproj
 
 jobs:
   build-infrastructure:
     name: Build Bicep Infrastructure
     runs-on: ubuntu-latest
+    environment: ${{ env.ENVIRONMENT }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -82,6 +84,7 @@ jobs:
     name: Deploy Infrastructure
     runs-on: ubuntu-latest
     needs: [build-infrastructure, build-server]
+    environment: ${{ env.ENVIRONMENT }}
     steps:
       - name: Azure Login
         uses: azure/login@v2
@@ -104,7 +107,8 @@ jobs:
   deploy-server:
     name: Deploy Server
     runs-on: ubuntu-latest
-    needs: [build-infrastructure, build-server]
+    needs: [deploy-infrastructure, build-server]
+    environment: ${{ env.ENVIRONMENT }}
     steps:
       - name: Azure Login
         uses: azure/login@v2
