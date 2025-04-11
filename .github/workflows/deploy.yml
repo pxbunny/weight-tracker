@@ -25,22 +25,16 @@ jobs:
   build-infrastructure:
     name: Build Bicep Infrastructure
     runs-on: ubuntu-latest
-    environment: prod
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Validate Bicep
         run: |
           cd infra/azure
           az bicep install
-          az bicep build -f main.bicep --stdout
-          # az bicep build-params -f main.bicepparam --stdout
+          az bicep build -f main.bicep
+          # az bicep build-params -f main.bicepparam
 
       - name: Upload Infrastructure Artifact
         uses: actions/upload-artifact@v4
@@ -98,7 +92,7 @@ jobs:
         run: |
           az deployment group create \
             --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
-            --template-file infra/main.bicep \
+            --template-file infra/main.json \
             --parameters infra/parameters.json
 
   deploy-server:
