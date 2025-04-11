@@ -7,7 +7,9 @@ echo "🚀 Running pre-commit hook 🚀"
 files=$(git diff --cached --name-only --diff-filter=d "*.py")
 
 if [ -n "$files" ]; then
-  echo -e "\n✨ Sorting imports..."
+  echo -e "\n✨ Running linter..."
+  pylint $files
+  echo -e "✨ Sorting imports..."
   isort $files
   git add $files
 fi

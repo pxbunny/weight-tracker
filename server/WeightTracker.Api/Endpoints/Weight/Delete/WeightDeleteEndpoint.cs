@@ -8,7 +8,9 @@ public class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest>
 
     public override async Task HandleAsync(WeightDeleteRequest request, CancellationToken ct)
     {
-        var command = new RemoveWeightDataCommand(CurrentUser.Id, DateOnly.Parse(request.Date));
+        var command = new RemoveWeightDataCommand(
+            UserId: CurrentUser.Id,
+            Date: DateOnly.Parse(request.Date));
         await command.ExecuteAsync(ct);
     }
 }

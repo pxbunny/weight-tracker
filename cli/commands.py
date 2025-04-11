@@ -21,7 +21,7 @@ console = Console(width=120)
 def login():
     with console.status('Signing in...'):
         tokens = auth.acquire_token()
-        auth.store_tokens(tokens['access_token'], None)
+        auth.store_tokens(tokens['access_token'], tokens['refresh_token'])
 
     console.print('Signed in.')
 
@@ -56,8 +56,8 @@ def get_weight_data(
     table = Table()
 
     table.add_column('Date')
-    table.add_column('Weight', justify='right')
-    table.add_column('+/-', justify='right')
+    table.add_column('Weight (kg)', justify='right')
+    table.add_column('+/- (kg)', justify='right')
 
     weight_data = response['data']
 
@@ -67,23 +67,23 @@ def get_weight_data(
 
     for index, item in enumerate(weight_data):
         diff = item['weight'] - weight_data[index - 1]['weight'] if index > 0 else 0
-        if diff == 0:
-            diff = '-'
-        else:
-            diff = f'+{diff:.2f}' if diff > 0 else f'{diff:.2f}'
+        diff = f'[deep_pink2]+{diff:.2f}[/]' if diff > 0 else f'{diff:.2f}'
         table.add_row(item['date'], f'{item['weight']:.2f}', diff)
 
     console.print()
     console.print(table)
 
-    console.print(f"\nMax: {response['max']:>6.2f}")
-    console.print(f"Min: {response['min']:>6.2f}")
-    console.print(f"Avg: {response['avg']:>6.2f}")
+    console.print(f"\nMax: [bright_cyan]{response['max']:>6.2f}[/] kg")
+    console.print(f"Min: [bright_cyan]{response['min']:>6.2f}[/] kg")
+    console.print(f"Avg: [bright_cyan]{response['avg']:>6.2f}[/] kg")
 
     min_date = weight_data[0]['date']
     max_date = weight_data[-1]['date']
 
-    console.print(f"\nDate range: {min_date} - {max_date} | Count: {len(weight_data)}\n")
+    console.print(
+        f"\nDate range: [bright_cyan]{min_date}[/] - [bright_cyan]{max_date}[/]" +
+        f" | Count: [bright_cyan]{len(weight_data)}\n[/]"
+    )
 
 
 @app.command('update')

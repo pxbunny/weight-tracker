@@ -10,7 +10,7 @@ internal static class Mappings
     public static Entity ToEntity(this WeightData domain) => new()
     {
         PartitionKey = domain.UserId,
-        RowKey = domain.Date.ToFormattedString(),
+        RowKey = domain.Date.ToDomainDateString(),
         Weight = decimal.ToDouble(domain.Weight)
     };
 }

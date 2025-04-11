@@ -1,6 +1,16 @@
-﻿namespace WeightTracker.Api.Endpoints.Weight.Delete;
+﻿using FluentValidation;
 
-public sealed class WeightDeleteRequest
+namespace WeightTracker.Api.Endpoints.Weight.Delete;
+
+public sealed record WeightDeleteRequest(string Date);
+
+public sealed class WeightDeleteRequestValidator : Validator<WeightDeleteRequest>
 {
-    public string Date { get; init; } = null!;
+    public WeightDeleteRequestValidator()
+    {
+        RuleFor(r => r.Date)
+            .NotEmpty()
+            .Must(date => date.IsValidDomainDateFormat())
+            .WithMessage("Invalid date format");
+    }
 }

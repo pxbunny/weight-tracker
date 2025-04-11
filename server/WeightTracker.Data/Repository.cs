@@ -19,8 +19,8 @@ internal sealed class Repository(TableServiceClient tableServiceClient) : IDataR
         var tableClient = await GetTableClientAsync();
         var (userId, dateFrom, dateTo) = weightDataFilter;
 
-        var from = (dateFrom ?? DateOnly.MinValue).ToFormattedString();
-        var to = (dateTo ?? DateOnly.MaxValue).ToFormattedString();
+        var from = (dateFrom ?? DateOnly.MinValue).ToDomainDateString();
+        var to = (dateTo ?? DateOnly.MaxValue).ToDomainDateString();
 
         var filter = $"PartitionKey eq '{userId}' and RowKey ge '{from}' and RowKey le '{to}'";
         var result = tableClient.Query<Entity>(filter).ToList();
@@ -41,7 +41,7 @@ internal sealed class Repository(TableServiceClient tableServiceClient) : IDataR
     public async Task DeleteAsync(string userId, DateOnly date)
     {
         var tableClient = await GetTableClientAsync();
-        await tableClient.DeleteEntityAsync(userId, date.ToFormattedString());
+        await tableClient.DeleteEntityAsync(userId, date.ToDomainDateString());
     }
 
     private async Task<TableClient> GetTableClientAsync()

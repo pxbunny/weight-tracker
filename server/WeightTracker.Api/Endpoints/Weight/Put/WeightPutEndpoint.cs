@@ -9,7 +9,10 @@ public class WeightPutEndpoint : Endpoint<WeightPutRequest>
     public override async Task HandleAsync(WeightPutRequest request, CancellationToken ct)
     {
         var (date, weight) = request;
-        var command = new UpdateWeightDataCommand(CurrentUser.Id, DateOnly.Parse(date), weight);
+        var command = new UpdateWeightDataCommand(
+            UserId: CurrentUser.Id,
+            Date: DateOnly.Parse(date),
+            Weight: weight);
         await command.ExecuteAsync(ct);
     }
 }

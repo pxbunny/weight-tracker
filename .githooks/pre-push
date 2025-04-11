@@ -1,6 +1,11 @@
 #!/bin/sh
 
-# dotnet test -c Release
-# dotnet clean -c Release
+set -e
 
-pyinstaller -F -n wtrack cli/__main__.py
+echo "🚀 Running pre-push hook 🚀"
+
+echo -e "\n🔧 Creating executable..."
+
+pyinstaller cli/__main__.py -F -n wtrack --log-level=WARN
+
+echo -e "\n🎉 Pre-push status: success 🎉\n"
