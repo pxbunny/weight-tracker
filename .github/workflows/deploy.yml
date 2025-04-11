@@ -1,66 +1,124 @@
-name: Deploy
+name: Build and Deploy
 
 on:
-  workflow_call:
-    inputs:
-      environment:
-        type: string
-        required: true
+  push:
+    branches:
+      - main
+    paths:
+      - 'infra/**'
+      - 'server/**'
 
-      arm-path:
-        type: string
-        required: true
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'infra/**'
+      - 'server/**'
 
-      arm-parameters-path:
-        type: string
-        required: true
+  workflow_dispatch:
 
-      infra-artifact-name:
-        type: string
-        required: false
-        default: infra
-
-      webapp-artifact-name:
-        type: string
-        required: false
-        default: webapp
+env:
+  BICEP_FILE: infra/azure/main.bicep
+  BICEP_PARAMS_FILE: infra/azure/parameters.json
+  DOTNET_VERSION: '9.0.x'
+  SERVER_PROJECT_PATH: server/WeightTracker.Api/WeightTracker.Api.csproj
 
 jobs:
-  deploy:
+  build-infrastructure:
+    name: Build Bicep Infrastructure
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
     steps:
-      - name: Login via Azure CLI
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Download an infrastructure artifact
+      - name: Validate Bicep
+        run: |
+          az bicep install
+          az bicep build -f ${{ env.BICEP_FILE }} --stdout
+          # az bicep build-params -f ${{ env.BICEP_PARAMS_FILE }} --stdout
+
+      - name: Upload Infrastructure Artifact
+        if: ${{ inputs.external-call }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra
+          path: infra/azure/*.json
+          if-no-files-found: error
+
+  build-server:
+    name: Build Server Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish
+        run: dotnet publish ${{ env.SERVER_PROJECT_PATH }} --no-build --configuration Release --output server
+
+      - name: Upload Server Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: server
+          path: server/**
+          if-no-files-found: error
+
+  deploy-infrastructure:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+    needs: [build-infrastructure, build-server]
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download Infrastructure Artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.infra-artifact-name }}
-          path: ${{ inputs.infra-artifact-name }}
+          name: infra
+          path: infra
 
-      - name: Download a web app artifact
+      - name: Deploy Infrastructure
+        run: |
+          az deployment group create \
+            --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
+            --template-file infra/main.bicep \
+            --parameters infra/parameters.json
+
+  deploy-server:
+    name: Deploy Server
+    runs-on: ubuntu-latest
+    needs: [build-infrastructure, build-server]
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Download Server Artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.webapp-artifact-name }}
-          path: ${{ inputs.webapp-artifact-name }}
+          name: server
+          path: server
 
-      - name: Deploy ARM template
-        uses: azure/arm-deploy@v2
-        with:
-          subscriptionId: ${{ vars.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ vars.RESOURCE_GROUP_NAME }}
-          template: ${{ inputs.arm-path }}
-          parameters: ${{ inputs.arm-parameters-path }}
-          failOnStdErr: false
-
-      - name: Deploy Azure web app
+      - name: Deploy Server App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ vars.APP_NAME }}
-          package: ${{ inputs.webapp-artifact-name }}
-
-      - name: Logout via Azure CLI
-        run: az logout
+          package: server
