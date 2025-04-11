@@ -18,8 +18,6 @@ on:
   workflow_dispatch:
 
 env:
-  BICEP_FILE: infra/azure/main.bicep
-  BICEP_PARAMS_FILE: infra/azure/parameters.json
   DOTNET_VERSION: '9.0.x'
   SERVER_PROJECT_PATH: server/WeightTracker.Api/WeightTracker.Api.csproj
 
@@ -39,9 +37,10 @@ jobs:
 
       - name: Validate Bicep
         run: |
+          cd infra/azure
           az bicep install
-          az bicep build -f ${{ env.BICEP_FILE }} --stdout
-          # az bicep build-params -f ${{ env.BICEP_PARAMS_FILE }} --stdout
+          az bicep build -f main.bicep --stdout
+          # az bicep build-params -f main.bicepparam --stdout
 
       - name: Upload Infrastructure Artifact
         uses: actions/upload-artifact@v4
