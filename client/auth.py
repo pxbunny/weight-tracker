@@ -24,7 +24,10 @@ def acquire_token() -> dict[str, Any]:
 
 
 def store_tokens(access_token: str, refresh_token: str = None) -> None:
-    delete_tokens()
+    try:
+        delete_tokens()
+    except Exception:
+        pass
 
     _store_token(access_token, 'access_token')
     _store_token(refresh_token, 'refresh_token')
