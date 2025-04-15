@@ -12,8 +12,8 @@ echo "Creating executable..."
 
 pyinstaller "$root_dir"/client/wtrack/__main__.py -F \
   --name ${CLI_APP_NAME} \
-  --distpath "$root_dir"/wtrack/dist \
-  --workpath "$root_dir"/wtrack/build \
+  --distpath "$root_dir"/client/dist \
+  --workpath "$root_dir"/client/build \
   --log-level=WARN
 
 branch_name=$(git rev-parse --abbrev-ref HEAD)
@@ -30,4 +30,4 @@ fi
 
 echo "Copying executable to $CLI_APP_DIR..."
 
-cp "$root_dir"/wtrack/dist/${CLI_APP_NAME}* "$CLI_APP_DIR"
+cp "$root_dir"/client/dist/${CLI_APP_NAME}* "$CLI_APP_DIR"
