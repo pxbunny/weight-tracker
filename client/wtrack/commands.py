@@ -5,6 +5,7 @@ from typing_extensions import Annotated
 
 from . import api_client as api
 from . import auth
+from .visualizer import plot_data
 
 typer.core.rich = None
 
@@ -47,7 +48,8 @@ def add_weight_data(
 @app.command('get')
 def get_weight_data(
     date_from: Annotated[str, typer.Option('--from')] = None,
-    date_to: Annotated[str, typer.Option('--to')] = None
+    date_to: Annotated[str, typer.Option('--to')] = None,
+    plot: Annotated[bool, typer.Option('--plot')] = False
 ):
     with console.status('Fetching data...'):
         access_token = _get_access_token()
@@ -73,9 +75,13 @@ def get_weight_data(
     console.print()
     console.print(table)
 
-    console.print(f"\nMax: [bright_cyan]{response['max']:>6.2f}[/] kg")
-    console.print(f"Min: [bright_cyan]{response['min']:>6.2f}[/] kg")
-    console.print(f"Avg: [bright_cyan]{response['avg']:>6.2f}[/] kg")
+    max_value = response['max']
+    min_value = response['min']
+    avg_value = response['avg']
+
+    console.print(f"\nMax: [bright_cyan]{max_value:>6.2f}[/] kg")
+    console.print(f"Min: [bright_cyan]{min_value:>6.2f}[/] kg")
+    console.print(f"Avg: [bright_cyan]{avg_value:>6.2f}[/] kg")
 
     min_date = weight_data[0]['date']
     max_date = weight_data[-1]['date']
@@ -84,6 +90,9 @@ def get_weight_data(
         f"\nDate range: [bright_cyan]{min_date}[/] - [bright_cyan]{max_date}[/]" +
         f" | Count: [bright_cyan]{len(weight_data)}\n[/]"
     )
+
+    if plot:
+        plot_data(weight_data, max_value, min_value, avg_value)
 
 
 @app.command('update')
@@ -107,16 +116,6 @@ def remove_weight_data(
         api.delete_weight_data(date, access_token)
 
     console.print('Data removed.')
-
-
-@app.command('forecast')
-def get_weight_forecast():
-    console.print('Not implemented yet.')
-
-
-@app.command('show')
-def show_weight_chart():
-    console.print('Not implemented yet.')
 
 
 @app.command('ping')
