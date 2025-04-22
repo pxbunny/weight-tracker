@@ -49,6 +49,7 @@ def add_weight_data(
 def get_weight_data(
     date_from: Annotated[str, typer.Option('--from')] = None,
     date_to: Annotated[str, typer.Option('--to')] = None,
+    limit: Annotated[int, typer.Option('--limit', help='Show only n last records in table')] = 10,
     plot: Annotated[bool, typer.Option('--plot')] = False
 ):
     with console.status('Fetching data...'):
@@ -67,13 +68,18 @@ def get_weight_data(
         console.print('No data found.')
         return
 
-    for index, item in enumerate(weight_data):
-        diff = item['weight'] - weight_data[index - 1]['weight'] if index > 0 else 0
+    data_chunk = weight_data[-limit:]
+
+    for index, item in enumerate(data_chunk):
+        diff = item['weight'] - data_chunk[index - 1]['weight'] if index > 0 else 0
         diff = f'[deep_pink2]+{diff:.2f}[/]' if diff > 0 else f'{diff:.2f}'
         table.add_row(item['date'], f'{item['weight']:.2f}', diff)
 
     console.print()
     console.print(table)
+
+    console.print("Number of shown records limited to:", limit)
+    console.print("Total received:", len(weight_data))
 
     max_value = response['max']
     min_value = response['min']
@@ -86,10 +92,7 @@ def get_weight_data(
     min_date = weight_data[0]['date']
     max_date = weight_data[-1]['date']
 
-    console.print(
-        f"\nDate range: [bright_cyan]{min_date}[/] - [bright_cyan]{max_date}[/]" +
-        f" | Count: [bright_cyan]{len(weight_data)}\n[/]"
-    )
+    console.print(f"\nDate range: [bright_cyan]{min_date}[/] - [bright_cyan]{max_date}[/]\n")
 
     if plot:
         plot_data(weight_data, max_value, min_value, avg_value)

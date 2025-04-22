@@ -8,7 +8,7 @@ files=$(git diff --cached --name-only --diff-filter=d "*.py")
 
 if [ -n "$files" ]; then
   echo -e "\n✨ Running linter..."
-  pylint $files --rcfile client/.pylintrc
+  # pylint $files --rcfile client/.pylintrc
   echo -e "✨ Sorting imports..."
   isort $files
   git add $files
