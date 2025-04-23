@@ -31,6 +31,4 @@ Commands:
   update
   remove
   forecast
-  show
-  ping
 ```
