@@ -21,15 +21,14 @@ console = Console(width=120)
 @app.command('login')
 def login():
     with console.status('Signing in...'):
-        tokens = auth.acquire_token()
-        auth.store_tokens(tokens['access_token'], tokens['refresh_token'])
+        auth.acquire_token()
 
     console.print('Signed in.')
 
 
 @app.command('logout')
 def logout():
-    auth.delete_tokens()
+    auth.logout()
     console.print('Signed out.')
 
 
@@ -39,7 +38,7 @@ def add_weight_data(
     date: Annotated[str, typer.Option('-d', '--date')] = None
 ):
     with console.status('Adding data...'):
-        access_token = _get_access_token()
+        access_token = auth.acquire_token()
         api.add_weight_data(date, weight, access_token)
 
     console.print('Data added.')
@@ -53,7 +52,7 @@ def get_weight_data(
     plot: Annotated[bool, typer.Option('--plot')] = False
 ):
     with console.status('Fetching data...'):
-        access_token = _get_access_token()
+        access_token = auth.acquire_token()
         response = api.get_weight_data(date_from, date_to, access_token)
 
     table = Table()
@@ -104,7 +103,7 @@ def update_weight_data(
     weight: Annotated[float, typer.Argument()]
 ):
     with console.status('Updating data...'):
-        access_token = _get_access_token()
+        access_token = auth.acquire_token()
         api.update_weight_data(date, weight, access_token)
 
     console.print('Data updated.')
@@ -115,16 +114,7 @@ def remove_weight_data(
     date: Annotated[str, typer.Argument()]
 ):
     with console.status('Removing data...'):
-        access_token = _get_access_token()
+        access_token = auth.acquire_token()
         api.delete_weight_data(date, access_token)
 
     console.print('Data removed.')
-
-
-@app.command('ping')
-def ping_server():
-    console.print('Not implemented yet.')
-
-
-def _get_access_token() -> str:
-    return auth.get_tokens()['access_token']
