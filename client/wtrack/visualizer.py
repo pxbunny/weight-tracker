@@ -19,6 +19,7 @@ def plot_data(data: list, max: float, min: float, avg: float) -> None:
 
     weights = [item['weight'] for item in data]
     dates = [item['date'] for item in data]
+    length = len(dates)
 
     fig.add_trace(go.Scatter(
         x=dates,
@@ -28,21 +29,21 @@ def plot_data(data: list, max: float, min: float, avg: float) -> None:
 
     fig.add_trace(go.Scatter(
         x=dates,
-        y=[max] * len(dates),
+        y=[max] * length,
         name='Max',
         visible='legendonly'
     ))
 
     fig.add_trace(go.Scatter(
         x=dates,
-        y=[min] * len(dates),
+        y=[min] * length,
         name='Min',
         visible='legendonly'
     ))
 
     fig.add_trace(go.Scatter(
         x=dates,
-        y=[avg] * len(dates),
+        y=[avg] * length,
         name='Avg',
         visible='legendonly'
     ))

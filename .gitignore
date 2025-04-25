@@ -173,4 +173,4 @@ cython_debug/
 **/*.Development.json
 **/*.dev.json
 **/local.settings.json
-config.json
+client/config.*json
