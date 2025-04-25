@@ -1,4 +1,6 @@
-﻿namespace WeightTracker.Api.Endpoints.Weight.Put;
+﻿using WeightTracker.Api.Handlers;
+
+namespace WeightTracker.Api.Endpoints.Weight.Put;
 
 public class WeightPutEndpoint : Endpoint<WeightPutRequest>
 {
@@ -9,7 +11,7 @@ public class WeightPutEndpoint : Endpoint<WeightPutRequest>
     public override async Task HandleAsync(WeightPutRequest request, CancellationToken ct)
     {
         var (date, weight) = request;
-        var command = new UpdateWeightDataCommand(
+        var command = new UpdateWeightData(
             UserId: CurrentUser.Id,
             Date: DateOnly.Parse(date),
             Weight: weight);

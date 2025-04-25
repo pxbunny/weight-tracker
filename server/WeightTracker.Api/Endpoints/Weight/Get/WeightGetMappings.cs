@@ -1,10 +1,11 @@
 ﻿using System.Linq;
+using WeightTracker.Api.Handlers;
 
 namespace WeightTracker.Api.Endpoints.Weight.Get;
 
 public static class WeightGetMappings
 {
-    public static GetWeightDataQuery ToQuery(this WeightGetRequest request, string userId)
+    public static GetWeightData ToCommand(this WeightGetRequest request, string userId)
     {
         var (dateFromStr, dateToStr) = request;
 
@@ -16,7 +17,7 @@ public static class WeightGetMappings
             ? DateOnly.MaxValue
             : DateOnly.Parse(dateToStr);
 
-        return new GetWeightDataQuery(userId, dateFrom, dateTo);
+        return new GetWeightData(userId, dateFrom, dateTo);
     }
 
     public static WeightGetResponse ToResponse(this WeightDataGroup data) => new()

@@ -1,4 +1,6 @@
-﻿namespace WeightTracker.Api.Endpoints.Weight.Delete;
+﻿using WeightTracker.Api.Handlers;
+
+namespace WeightTracker.Api.Endpoints.Weight.Delete;
 
 public class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest>
 {
@@ -8,7 +10,7 @@ public class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest>
 
     public override async Task HandleAsync(WeightDeleteRequest request, CancellationToken ct)
     {
-        var command = new RemoveWeightDataCommand(
+        var command = new RemoveWeightData(
             UserId: CurrentUser.Id,
             Date: DateOnly.Parse(request.Date));
         await command.ExecuteAsync(ct);

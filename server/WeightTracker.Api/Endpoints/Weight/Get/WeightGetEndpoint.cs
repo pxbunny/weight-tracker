@@ -8,8 +8,8 @@ public class WeightGetEndpoint : Endpoint<WeightGetRequest, WeightGetResponse>
 
     public override async Task HandleAsync(WeightGetRequest request, CancellationToken ct)
     {
-        var query = request.ToQuery(CurrentUser.Id);
-        var data = await query.ExecuteAsync(ct);
+        var command = request.ToCommand(CurrentUser.Id);
+        var data = await command.ExecuteAsync(ct);
         Response = data.ToResponse();
     }
 }
