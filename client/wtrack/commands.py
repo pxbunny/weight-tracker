@@ -7,6 +7,8 @@ from . import api_client as api
 from . import auth
 from .visualizer import plot_data
 
+WEIGHT_UNIT = 'kg'
+
 typer.core.rich = None
 
 app = typer.Typer(
@@ -55,38 +57,28 @@ def get_weight_data(
         access_token = auth.acquire_token()
         response = api.get_weight_data(date_from, date_to, access_token)
 
-    table = Table()
-
-    table.add_column('Date')
-    table.add_column('Weight (kg)', justify='right')
-    table.add_column('+/- (kg)', justify='right')
-
     weight_data = response['data']
 
     if not weight_data:
         console.print('No data found.')
         return
 
-    data_chunk = weight_data[-limit:]
-
-    for index, item in enumerate(data_chunk):
-        diff = item['weight'] - data_chunk[index - 1]['weight'] if index > 0 else 0
-        diff = f'[deep_pink2]+{diff:.2f}[/]' if diff > 0 else f'{diff:.2f}'
-        table.add_row(item['date'], f'{item['weight']:.2f}', diff)
+    table = _create_weight_data_table(weight_data, limit)
 
     console.print()
+    console.print(f"Weight unit: [bright_cyan]{WEIGHT_UNIT}[/]")
     console.print(table)
 
-    console.print("Number of shown records limited to:", limit)
+    console.print("Displayed:", min(len(weight_data), limit))
     console.print("Total received:", len(weight_data))
 
     max_value = response['max']
     min_value = response['min']
     avg_value = response['avg']
 
-    console.print(f"\nMax: [bright_cyan]{max_value:>6.2f}[/] kg")
-    console.print(f"Min: [bright_cyan]{min_value:>6.2f}[/] kg")
-    console.print(f"Avg: [bright_cyan]{avg_value:>6.2f}[/] kg")
+    console.print(f"\nMax: [bright_cyan]{max_value:>6.2f}[/] {WEIGHT_UNIT}")
+    console.print(f"Min: [bright_cyan]{min_value:>6.2f}[/] {WEIGHT_UNIT}")
+    console.print(f"Avg: [bright_cyan]{avg_value:>6.2f}[/] {WEIGHT_UNIT}")
 
     min_date = weight_data[0]['date']
     max_date = weight_data[-1]['date']
@@ -118,3 +110,20 @@ def remove_weight_data(
         api.delete_weight_data(date, access_token)
 
     console.print('Data removed.')
+
+
+def _create_weight_data_table(weight_data: list[dict], limit: int):
+    table = Table()
+
+    table.add_column('Date')
+    table.add_column('Weight', justify='right')
+    table.add_column('+/-', justify='right')
+
+    data_chunk = weight_data[-limit:]
+
+    for index, item in enumerate(data_chunk):
+        diff = item['weight'] - data_chunk[index - 1]['weight'] if index > 0 else 0
+        diff = f'[deep_pink2]+{diff:.2f}[/]' if diff > 0 else f'{diff:.2f}'
+        table.add_row(item['date'], f'{item['weight']:.2f}', diff)
+
+    return table
