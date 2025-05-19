@@ -1,3 +1,5 @@
+from typing import Iterator
+
 import plotly.graph_objects as go
 
 BACKGROUND_COLOR = '#111111'
@@ -21,10 +23,20 @@ def plot_data(data: list, max: float, min: float, avg: float) -> None:
     dates = [item['date'] for item in data]
     length = len(dates)
 
+    window_size = 5
+    sma_weight = list(_calculate_sma(weights, window_size))
+
     fig.add_trace(go.Scatter(
         x=dates,
         y=weights,
         name='Weight'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=dates[window_size - 1:],
+        y=sma_weight,
+        name='Weight (smoothened)',
+        line={'shape': 'spline',  'smoothing': 0.5}
     ))
 
     fig.add_trace(go.Scatter(
@@ -49,3 +61,12 @@ def plot_data(data: list, max: float, min: float, avg: float) -> None:
     ))
 
     fig.show(config=DEFAULT_CONFIG, post_script=[JAVASCRIPT])
+
+
+def _calculate_sma(data: list, window_size) -> Iterator[float]:
+    i = 0
+    while i < len(data) - window_size + 1:
+        window = data[i : i + window_size]
+        window_average = round(sum(window) / window_size, 2)
+        i += 1
+        yield window_average
