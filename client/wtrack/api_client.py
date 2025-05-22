@@ -5,6 +5,10 @@ import requests
 from .config import get_server_config
 
 
+def get_status(access_token: str):
+    return _send_request('GET', 'api/status', access_token=access_token).json()
+
+
 def get_weight_data(date_from: str, date_to: str, access_token: str) -> dict:
     params = {'dateFrom': date_from, 'dateTo': date_to}
     return _send_request('GET', 'api/weight', params=params, access_token=access_token).json()

@@ -34,6 +34,21 @@ def logout():
     console.print('Signed out.')
 
 
+@app.command('status')
+def show_status():
+    with console.status('Checking status...'):
+        access_token = auth.acquire_token()
+        response = api.get_status(access_token)
+
+    if response['addedForToday']:
+        console.print('[green]Weight data already added for today[/]')
+    else:
+        console.print('[red]Weight data not added for today[/]')
+
+    missed = response['missedInLast30Days']
+    console.print(f'{missed} entries missed in the last 30 days.')
+
+
 @app.command('add')
 def add_weight_data(
     weight: Annotated[float, typer.Argument()],
