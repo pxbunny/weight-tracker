@@ -19,7 +19,7 @@ on:
 
 env:
   DOTNET_VERSION: '9.0.x'
-  SERVER_PROJECT_PATH: server/WeightTracker.Api/WeightTracker.Api.csproj
+  SERVER_PROJECT_PATH: WeightTracker.Api/WeightTracker.Api.csproj
 
 jobs:
   build-infrastructure:
@@ -54,6 +54,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Go to Server Directory
+        run: cd server
 
       - name: Restore Dependencies
         run: dotnet restore
