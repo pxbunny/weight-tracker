@@ -41,9 +41,9 @@ def show_status():
         response = api.get_status(access_token)
 
     if response['addedForToday']:
-        console.print('[green]Weight data already added for today[/]')
+        console.print('[green]Weight data already added for today.[/]')
     else:
-        console.print('[red]Weight data not added for today[/]')
+        console.print('[red]Weight data not added for today.[/]')
 
     missed = response['missedInLast30Days']
     console.print(f'{missed} entries missed in the last 30 days.')
