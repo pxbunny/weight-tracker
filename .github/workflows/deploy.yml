@@ -19,7 +19,6 @@ on:
 
 env:
   DOTNET_VERSION: '9.0.x'
-  SERVER_PROJECT_PATH: WeightTracker.Api/WeightTracker.Api.csproj
 
 jobs:
   build-infrastructure:
@@ -46,6 +45,9 @@ jobs:
   build-server:
     name: Build Server Project
     runs-on: ubuntu-latest
+    env:
+      WORKING_DIRECTORY: server
+      SERVER_PROJECT_PATH: WeightTracker.Api/WeightTracker.Api.csproj
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -55,23 +57,23 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Go to Server Directory
-        run: cd server
-
       - name: Restore Dependencies
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet restore
 
       - name: Build
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet build --configuration Release --no-restore
 
       - name: Publish
+        working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet publish ${{ env.SERVER_PROJECT_PATH }} --no-build --configuration Release --output webapp
 
       - name: Upload Server Artifact
         uses: actions/upload-artifact@v4
         with:
           name: webapp
-          path: webapp/**
+          path: ${{ env.WORKING_DIRECTORY }}/webapp/**
           if-no-files-found: error
 
   deploy-infrastructure:
