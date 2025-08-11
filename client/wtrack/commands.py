@@ -86,19 +86,15 @@ def get_weight_data(
 
     console.print("Displayed:", min(len(weight_data), limit))
     console.print("Total received:", len(weight_data))
+    console.print()
 
     max_value = response['max']
     min_value = response['min']
     avg_value = response['avg']
 
-    console.print(f"\nMax: [bright_cyan]{max_value:>6.2f}[/] {WEIGHT_UNIT}")
-    console.print(f"Min: [bright_cyan]{min_value:>6.2f}[/] {WEIGHT_UNIT}")
-    console.print(f"Avg: [bright_cyan]{avg_value:>6.2f}[/] {WEIGHT_UNIT}")
-
-    min_date = weight_data[0]['date']
-    max_date = weight_data[-1]['date']
-
-    console.print(f"\nDate range: [bright_cyan]{min_date}[/] - [bright_cyan]{max_date}[/]\n")
+    _print_weight_stats(max_value, min_value, avg_value)
+    _print_current_weight(weight_data, avg_value)
+    _print_date_range(weight_data)
 
     if plot:
         plot_data(weight_data, max_value, min_value, avg_value)
@@ -142,3 +138,32 @@ def _create_weight_data_table(weight_data: list[dict], limit: int):
         table.add_row(item['date'], f'{item['weight']:.2f}', diff)
 
     return table
+
+
+def _print_weight_stats(max_value: float, min_value: float, avg_value: float):
+    console.print(f"Max: [bright_cyan]{max_value:>6.2f}[/] {WEIGHT_UNIT}")
+    console.print(f"Min: [bright_cyan]{min_value:>6.2f}[/] {WEIGHT_UNIT}")
+    console.print(f"Avg: [bright_cyan]{avg_value:>6.2f}[/] {WEIGHT_UNIT}\n")
+
+
+def _print_current_weight(weight_data: list[dict], avg_value: float):
+    last_weight = weight_data[-1]['weight']
+
+    is_lower_than_avg = last_weight < avg_value
+    is_higher_than_avg = last_weight > avg_value
+
+    comparison_str = '[bright_cyan]EQUAL[/] to'
+
+    if is_lower_than_avg:
+        comparison_str = '[green]LOWER[/] then'
+    elif is_higher_than_avg:
+        comparison_str = '[red]HIGHER[/] then'
+
+    console.print(f"Current weight [bright_cyan]{last_weight:>.2f} {WEIGHT_UNIT}[/] is {comparison_str} average.\n")
+
+
+def _print_date_range(weight_data: list[dict]):
+    min_date = weight_data[0]['date']
+    max_date = weight_data[-1]['date']
+
+    console.print(f"Date range: [bright_cyan]{min_date}[/] - [bright_cyan]{max_date}[/]\n")
