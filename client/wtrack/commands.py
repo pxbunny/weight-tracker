@@ -78,6 +78,10 @@ def get_weight_data(
         console.print('No data found.')
         return
 
+    max_value = response['max']
+    min_value = response['min']
+    avg_value = response['avg']
+
     table = _create_weight_data_table(weight_data, limit)
 
     console.print()
@@ -88,13 +92,10 @@ def get_weight_data(
     console.print("Total received:", len(weight_data))
     console.print()
 
-    max_value = response['max']
-    min_value = response['min']
-    avg_value = response['avg']
+    _print_date_range(weight_data)
 
     _print_weight_stats(max_value, min_value, avg_value)
     _print_current_weight(weight_data, avg_value)
-    _print_date_range(weight_data)
 
     if plot:
         plot_data(weight_data, max_value, min_value, avg_value)
