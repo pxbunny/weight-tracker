@@ -58,7 +58,30 @@ def add_weight_data(
         access_token = auth.acquire_token()
         api.add_weight_data(date, weight, access_token)
 
-    console.print('Data added.')
+    console.print('Data added successfully.')
+
+    with console.status('Fetching data...'):
+        access_token = auth.acquire_token()
+        response = api.get_weight_data(date, date, access_token)
+
+    weight_data = response['data']
+
+    if not weight_data:
+        console.print('There is a problem with your data.')
+        console.print('Check your data and try again.')
+        return
+
+    max_value = response['max']
+    min_value = response['min']
+    avg_value = response['avg']
+
+    console.print("\n=========================")
+    console.print("Statistics for your data:")
+    console.print("=========================\n")
+
+    _print_date_range(weight_data)
+    _print_weight_stats(max_value, min_value, avg_value)
+    _print_current_weight(weight_data, avg_value)
 
 
 @app.command('get')
