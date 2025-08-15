@@ -140,6 +140,12 @@ def update_weight_data(
 def remove_weight_data(
     date: Annotated[str, typer.Argument()]
 ):
+    console.print(f"Are you sure you want to remove data for [bright_cyan]{date}[/]?", end='')
+
+    if not typer.confirm(''):
+        console.print("Operation cancelled.")
+        return
+
     with console.status('Removing data...'):
         access_token = auth.acquire_token()
         api.delete_weight_data(date, access_token)
