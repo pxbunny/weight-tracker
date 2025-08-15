@@ -35,7 +35,7 @@ def plot_data(data: list, max: float, min: float, avg: float) -> None:
     fig.add_trace(go.Scatter(
         x=dates[window_size - 1:],
         y=sma_weight,
-        name='Weight (smoothened)',
+        name=f'Weight (SMA{window_size})',
         line={'shape': 'spline',  'smoothing': 0.5}
     ))
 
