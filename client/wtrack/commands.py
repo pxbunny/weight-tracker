@@ -5,6 +5,7 @@ from typing_extensions import Annotated
 
 from . import api_client as api
 from . import auth
+from .exceptions import AppException
 from .visualizer import plot_data
 
 WEIGHT_UNIT = 'kg'
@@ -54,9 +55,13 @@ def add_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str, typer.Option('-d', '--date')] = None
 ):
-    with console.status('Adding data...'):
-        access_token = auth.acquire_token()
-        api.add_weight_data(date, weight, access_token)
+    try:
+        with console.status('Adding data...'):
+            access_token = auth.acquire_token()
+            api.add_weight_data(date, weight, access_token)
+    except AppException as e:
+        console.print(e.message)
+        return
 
     console.print('Data added successfully.')
 
