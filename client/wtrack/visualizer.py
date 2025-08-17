@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 
 BACKGROUND_COLOR = '#111111'
 DEFAULT_CONFIG = {'displaylogo': False}
-JAVASCRIPT = f'''document.body.style.backgroundColor = "{BACKGROUND_COLOR}";'''
+JAVASCRIPT = f'''document.body.style.backgroundColor = "{BACKGROUND_COLOR}"; document.title = "Weight Tracker";'''
 TEMPLATE = 'plotly_dark'
 
 def plot_data(data: list, max: float, min: float, avg: float) -> None:
@@ -12,7 +12,7 @@ def plot_data(data: list, max: float, min: float, avg: float) -> None:
 
     fig.update_layout(
         hovermode='x unified',
-        title='Weight Data',
+        title='Weight [kg]',
         xaxis_title='Date',
         yaxis_title='Weight (kg)',
         template=TEMPLATE,
