@@ -14,8 +14,7 @@ typer.core.rich = None
 
 app = typer.Typer(
     add_completion=False,
-    no_args_is_help=True,
-    epilog="You're not fat, you're fluffy."
+    no_args_is_help=True
 )
 
 console = Console(width=120)
