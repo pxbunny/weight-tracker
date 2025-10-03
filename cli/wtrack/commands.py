@@ -175,9 +175,9 @@ def _create_weight_data_table(weight_data: list[dict], limit: int):
 
 
 def _print_weight_stats(max_value: float, min_value: float, avg_value: float):
-    console.print(f"Max: [bright_cyan]{max_value:>6.2f}[/] {WEIGHT_UNIT}")
-    console.print(f"Min: [bright_cyan]{min_value:>6.2f}[/] {WEIGHT_UNIT}")
-    console.print(f"Avg: [bright_cyan]{avg_value:>6.2f}[/] {WEIGHT_UNIT}\n")
+    console.print(f"Max: [bright_cyan]{max_value:>6.2f} {WEIGHT_UNIT}[/]")
+    console.print(f"Min: [bright_cyan]{min_value:>6.2f} {WEIGHT_UNIT}[/]")
+    console.print(f"Avg: [bright_cyan]{avg_value:>6.2f} {WEIGHT_UNIT}[/]\n")
 
 
 def _print_current_weight(weight_data: list[dict], avg_value: float):
