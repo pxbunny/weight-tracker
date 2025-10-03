@@ -7,7 +7,7 @@ DEFAULT_CONFIG = {'displaylogo': False}
 JAVASCRIPT = f'''document.body.style.backgroundColor = "{BACKGROUND_COLOR}"; document.title = "Weight Tracker";'''
 TEMPLATE = 'plotly_dark'
 
-def plot_data(data: list, max: float, min: float, avg: float) -> None:
+def plot_data(data: list, avg: float) -> None:
     fig = go.Figure()
 
     fig.update_layout(
@@ -37,20 +37,6 @@ def plot_data(data: list, max: float, min: float, avg: float) -> None:
         y=sma_weight,
         name=f'Weight (SMA{window_size})',
         line={'shape': 'spline',  'smoothing': 0.5}
-    ))
-
-    fig.add_trace(go.Scatter(
-        x=dates,
-        y=[max] * length,
-        name='Max',
-        visible='legendonly'
-    ))
-
-    fig.add_trace(go.Scatter(
-        x=dates,
-        y=[min] * length,
-        name='Min',
-        visible='legendonly'
     ))
 
     fig.add_trace(go.Scatter(

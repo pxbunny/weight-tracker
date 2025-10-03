@@ -125,7 +125,7 @@ def get_weight_data(
     _print_current_weight(weight_data, avg_value)
 
     if plot:
-        plot_data(weight_data, max_value, min_value, avg_value)
+        plot_data(weight_data, avg_value)
 
 
 @app.command('update')
