@@ -30,5 +30,4 @@ Commands:
   get
   update
   remove
-  forecast
 ```
