@@ -191,9 +191,9 @@ def _print_current_weight(weight_data: list[dict], avg_value: float):
     comparison_str = '[bright_cyan]EQUAL[/] to'
 
     if is_lower_than_avg:
-        comparison_str = '[green]LOWER[/] then'
+        comparison_str = '[bold]LOWER[/] then'
     elif is_higher_than_avg:
-        comparison_str = '[red]HIGHER[/] then'
+        comparison_str = '[bold]HIGHER[/] then'
 
     console.print(f"Current weight [bright_cyan]{last_weight:>.2f} {WEIGHT_UNIT}[/] is {comparison_str} average.\n")
 
