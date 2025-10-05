@@ -17,8 +17,4 @@
     <ProjectReference Include="..\WeightTracker.Data\WeightTracker.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Endpoints\Forecast\" />
-  </ItemGroup>
-
 </Project>
