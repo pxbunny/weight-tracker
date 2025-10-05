@@ -113,8 +113,10 @@ def get_weight_data(
 
     console.print()
     console.print(f"Weight unit: [bright_cyan]{WEIGHT_UNIT}[/]")
+    console.print()
     console.print(table)
 
+    console.print()
     console.print("Displayed:", min(len(weight_data), limit))
     console.print("Total received:", len(weight_data))
     console.print()
