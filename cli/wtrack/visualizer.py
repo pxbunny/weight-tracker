@@ -24,13 +24,15 @@ def plot_data(data: list, avg: float) -> None:
     fig.add_trace(go.Scatter(
         x=dates,
         y=weights,
-        name='Weight'
+        name='Weight',
+        line_color='cyan'
     ))
 
     fig.add_trace(go.Scatter(
         x=dates,
         y=[avg] * length,
-        name='Avg'
+        name='Avg',
+        line_color='firebrick'
     ))
 
     fig.show(config=DEFAULT_CONFIG, post_script=[JAVASCRIPT])
