@@ -174,3 +174,6 @@ cython_debug/
 **/*.dev.json
 **/local.settings.json
 cli/config.*json
+
+# Other files and directories
+TODOs.txt
