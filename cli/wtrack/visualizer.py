@@ -9,8 +9,13 @@ def plot_data(data: list, avg: float) -> None:
     fig = go.Figure()
 
     fig.update_layout(
+        title={
+            'text': '<b>Weight Tracker - data visualization</b>',
+            'x':0.5,
+            'xanchor': 'center',
+            'font_size': 24
+        },
         hovermode='x unified',
-        title='Weight Tracker - data visualization',
         xaxis_title='Date',
         yaxis_title='Weight (kg)',
         template=TEMPLATE,
@@ -32,7 +37,7 @@ def plot_data(data: list, avg: float) -> None:
         x=dates,
         y=[avg] * length,
         name='Avg',
-        line_color='firebrick'
+        line_color='deeppink'
     ))
 
     fig.show(config=DEFAULT_CONFIG, post_script=[JAVASCRIPT])
