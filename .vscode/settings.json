@@ -1,5 +1,6 @@
 {
-  "pylint.args": [
-    "--rcfile=${workspaceFolder}/cli/.pylintrc"
-  ]
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  }
 }

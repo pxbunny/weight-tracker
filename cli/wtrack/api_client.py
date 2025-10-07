@@ -43,14 +43,8 @@ def ping_server(access_token: str) -> Response:
 
 
 def _send_request(
-    method: str,
-    url: str,
-    *,
-    data: dict = None,
-    params: dict = None,
-    access_token: str = None
+    method: str, url: str, *, data: dict = None, params: dict = None, access_token: str = None
 ) -> Response:
-
     """Sends an HTTP request with Bearer authorization and base URL handling.
 
     This internal helper function handles HTTP requests by automatically:
@@ -90,21 +84,14 @@ def _send_request(
     url = f'{base_url}/{url}' if not is_full_url else url
 
     try:
-        response = requests.request(
-            method,
-            url,
-            json=data,
-            params=params,
-            headers=auth_header,
-            timeout=timeout
-        )
+        response = requests.request(method, url, json=data, params=params, headers=auth_header, timeout=timeout)
         response.raise_for_status()
 
     except requests.exceptions.HTTPError as e:
         # TODO: Update server error responses
-        raise ApiError(f"Server responded with an error: {str(e)}") from e
+        raise ApiError(f'Server responded with an error: {str(e)}') from e
 
     except requests.exceptions.RequestException as e:
-        raise ApiError("Could not reach the server") from e
+        raise ApiError('Could not reach the server') from e
 
     return response

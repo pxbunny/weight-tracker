@@ -7,12 +7,12 @@ from .config import get_auth_config
 
 
 class PersistentTokenCache(SerializableTokenCache):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.cache_file = self._get_cache_path()
         self.deserialize(self._load_cache())
 
-    def persist_cache(self):
+    def persist_cache(self) -> None:
         os.makedirs(os.path.dirname(self.cache_file), exist_ok=True)
 
         with open(self.cache_file, 'wb') as f:
@@ -21,11 +21,11 @@ class PersistentTokenCache(SerializableTokenCache):
         if not sys.platform.startswith('win'):
             os.chmod(self.cache_file, 0o600)
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
         if os.path.exists(self.cache_file):
             os.remove(self.cache_file)
 
-    def _get_cache_path(self):
+    def _get_cache_path(self) -> str:
         app_name = 'wtrack'
         home = os.path.expanduser('~')
 
@@ -34,7 +34,7 @@ class PersistentTokenCache(SerializableTokenCache):
 
         return os.path.join(home, f'.{app_name}_token_cache')
 
-    def _load_cache(self):
+    def _load_cache(self) -> str:
         if not os.path.exists(self.cache_file):
             return ''
 
@@ -51,11 +51,7 @@ def acquire_token() -> str:
     tenant_id = config['tenant_id']
     authority = f'https://login.microsoftonline.com/{tenant_id}'
 
-    app = PublicClientApplication(
-        client_id,
-        authority=authority,
-        token_cache=cache
-    )
+    app = PublicClientApplication(client_id, authority=authority, token_cache=cache)
 
     scopes = [f'api://{client_id}/access_as_user']
     accounts = app.get_accounts()

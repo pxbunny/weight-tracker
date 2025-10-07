@@ -7,11 +7,13 @@ echo "🚀 Running pre-commit hook 🚀"
 files=$(git diff --cached --name-only --diff-filter=d "*.py")
 
 if [ -n "$files" ]; then
-  echo -e "\n✨ Running linter..."
-  pylint $files --rcfile cli/.pylintrc
-  echo -e "✨ Sorting imports..."
-  isort $files
+  echo -e "\n✨ Sorting imports..."
+  ruff check --select I --fix $files
   git add $files
+
+  echo -e "\n✨ Linting and formatting..."
+  ruff check $files
+  ruff format $files
 fi
 
 echo -e "\n🎉 Pre-commit status: success 🎉\n"

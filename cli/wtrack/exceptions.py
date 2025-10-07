@@ -1,13 +1,13 @@
-class AppException(Exception):
+class AppError(Exception):
     """Base class for all application exceptions."""
 
     def __init__(self, message: str) -> None:
         self.message = message
 
 
-class ConfigError(AppException):
+class ConfigError(AppError):
     pass
 
 
-class ApiError(AppException):
+class ApiError(AppError):
     pass
