@@ -1,0 +1,9 @@
+{
+  "server": {
+    "base_url": ""
+  },
+  "auth": {
+    "client_id": "",
+    "tenant_id": ""
+  }
+}
