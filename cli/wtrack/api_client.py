@@ -4,7 +4,7 @@ import requests
 from requests import Response
 
 from .config import get_server_config
-from .exceptions import ApiError, ConfigError
+from .errors import ApiError, ConfigError
 
 
 def get_status(access_token: str) -> dict:

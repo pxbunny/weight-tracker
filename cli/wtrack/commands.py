@@ -6,7 +6,7 @@ from rich.table import Table
 
 from . import api_client as api
 from . import auth
-from .exceptions import AppError
+from .errors import AppError
 from .visualizer import plot_data
 
 WEIGHT_UNIT = 'kg'
