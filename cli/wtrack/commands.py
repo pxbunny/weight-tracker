@@ -2,6 +2,7 @@ from typing import Annotated
 
 import typer
 from rich.console import Console
+from rich.style import Style
 from rich.table import Table
 
 from . import api_client as api
@@ -16,27 +17,30 @@ typer.core.rich = None
 app = typer.Typer(add_completion=False, no_args_is_help=True)
 
 console = Console(width=120)
+style = Style(color='bright_cyan', bold=True)
 
 
 @app.command('login')
 def login() -> None:
-    with console.status('Signing in...'):
+    with console.status('Signing in...', spinner='arc', spinner_style=style):
         auth.acquire_token()
 
-    console.print('Signed in.')
+    console.print('\nSigned in.\n')
 
 
 @app.command('logout')
 def logout() -> None:
     auth.logout()
-    console.print('Signed out.')
+    console.print('\nSigned out.\n')
 
 
 @app.command('status')
 def show_status() -> None:
-    with console.status('Checking status...'):
+    with console.status('Checking status...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
         response = api.get_status(access_token)
+
+    console.print()
 
     if response['addedForToday']:
         console.print('[bold]Weight data already added for today.[/]')
@@ -45,6 +49,7 @@ def show_status() -> None:
 
     missed = response['missedInLast30Days']
     console.print(f'[bold bright_cyan]{missed}[/] entries missed in the last [bold bright_cyan]30 days[/].')
+    console.print()
 
 
 @app.command('add')
@@ -53,7 +58,7 @@ def add_weight_data(
     date: Annotated[str | None, typer.Option('-d', '--date')] = None,
 ) -> None:
     try:
-        with console.status('Adding data...'):
+        with console.status('Adding data...', spinner='arc', spinner_style=style):
             access_token = auth.acquire_token()
             api.add_weight_data(date, weight, access_token)
     except AppError as e:
@@ -62,7 +67,7 @@ def add_weight_data(
 
     console.print('\nData added successfully.')
 
-    with console.status('Fetching data...'):
+    with console.status('Fetching data...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
         response = api.get_weight_data(date, date, access_token)
 
@@ -93,7 +98,7 @@ def get_weight_data(
     tail: Annotated[int, typer.Option('--tail', help='Show only n last records in table')] = 10,
     plot: Annotated[bool, typer.Option('--plot')] = False,
 ) -> None:
-    with console.status('Fetching data...'):
+    with console.status('Fetching data...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
         response = api.get_weight_data(date_from, date_to, access_token)
 
@@ -133,28 +138,28 @@ def update_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str, typer.Option('-d', '--date')],
 ) -> None:
-    with console.status('Updating data...'):
+    with console.status('Updating data...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
         api.update_weight_data(date, weight, access_token)
 
-    console.print('Data updated.')
+    console.print('\nData updated.\n')
 
 
 @app.command('remove')
 def remove_weight_data(
     date: Annotated[str, typer.Argument()],
 ) -> None:
-    console.print(f'Are you sure you want to remove data for [bold bright_cyan]{date}[/]?', end='')
+    console.print(f'\nAre you sure you want to remove data for [bold bright_cyan]{date}[/]?', end='')
 
     if not typer.confirm(''):
         console.print('Operation cancelled.')
         return
 
-    with console.status('Removing data...'):
+    with console.status('Removing data...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
         api.delete_weight_data(date, access_token)
 
-    console.print('Data removed.')
+    console.print('Data removed.\n')
 
 
 def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
