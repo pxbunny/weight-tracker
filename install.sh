@@ -24,16 +24,16 @@ pyinstaller $root_dir/cli/wtrack/__main__.py \
 branch_name=$(git rev-parse --abbrev-ref HEAD)
 
 if [ "$branch_name" != "main" ]; then
-  echo "Skipping copying executable to $CLI_APP_DIR because it's not on main branch."
+  echo "Skipping copying executable to $CLI_APP_INSTALLATION_DIR because it's not on main branch."
   exit 0
 fi
 
-if [ -z "$CLI_APP_DIR" ]; then
-  echo "CLI_APP_DIR is not set."
+if [ -z "$CLI_APP_INSTALLATION_DIR" ]; then
+  echo "CLI_APP_INSTALLATION_DIR is not set."
   exit 1
 fi
 
-echo "Copying executable to $CLI_APP_DIR..."
+echo "Copying executable to $CLI_APP_INSTALLATION_DIR..."
 
 cp $root_dir/cli/config.prod.json $root_dir/cli/dist/$CLI_APP_NAME/config.json
-cp -r $root_dir/cli/dist/$CLI_APP_NAME $CLI_APP_DIR
+cp -r $root_dir/cli/dist/$CLI_APP_NAME $CLI_APP_INSTALLATION_DIR

@@ -4,8 +4,8 @@ set -e
 
 echo "🚀 Running pre-push hook 🚀"
 
-echo -e "\n🔧 Creating executable..."
+echo -e "\n🔧 Installing/updating app on this computer..."
 
-./build_exe.sh
+./install.sh
 
 echo -e "\n🎉 Pre-push status: success 🎉\n"
