@@ -35,5 +35,5 @@ fi
 
 echo "Copying executable to $CLI_APP_INSTALLATION_DIR..."
 
-cp $root_dir/cli/config.prod.json $root_dir/cli/dist/$CLI_APP_NAME/config.json
+cp $root_dir/cli/config.prod.yaml $root_dir/cli/dist/$CLI_APP_NAME/config.yaml
 cp -r $root_dir/cli/dist/$CLI_APP_NAME $CLI_APP_INSTALLATION_DIR

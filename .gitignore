@@ -173,8 +173,8 @@ cython_debug/
 **/*.Development.json
 **/*.dev.json
 **/local.settings.json
-cli/config.json
-cli/config.prod.json
+cli/config.yaml
+cli/config.prod.yaml
 
 # Other files and directories
 TODOs.txt
