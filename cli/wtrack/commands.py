@@ -52,7 +52,7 @@ def show_status():
 @app.command('add')
 def add_weight_data(
     weight: Annotated[float, typer.Argument()],
-    date: Annotated[str, typer.Option('-d', '--date')] = None
+    date: Annotated[str | None, typer.Option('-d', '--date')] = None
 ):
     try:
         with console.status('Adding data...'):
@@ -90,9 +90,9 @@ def add_weight_data(
 
 @app.command('get')
 def get_weight_data(
-    date_from: Annotated[str, typer.Option('--from')] = None,
-    date_to: Annotated[str, typer.Option('--to')] = None,
-    limit: Annotated[int, typer.Option('--limit', help='Show only n last records in table')] = 10,
+    date_from: Annotated[str | None, typer.Option('--date-from')] = None,
+    date_to: Annotated[str | None, typer.Option('--date-to')] = None,
+    tail: Annotated[int, typer.Option('--tail', help='Show only n last records in table')] = 10,
     plot: Annotated[bool, typer.Option('--plot')] = False
 ):
     with console.status('Fetching data...'):
@@ -109,7 +109,7 @@ def get_weight_data(
     min_value = response['min']
     avg_value = response['avg']
 
-    table = _create_weight_data_table(weight_data, limit)
+    table = _create_weight_data_table(weight_data, tail)
 
     console.print()
     console.print(f"Weight unit: [bright_cyan]{WEIGHT_UNIT}[/]")
@@ -117,7 +117,7 @@ def get_weight_data(
     console.print(table)
 
     console.print()
-    console.print("Displayed:", min(len(weight_data), limit))
+    console.print("Displayed:", min(len(weight_data), tail))
     console.print("Total received:", len(weight_data))
     console.print()
 
@@ -132,8 +132,8 @@ def get_weight_data(
 
 @app.command('update')
 def update_weight_data(
-    date: Annotated[str, typer.Argument()],
-    weight: Annotated[float, typer.Argument()]
+    weight: Annotated[float, typer.Argument()],
+    date: Annotated[str, typer.Option('-d', '--date')]
 ):
     with console.status('Updating data...'):
         access_token = auth.acquire_token()
@@ -159,14 +159,14 @@ def remove_weight_data(
     console.print('Data removed.')
 
 
-def _create_weight_data_table(weight_data: list[dict], limit: int):
+def _create_weight_data_table(weight_data: list[dict], tail: int):
     table = Table()
 
     table.add_column('Date')
     table.add_column('Weight', justify='right')
     table.add_column('+/-', justify='right')
 
-    data_chunk = weight_data[-limit:]
+    data_chunk = weight_data[-tail:]
 
     for index, item in enumerate(data_chunk):
         diff = item['weight'] - data_chunk[index - 1]['weight'] if index > 0 else 0
