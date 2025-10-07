@@ -62,7 +62,7 @@ def add_weight_data(
         console.print(e.message)
         return
 
-    console.print('Data added successfully.')
+    console.print('\nData added successfully.')
 
     with console.status('Fetching data...'):
         access_token = auth.acquire_token()
