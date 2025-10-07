@@ -39,12 +39,12 @@ def show_status() -> None:
         response = api.get_status(access_token)
 
     if response['addedForToday']:
-        console.print('[green]Weight data already added for today.[/]')
+        console.print('[bold]Weight data already added for today.[/]')
     else:
-        console.print('[red]Weight data not added for today.[/]')
+        console.print('[deep_pink2]Weight data not added for today.[/]')
 
     missed = response['missedInLast30Days']
-    console.print(f'{missed} entries missed in the last 30 days.')
+    console.print(f'[bold bright_cyan]{missed}[/] entries missed in the last [bold bright_cyan]30 days[/].')
 
 
 @app.command('add')
@@ -70,7 +70,7 @@ def add_weight_data(
 
     if not weight_data:
         console.print('There is a problem with your data.')
-        console.print('Check your data and try again.')
+        console.print('Check the data and try again.')
         return
 
     max_value = response['max']
@@ -110,7 +110,7 @@ def get_weight_data(
     table = _create_weight_data_table(weight_data, tail)
 
     console.print()
-    console.print(f'Weight unit: [bright_cyan]{WEIGHT_UNIT}[/]')
+    console.print(f'Weight unit: [bold bright_cyan]{WEIGHT_UNIT}[/]')
     console.print()
     console.print(table)
 
@@ -144,7 +144,7 @@ def update_weight_data(
 def remove_weight_data(
     date: Annotated[str, typer.Argument()],
 ) -> None:
-    console.print(f'Are you sure you want to remove data for [bright_cyan]{date}[/]?', end='')
+    console.print(f'Are you sure you want to remove data for [bold bright_cyan]{date}[/]?', end='')
 
     if not typer.confirm(''):
         console.print('Operation cancelled.')
@@ -175,9 +175,9 @@ def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
 
 
 def _print_weight_stats(max_value: float, min_value: float, avg_value: float) -> None:
-    console.print(f'Max: [bright_cyan]{max_value:>6.2f} {WEIGHT_UNIT}[/]')
-    console.print(f'Min: [bright_cyan]{min_value:>6.2f} {WEIGHT_UNIT}[/]')
-    console.print(f'Avg: [bright_cyan]{avg_value:>6.2f} {WEIGHT_UNIT}[/]\n')
+    console.print(f'Max: [bold bright_cyan]{max_value:>6.2f} {WEIGHT_UNIT}[/]')
+    console.print(f'Min: [bold bright_cyan]{min_value:>6.2f} {WEIGHT_UNIT}[/]')
+    console.print(f'Avg: [bold bright_cyan]{avg_value:>6.2f} {WEIGHT_UNIT}[/]\n')
 
 
 def _print_current_weight(weight_data: list[dict], avg_value: float) -> None:
@@ -186,18 +186,20 @@ def _print_current_weight(weight_data: list[dict], avg_value: float) -> None:
     is_lower_than_avg = last_weight < avg_value
     is_higher_than_avg = last_weight > avg_value
 
-    comparison_str = '[bright_cyan]EQUAL[/] to'
+    comparison_str = '[bold bright_cyan]EQUAL[/] to'
 
     if is_lower_than_avg:
         comparison_str = '[bold]LOWER[/] then'
     elif is_higher_than_avg:
         comparison_str = '[bold]HIGHER[/] then'
 
-    console.print(f'Current weight [bright_cyan]{last_weight:>.2f} {WEIGHT_UNIT}[/] is {comparison_str} average.\n')
+    console.print(
+        f'Current weight [bold bright_cyan]{last_weight:>.2f} {WEIGHT_UNIT}[/] is {comparison_str} average.\n'
+    )
 
 
 def _print_date_range(weight_data: list[dict]) -> None:
     min_date = weight_data[0]['date']
     max_date = weight_data[-1]['date']
 
-    console.print(f'Date range: [bright_cyan]{min_date}[/] - [bright_cyan]{max_date}[/]\n')
+    console.print(f'Date range: [bold bright_cyan]{min_date}[/] - [bold bright_cyan]{max_date}[/]\n')
