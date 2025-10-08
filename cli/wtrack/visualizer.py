@@ -11,6 +11,7 @@ def plot_data(data: list, avg: float) -> None:
 
     fig.update_layout(
         title={'text': '<b>Weight Tracker - data visualization</b>', 'x': 0.5, 'xanchor': 'center', 'font_size': 24},
+        legend={'orientation': 'h', 'yanchor': 'bottom', 'y': 1.02, 'xanchor': 'right', 'x': 1},
         hovermode='x unified',
         xaxis_title='Date',
         yaxis_title='Weight (kg)',
