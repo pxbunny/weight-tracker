@@ -48,7 +48,7 @@ def show_status() -> None:
         console.print('[deep_pink2]Weight data not added for today.[/]')
 
     missed = response['missedInLast30Days']
-    console.print(f'[bold bright_cyan]{missed}[/] entries missed in the last [bold bright_cyan]30 days[/].')
+    console.print(f'\n[bold bright_cyan]{missed}[/] entries missed in the last [bold bright_cyan]30 days[/].')
     console.print()
 
 
@@ -95,7 +95,7 @@ def add_weight_data(
 def get_weight_data(
     date_from: Annotated[str | None, typer.Option('--date-from')] = None,
     date_to: Annotated[str | None, typer.Option('--date-to')] = None,
-    tail: Annotated[int, typer.Option('--tail', help='Show only n last records in table')] = 10,
+    tail: Annotated[int, typer.Option('--tail', help='Show only n last records in table')] = 7,
     plot: Annotated[bool, typer.Option('--plot')] = False,
 ) -> None:
     with console.status('Fetching data...', spinner='arc', spinner_style=style):
