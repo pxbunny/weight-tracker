@@ -174,8 +174,11 @@ def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
     for index, item in enumerate(data_chunk):
         is_weight_higher = index > 0 and item['weight'] > data_chunk[index - 1]['weight']
         row_style = Style(bold=True) if is_weight_higher else None
+
         diff = item['weight'] - data_chunk[index - 1]['weight'] if index > 0 else 0
-        table.add_row(item['date'], f'{item["weight"]:.2f}', f'{diff:.2f}', style=row_style)
+        diff = f'+{diff:.2f}' if is_weight_higher else f'{diff:.2f}'
+
+        table.add_row(item['date'], f'{item["weight"]:.2f}', diff, style=row_style)
 
     return table
 
