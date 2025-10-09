@@ -14,7 +14,7 @@ def plot_data(data: list, avg: float) -> None:
         legend={'orientation': 'h', 'yanchor': 'bottom', 'y': 1.02, 'xanchor': 'right', 'x': 1},
         hovermode='x unified',
         xaxis_title='Date',
-        yaxis_title='Weight (kg)',
+        yaxis_title='Weight [kg]',
         template=TEMPLATE,
         paper_bgcolor=BACKGROUND_COLOR,
     )
