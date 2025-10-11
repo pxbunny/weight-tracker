@@ -56,6 +56,7 @@ def show_status() -> None:
 def add_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str | None, typer.Option('-d', '--date')] = None,
+    show_stats: Annotated[bool, typer.Option('--stats')] = False,
 ) -> None:
     try:
         with console.status('Adding data...', spinner='arc', spinner_style=style):
@@ -66,6 +67,10 @@ def add_weight_data(
         return
 
     console.print('\nData added successfully.')
+
+    if not show_stats:
+        console.print()
+        return
 
     with console.status('Fetching data...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
