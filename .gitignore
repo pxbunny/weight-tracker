@@ -177,4 +177,4 @@ cli/config.yaml
 cli/config.prod.yaml
 
 # Other files and directories
-TODOs.txt
+TODOs.md

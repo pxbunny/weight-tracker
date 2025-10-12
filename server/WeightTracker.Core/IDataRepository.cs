@@ -5,7 +5,7 @@ namespace WeightTracker.Core;
 
 public interface IDataRepository
 {
-    Task AddAsync(WeightData weightData); // TODO: add cancellation token
+    Task AddAsync(WeightData weightData);
 
     Task<WeightDataGroup> GetAsync(WeightDataFilter filter);
 

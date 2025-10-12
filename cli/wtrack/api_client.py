@@ -88,7 +88,6 @@ def _send_request(
         response.raise_for_status()
 
     except requests.exceptions.HTTPError as e:
-        # TODO: Update server error responses
         raise ApiError(f'Server responded with an error: {str(e)}') from e
 
     except requests.exceptions.RequestException as e:
