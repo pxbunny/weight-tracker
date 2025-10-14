@@ -3,7 +3,7 @@ import sys
 
 from msal import PublicClientApplication, SerializableTokenCache
 
-from .config import get_auth_config
+from .settings import get_auth_config
 
 
 class PersistentTokenCache(SerializableTokenCache):

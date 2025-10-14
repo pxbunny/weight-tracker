@@ -3,8 +3,8 @@ from datetime import datetime
 import requests
 from requests import Response
 
-from .config import get_server_config
 from .errors import ApiError, ConfigError
+from .settings import get_server_config
 
 
 def get_status(access_token: str) -> dict:
