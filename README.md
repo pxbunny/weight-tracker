@@ -16,13 +16,14 @@ python 3.12 or higher
 Usage: wtrack [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --help  Show this message and exit.
+  --help   Show this message and exit.
 
 Commands:
-  login
-  logout
-  add
-  get
-  update
-  remove
+  login    aliases: signin
+  logout   aliases: signout
+  status   aliases: streak
+  add      aliases: new, insert
+  report   aliases: show, get, list, ls, display
+  update   aliases: edit
+  remove   aliases: rm, delete
 ```
