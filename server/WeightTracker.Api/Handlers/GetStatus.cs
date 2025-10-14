@@ -9,7 +9,7 @@ internal sealed class GetStatusHandler(IDataRepository repository) : ICommandHan
     public async Task<Status> ExecuteAsync(GetStatus command, CancellationToken ct)
     {
         var filter = new WeightDataFilter(command.UserId);
-        var response = await repository.GetAsync(filter);
+        var response = await repository.GetAsync(filter, ct);
         return Status.GetStatus(response.Data.ToList());
     }
 }
