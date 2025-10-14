@@ -6,14 +6,14 @@ on:
       - main
     paths:
       - 'infra/**'
-      - 'server/**'
+      - 'app-api/**'
 
   pull_request:
     branches:
       - main
     paths:
       - 'infra/**'
-      - 'server/**'
+      - 'app-api/**'
 
   workflow_dispatch:
 
@@ -42,12 +42,12 @@ jobs:
           path: infra/azure/*.json
           if-no-files-found: error
 
-  build-server:
-    name: Build Server Project
+  build-api:
+    name: Build API Project
     runs-on: ubuntu-latest
     env:
-      WORKING_DIRECTORY: server
-      SERVER_PROJECT_PATH: WeightTracker.Api/WeightTracker.Api.csproj
+      WORKING_DIRECTORY: app-api
+      API_PROJECT_PATH: WeightTracker.Api/WeightTracker.Api.csproj
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -67,9 +67,9 @@ jobs:
 
       - name: Publish
         working-directory: ${{ env.WORKING_DIRECTORY }}
-        run: dotnet publish ${{ env.SERVER_PROJECT_PATH }} --no-build --configuration Release --output webapp
+        run: dotnet publish ${{ env.API_PROJECT_PATH }} --no-build --configuration Release --output webapp
 
-      - name: Upload Server Artifact
+      - name: Upload API Artifact
         uses: actions/upload-artifact@v4
         with:
           name: webapp
@@ -79,7 +79,7 @@ jobs:
   deploy-infrastructure:
     name: Deploy Infrastructure
     runs-on: ubuntu-latest
-    needs: [build-infrastructure, build-server]
+    needs: [build-infrastructure, build-api]
     environment: prod
     steps:
       - name: Azure Login
@@ -100,10 +100,10 @@ jobs:
             --template-file infra/main.json \
             --parameters infra/parameters.json
 
-  deploy-server:
-    name: Deploy Server
+  deploy-api:
+    name: Deploy API
     runs-on: ubuntu-latest
-    needs: [deploy-infrastructure, build-server]
+    needs: [deploy-infrastructure, build-api]
     environment: prod
     steps:
       - name: Azure Login
@@ -111,13 +111,13 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Download Server Artifact
+      - name: Download API Artifact
         uses: actions/download-artifact@v4
         with:
           name: webapp
           path: webapp
 
-      - name: Deploy Server App
+      - name: Deploy API
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ vars.APP_NAME }}

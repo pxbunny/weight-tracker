@@ -4,7 +4,7 @@ import requests
 from requests import Response
 
 from .errors import ApiError, ConfigError
-from .settings import get_server_config
+from .settings import get_api_config
 
 
 def get_status(access_token: str) -> dict:
@@ -38,10 +38,6 @@ def delete_weight_data(date: str, access_token: str) -> None:
     _send_request('DELETE', f'api/weight/{date}', access_token=access_token)
 
 
-def ping_server(access_token: str) -> Response:
-    return _send_request('GET', 'api/ping', access_token=access_token)
-
-
 def _send_request(
     method: str, url: str, *, data: dict = None, params: dict = None, access_token: str = None
 ) -> Response:
@@ -49,7 +45,7 @@ def _send_request(
 
     This internal helper function handles HTTP requests by automatically:
     - Adding Authorization header when access token is provided
-    - Resolving relative URLs against the base URL from server configuration
+    - Resolving relative URLs against the base URL from api configuration
     - Serializing JSON data payloads
     - Validating HTTP response status codes
 
@@ -65,18 +61,18 @@ def _send_request(
         Response: Validated requests.Response object after HTTP status check
 
     Raises:
-        ConfigError: When missing 'base_url' in server configuration
-        ApiError: When request fails (network or server errors)
+        ConfigError: When missing 'base_url' in api configuration
+        ApiError: When request fails (network or api errors)
     """
 
-    config = get_server_config()
+    config = get_api_config()
 
     auth_header = {'Authorization': f'Bearer {access_token}'} if access_token else None
 
     try:
         base_url = config['base_url']
     except KeyError as e:
-        raise ConfigError("Missing 'base_url' in server configuration") from e
+        raise ConfigError("Missing 'base_url' in api configuration") from e
 
     is_full_url = url.startswith('http')
     timeout = 15

@@ -6,8 +6,8 @@ import yaml
 CONFIG_FILENAME = 'config.yaml'
 
 
-def get_server_config() -> dict:
-    return config['server']
+def get_api_config() -> dict:
+    return config['api']
 
 
 def get_auth_config() -> dict:
