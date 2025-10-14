@@ -20,7 +20,8 @@ console = Console(width=120)
 style = Style(color='bright_cyan', bold=True)
 
 
-@app.command('login')
+@app.command('login', help='aliases: signin')
+@app.command('signin', hidden=True)
 def login() -> None:
     with console.status('Signing in...', spinner='arc', spinner_style=style):
         auth.acquire_token()
@@ -28,13 +29,15 @@ def login() -> None:
     console.print('\nSigned in.\n')
 
 
-@app.command('logout')
+@app.command('logout', help='aliases: signout')
+@app.command('signout', hidden=True)
 def logout() -> None:
     auth.logout()
     console.print('\nSigned out.\n')
 
 
-@app.command('status')
+@app.command('status', help='aliases: streak')
+@app.command('streak', hidden=True)
 def show_status() -> None:
     with console.status('Checking status...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
@@ -52,7 +55,9 @@ def show_status() -> None:
     console.print()
 
 
-@app.command('add')
+@app.command('add', help='aliases: new, insert')
+@app.command('new', hidden=True)
+@app.command('insert', hidden=True)
 def add_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str | None, typer.Option('-d', '--date')] = None,
@@ -96,8 +101,13 @@ def add_weight_data(
     _print_current_weight(weight_data, avg_value)
 
 
-@app.command('get')
-def get_weight_data(
+@app.command('report', help='aliases: show, get, list, ls, display')
+@app.command('show', hidden=True)
+@app.command('get', hidden=True)
+@app.command('list', hidden=True)
+@app.command('ls', hidden=True)
+@app.command('display', hidden=True)
+def show_report(
     date_from: Annotated[str | None, typer.Option('--date-from')] = None,
     date_to: Annotated[str | None, typer.Option('--date-to')] = None,
     tail: Annotated[int, typer.Option('--tail', help='Show only n last records in table')] = 7,
@@ -138,7 +148,8 @@ def get_weight_data(
         plot_data(weight_data, avg_value)
 
 
-@app.command('update')
+@app.command('update', help='aliases: edit')
+@app.command('edit', hidden=True)
 def update_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str, typer.Option('-d', '--date')],
@@ -150,7 +161,9 @@ def update_weight_data(
     console.print('\nData updated.\n')
 
 
-@app.command('remove')
+@app.command('remove', help='aliases: rm, delete')
+@app.command('rm', hidden=True)
+@app.command('delete', hidden=True)
 def remove_weight_data(
     date: Annotated[str, typer.Argument()],
 ) -> None:
