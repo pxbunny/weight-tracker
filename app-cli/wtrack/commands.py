@@ -144,7 +144,10 @@ def show_report(
     _print_weight_stats(max_value, min_value, avg_value)
     _print_current_weight(weight_data, avg_value)
 
-    if plot:
+    if not plot:
+        return
+
+    with console.status('Plotting data...', spinner='arc', spinner_style=style):
         plot_data(weight_data, avg_value)
 
 
