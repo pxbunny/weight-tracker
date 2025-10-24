@@ -190,7 +190,8 @@ def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
     table.add_column('Weight', justify='right')
     table.add_column('+/-', justify='right')
 
-    data_chunk = weight_data[-tail:]
+    data_chunk = weight_data[-(tail + 1) :]
+    is_tail_shorter_than_data = tail < len(weight_data)
 
     for index, item in enumerate(data_chunk):
         is_weight_higher = index > 0 and item['weight'] > data_chunk[index - 1]['weight']
@@ -199,7 +200,8 @@ def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
         diff = item['weight'] - data_chunk[index - 1]['weight'] if index > 0 else 0
         diff = f'+{diff:.2f}' if is_weight_higher else f'{diff:.2f}'
 
-        table.add_row(item['date'], f'{item["weight"]:.2f}', diff, style=row_style)
+        if index > 0 or not is_tail_shorter_than_data:
+            table.add_row(item['date'], f'{item["weight"]:.2f}', diff, style=row_style)
 
     return table
 
