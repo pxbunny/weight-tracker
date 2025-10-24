@@ -33,7 +33,7 @@ jobs:
           cd infra/azure
           az bicep install
           az bicep build -f main.bicep
-          # az bicep build-params -f main.bicepparam
+          az bicep build-params -f main.bicepparam
 
       - name: Upload Infrastructure Artifact
         uses: actions/upload-artifact@v4
