@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.Endpoints.Weight.Get;
 
-public class WeightGetEndpoint : Endpoint<WeightGetRequest, WeightGetResponse>
+internal sealed class WeightGetEndpoint : Endpoint<WeightGetRequest, WeightGetResponse>
 {
     public required CurrentUser CurrentUser { get; init; }
 

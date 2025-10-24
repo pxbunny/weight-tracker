@@ -1,8 +1,9 @@
-﻿using WeightTracker.Api.Handlers;
+﻿using System.Globalization;
+using WeightTracker.Api.Handlers;
 
 namespace WeightTracker.Api.Endpoints.Weight.Delete;
 
-public class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest>
+internal sealed class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest>
 {
     public required CurrentUser CurrentUser { get; init; }
 
@@ -12,7 +13,7 @@ public class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest>
     {
         var command = new RemoveWeightData(
             UserId: CurrentUser.Id,
-            Date: DateOnly.Parse(request.Date));
+            Date: DateOnly.Parse(request.Date, CultureInfo.InvariantCulture));
         await command.ExecuteAsync(ct);
     }
 }

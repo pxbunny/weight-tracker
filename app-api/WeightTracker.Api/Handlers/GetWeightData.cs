@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.Handlers;
 
-public sealed record GetWeightData(string UserId, DateOnly DateFrom, DateOnly DateTo)
+internal sealed record GetWeightData(string UserId, DateOnly DateFrom, DateOnly DateTo)
     : ICommand<WeightDataGroup>;
 
 internal sealed class GetWeightDataHandler(IDataRepository repository) : ICommandHandler<GetWeightData, WeightDataGroup>

@@ -2,7 +2,7 @@
 
 namespace WeightTracker.Api.Endpoints.Status.Get;
 
-public class StatusGetEndpoint : EndpointWithoutRequest<StatusGetResponse>
+internal sealed class StatusGetEndpoint : EndpointWithoutRequest<StatusGetResponse>
 {
     public required CurrentUser CurrentUser { get; init; }
 

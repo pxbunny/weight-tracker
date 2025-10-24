@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.Endpoints.Weight.Get;
 
-public sealed class WeightGetResponse
+internal sealed class WeightGetResponse
 {
     public string UserId { get; init; } = null!;
 
@@ -13,4 +13,4 @@ public sealed class WeightGetResponse
     public IEnumerable<WeightDataListItem> Data { get; init; } = null!;
 }
 
-public sealed record WeightDataListItem(string Date, decimal Weight);
+internal sealed record WeightDataListItem(string Date, decimal Weight);

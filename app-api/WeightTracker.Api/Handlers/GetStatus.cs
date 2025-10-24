@@ -1,8 +1,6 @@
-﻿using System.Linq;
+﻿namespace WeightTracker.Api.Handlers;
 
-namespace WeightTracker.Api.Handlers;
-
-public sealed record GetStatus(string UserId) : ICommand<Status>;
+internal sealed record GetStatus(string UserId) : ICommand<Status>;
 
 internal sealed class GetStatusHandler(IDataRepository repository) : ICommandHandler<GetStatus, Status>
 {
@@ -10,6 +8,6 @@ internal sealed class GetStatusHandler(IDataRepository repository) : ICommandHan
     {
         var filter = new WeightDataFilter(command.UserId);
         var response = await repository.GetAsync(filter, ct);
-        return Status.GetStatus(response.Data.ToList());
+        return Status.GetStatus([.. response.Data]);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace WeightTracker.Api.Endpoints.Weight.Put;
 
-public sealed record WeightPutRequest(string Date, decimal Weight);
+internal sealed record WeightPutRequest(string Date, decimal Weight);
 
-public sealed class WeightPutRequestValidator : Validator<WeightPutRequest>
+internal sealed class WeightPutRequestValidator : Validator<WeightPutRequest>
 {
     public WeightPutRequestValidator()
     {

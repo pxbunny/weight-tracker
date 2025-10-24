@@ -1,12 +1,14 @@
-﻿namespace WeightTracker.Core;
+﻿using System.Globalization;
+
+namespace WeightTracker.Core;
 
 public static class Extensions
 {
     private const string DateFormat = "yyyy-MM-dd";
 
-    public static string ToDomainDateString(this DateOnly date) => date.ToString(DateFormat);
+    public static string ToDomainDateString(this DateOnly date) =>
+        date.ToString(DateFormat, CultureInfo.InvariantCulture);
 
     public static bool IsValidDomainDateFormat(this string date) =>
-        !string.IsNullOrEmpty(date) &&
-        DateTime.TryParse(date, out _);
+        !string.IsNullOrEmpty(date) && DateTime.TryParse(date, out _);
 }

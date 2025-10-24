@@ -9,13 +9,12 @@ public record Status(bool AddedForToday, int MissedInLast7Days, int MissedInLast
     {
         var lastDate = data.LastOrDefault()?.Date;
 
-        if (lastDate is null)
-            return new Status(false, 0, 0);
-
-        return new Status(
-            lastDate == DateOnly.FromDateTime(DateTime.Today),
-            CalculateMissedDays(data, 7),
-            CalculateMissedDays(data, 30));
+        return lastDate is null
+            ? new Status(false, 0, 0)
+            : new Status(
+                lastDate == DateOnly.FromDateTime(DateTime.Today),
+                CalculateMissedDays(data, 7),
+                CalculateMissedDays(data, 30));
     }
 
     private static int CalculateMissedDays(IEnumerable<WeightData> data, int totalDays)

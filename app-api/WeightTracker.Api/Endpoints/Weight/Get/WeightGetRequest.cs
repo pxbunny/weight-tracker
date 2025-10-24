@@ -2,9 +2,9 @@
 
 namespace WeightTracker.Api.Endpoints.Weight.Get;
 
-public sealed record WeightGetRequest(string? DateFrom, string? DateTo);
+internal sealed record WeightGetRequest(string? DateFrom, string? DateTo);
 
-public sealed class WeightGetRequestValidator : Validator<WeightGetRequest>
+internal sealed class WeightGetRequestValidator : Validator<WeightGetRequest>
 {
     public WeightGetRequestValidator()
     {

@@ -2,9 +2,9 @@
 
 namespace WeightTracker.Api.Endpoints.Weight.Post;
 
-public sealed record WeightPostRequest(decimal Weight, string Date);
+internal sealed record WeightPostRequest(decimal Weight, string Date);
 
-public sealed class WeightPostRequestValidator : Validator<WeightPostRequest>
+internal sealed class WeightPostRequestValidator : Validator<WeightPostRequest>
 {
     public WeightPostRequestValidator()
     {

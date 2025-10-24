@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.Handlers;
 
-public sealed record AddWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand;
+internal sealed record AddWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand;
 
 internal sealed class AddWeightDataHandler(IDataRepository repository) : ICommandHandler<AddWeightData>
 {

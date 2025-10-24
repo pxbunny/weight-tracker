@@ -2,9 +2,9 @@
 
 namespace WeightTracker.Api.Endpoints.Weight.Delete;
 
-public sealed record WeightDeleteRequest(string Date);
+internal sealed record WeightDeleteRequest(string Date);
 
-public sealed class WeightDeleteRequestValidator : Validator<WeightDeleteRequest>
+internal sealed class WeightDeleteRequestValidator : Validator<WeightDeleteRequest>
 {
     public WeightDeleteRequestValidator()
     {

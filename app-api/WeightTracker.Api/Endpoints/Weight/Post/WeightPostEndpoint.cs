@@ -1,8 +1,9 @@
-﻿using WeightTracker.Api.Handlers;
+﻿using System.Globalization;
+using WeightTracker.Api.Handlers;
 
 namespace WeightTracker.Api.Endpoints.Weight.Post;
 
-public class WeightPostEndpoint : Endpoint<WeightPostRequest>
+internal sealed class WeightPostEndpoint : Endpoint<WeightPostRequest>
 {
     public required CurrentUser CurrentUser { get; init; }
 
@@ -18,7 +19,7 @@ public class WeightPostEndpoint : Endpoint<WeightPostRequest>
     private static DateOnly GetDate(string date)
     {
         return string.IsNullOrWhiteSpace(date)
-            ? DateOnly.Parse(date)
+            ? DateOnly.Parse(date, CultureInfo.InvariantCulture)
             : DateOnly.FromDateTime(DateTime.UtcNow);
     }
 }

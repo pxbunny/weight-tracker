@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using WeightTracker.Api.Handlers;
 
 namespace WeightTracker.Api.Endpoints.Weight.Get;
 
-public static class WeightGetMappings
+internal static class WeightGetMappings
 {
     public static GetWeightData ToCommand(this WeightGetRequest request, string userId)
     {
@@ -11,11 +12,11 @@ public static class WeightGetMappings
 
         var dateFrom = string.IsNullOrWhiteSpace(dateFromStr)
             ? DateOnly.MinValue
-            : DateOnly.Parse(dateFromStr);
+            : DateOnly.Parse(dateFromStr, CultureInfo.InvariantCulture);
 
         var dateTo = string.IsNullOrWhiteSpace(dateToStr)
             ? DateOnly.MaxValue
-            : DateOnly.Parse(dateToStr);
+            : DateOnly.Parse(dateToStr, CultureInfo.InvariantCulture);
 
         return new GetWeightData(userId, dateFrom, dateTo);
     }

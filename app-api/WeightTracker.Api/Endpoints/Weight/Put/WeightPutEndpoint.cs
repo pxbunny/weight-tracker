@@ -1,8 +1,9 @@
-﻿using WeightTracker.Api.Handlers;
+﻿using System.Globalization;
+using WeightTracker.Api.Handlers;
 
 namespace WeightTracker.Api.Endpoints.Weight.Put;
 
-public class WeightPutEndpoint : Endpoint<WeightPutRequest>
+internal sealed class WeightPutEndpoint : Endpoint<WeightPutRequest>
 {
     public required CurrentUser CurrentUser { get; init; }
 
@@ -13,7 +14,7 @@ public class WeightPutEndpoint : Endpoint<WeightPutRequest>
         var (date, weight) = request;
         var command = new UpdateWeightData(
             UserId: CurrentUser.Id,
-            Date: DateOnly.Parse(date),
+            Date: DateOnly.Parse(date, CultureInfo.InvariantCulture),
             Weight: weight);
         await command.ExecuteAsync(ct);
     }
