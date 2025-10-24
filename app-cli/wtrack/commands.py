@@ -108,11 +108,16 @@ def add_weight_data(
 @app.command('ls', hidden=True)
 @app.command('display', hidden=True)
 def show_report(
+    date: Annotated[str, typer.Argument()] = None,
     date_from: Annotated[str | None, typer.Option('--date-from')] = None,
     date_to: Annotated[str | None, typer.Option('--date-to')] = None,
     tail: Annotated[int, typer.Option('--tail', help='Show only n last records in table')] = 7,
     plot: Annotated[bool, typer.Option('--plot')] = False,
 ) -> None:
+    if date:
+        _handle_report_for_specific_day(date)
+        return
+
     with console.status('Fetching data...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
         response = api.get_weight_data(date_from, date_to, access_token)
@@ -181,6 +186,15 @@ def remove_weight_data(
         api.delete_weight_data(date, access_token)
 
     console.print('Data removed.\n')
+
+
+def _handle_report_for_specific_day(date: str) -> None:
+    with console.status('Fetching data...', spinner='arc', spinner_style=style):
+        access_token = auth.acquire_token()
+        response = api.get_weight_data_by_date(date, access_token)
+
+    console.print(f'\nDate: [bold bright_cyan]{date}[/]')
+    console.print(f'Weight: [bold bright_cyan]{response["weight"]} {WEIGHT_UNIT}[/]\n')
 
 
 def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
