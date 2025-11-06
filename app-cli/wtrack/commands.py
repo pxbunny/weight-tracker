@@ -4,6 +4,7 @@ import typer
 from rich.console import Console
 from rich.style import Style
 from rich.table import Table
+from rich.text import Text
 
 from . import api_client as api
 from . import auth
@@ -200,7 +201,7 @@ def _handle_report_for_specific_day(date: str) -> None:
 def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
     table = Table()
 
-    table.add_column('Date')
+    table.add_column(Text('Date', justify='center'))
     table.add_column('Weight', justify='right')
     table.add_column('+/-', justify='right')
 
