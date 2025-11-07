@@ -65,6 +65,10 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet build --configuration Release --no-restore
 
+      - name: Test
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: dotnet test -c Release --no-build
+
       - name: Publish
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet publish ${{ env.API_PROJECT_PATH }} --no-build --configuration Release --output webapp

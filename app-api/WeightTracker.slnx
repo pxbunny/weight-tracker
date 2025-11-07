@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="WeightTracker.Api/WeightTracker.Api.csproj" />
+  <Project Path="WeightTracker.Core.UnitTests\WeightTracker.Core.UnitTests.csproj" />
   <Project Path="WeightTracker.Core/WeightTracker.Core.csproj" />
   <Project Path="WeightTracker.Data/WeightTracker.Data.csproj" />
 </Solution>
