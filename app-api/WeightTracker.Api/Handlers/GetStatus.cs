@@ -1,13 +1,13 @@
 ﻿namespace WeightTracker.Api.Handlers;
 
-internal sealed record GetStatus(string UserId) : ICommand<Status>;
+internal sealed record GetStatus(string UserId) : ICommand<Result<Status>>;
 
-internal sealed class GetStatusHandler(IDataRepository repository) : ICommandHandler<GetStatus, Status>
+internal sealed class GetStatusHandler(IDataRepository repository) : ICommandHandler<GetStatus, Result<Status>>
 {
-    public async Task<Status> ExecuteAsync(GetStatus command, CancellationToken ct)
+    public async Task<Result<Status>> ExecuteAsync(GetStatus command, CancellationToken ct)
     {
         var filter = new WeightDataFilter(command.UserId);
-        var response = await repository.GetAsync(filter, ct);
-        return Status.GetStatus([.. response.Data]);
+        var dataGroup = await repository.GetAsync(filter, ct);
+        return Status.GetStatus([.. dataGroup.Data]);
     }
 }

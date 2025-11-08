@@ -1,24 +1,24 @@
-﻿using System.Linq;
+﻿using WeightTracker.Api.Extensions;
 
 namespace WeightTracker.Api.Endpoints.Weight.GetByDate;
 
-internal sealed class WeightGetByDateEndpoint : Endpoint<WeightGetByDateRequest, WeightGetByDateResponse>
+internal sealed class WeightGetByDateEndpoint : Endpoint<WeightGetByDateRequest, IResult>
 {
     public required CurrentUser CurrentUser { get; init; }
 
-    public override void Configure() => Get("api/weight/{Date}");
+    public override void Configure()
+    {
+        Get("api/weight/{Date}");
 
-    public override async Task HandleAsync(WeightGetByDateRequest request, CancellationToken ct)
+        Description(b => b
+            .Produces<WeightGetByDateResponse>()
+            .ProducesCommonProblems());
+    }
+
+    public override async Task<IResult> ExecuteAsync(WeightGetByDateRequest request, CancellationToken ct)
     {
         var command = request.ToCommand(CurrentUser.Id);
-        var data = await command.ExecuteAsync(ct);
-
-        if (!data.Data.Any())
-        {
-            await Send.NotFoundAsync(ct);
-            return;
-        }
-
-        Response = data.ToResponse();
+        var result = await command.ExecuteAsync(ct);
+        return result.Match(d => TypedResults.Ok(d.ToResponse()), ErrorsService.HandleError);
     }
 }

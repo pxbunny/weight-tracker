@@ -6,11 +6,11 @@ namespace WeightTracker.Core;
 
 public interface IDataRepository
 {
-    Task AddAsync(WeightData weightData, CancellationToken ct);
+    Task<ResponseTuple> AddAsync(WeightData weightData, CancellationToken ct);
 
     Task<WeightDataGroup> GetAsync(WeightDataFilter filter, CancellationToken ct);
 
-    Task UpdateAsync(WeightData weightData, CancellationToken ct);
+    Task<ResponseTuple> UpdateAsync(WeightData weightData, CancellationToken ct);
 
-    Task DeleteAsync(string userId, DateOnly date, CancellationToken ct);
+    Task<ResponseTuple> DeleteAsync(string userId, DateOnly date, CancellationToken ct);
 }

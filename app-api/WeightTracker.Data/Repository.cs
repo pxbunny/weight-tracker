@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure;
 
 namespace WeightTracker.Data;
 
@@ -8,11 +10,12 @@ internal sealed class Repository(TableServiceClient tableServiceClient) : IDataR
 {
     private const string TableName = "WeightData";
 
-    public async Task AddAsync(WeightData weightData, CancellationToken ct)
+    public async Task<ResponseTuple> AddAsync(WeightData weightData, CancellationToken ct)
     {
         var tableClient = await GetTableClientAsync(ct);
         var entity = weightData.ToEntity();
-        await tableClient.AddEntityAsync(entity, ct);
+        var response = await tableClient.AddEntityAsync(entity, ct);
+        return GetResponse(response);
     }
 
     public async Task<WeightDataGroup> GetAsync(WeightDataFilter weightDataFilter, CancellationToken ct)
@@ -27,22 +30,22 @@ internal sealed class Repository(TableServiceClient tableServiceClient) : IDataR
         var result = tableClient.Query<Entity>(filter, cancellationToken: ct).ToList();
 
         var data = result.Select(e => e.ToDomain());
-        var dataGroup = WeightDataGroup.Create(userId, data);
-
-        return dataGroup;
+        return WeightDataGroup.Create(userId, data);
     }
 
-    public async Task UpdateAsync(WeightData weightData, CancellationToken ct)
+    public async Task<ResponseTuple> UpdateAsync(WeightData weightData, CancellationToken ct)
     {
         var tableClient = await GetTableClientAsync(ct);
         var entity = weightData.ToEntity();
-        await tableClient.UpsertEntityAsync(entity, TableUpdateMode.Replace, ct);
+        var response = await tableClient.UpsertEntityAsync(entity, TableUpdateMode.Replace, ct);
+        return GetResponse(response);
     }
 
-    public async Task DeleteAsync(string userId, DateOnly date, CancellationToken ct)
+    public async Task<ResponseTuple> DeleteAsync(string userId, DateOnly date, CancellationToken ct)
     {
         var tableClient = await GetTableClientAsync(ct);
-        await tableClient.DeleteEntityAsync(userId, date.ToDomainDateString(), cancellationToken: ct);
+        var response = await tableClient.DeleteEntityAsync(userId, date.ToDomainDateString(), cancellationToken: ct);
+        return GetResponse(response);
     }
 
     private async Task<TableClient> GetTableClientAsync(CancellationToken ct)
@@ -51,4 +54,6 @@ internal sealed class Repository(TableServiceClient tableServiceClient) : IDataR
         await tableClient.CreateIfNotExistsAsync(ct);
         return tableClient;
     }
+
+    private static ResponseTuple GetResponse(Response response) => (!response.IsError, (HttpStatusCode)response.Status);
 }

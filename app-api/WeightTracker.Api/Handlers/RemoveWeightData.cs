@@ -1,12 +1,13 @@
 ﻿namespace WeightTracker.Api.Handlers;
 
-internal sealed record RemoveWeightData(string UserId, DateOnly Date) : ICommand;
+internal sealed record RemoveWeightData(string UserId, DateOnly Date) : ICommand<Result>;
 
-internal sealed class RemoveWeightDataHandler(IDataRepository repository) : ICommandHandler<RemoveWeightData>
+internal sealed class RemoveWeightDataHandler(IDataRepository repository) : ICommandHandler<RemoveWeightData, Result>
 {
-    public async Task ExecuteAsync(RemoveWeightData command, CancellationToken ct)
+    public async Task<Result> ExecuteAsync(RemoveWeightData command, CancellationToken ct)
     {
         var (userId, date) = command;
-        await repository.DeleteAsync(userId, date, ct);
+        var response = await repository.DeleteAsync(userId, date, ct);
+        return ResponseService.HandleResponse(response);
     }
 }

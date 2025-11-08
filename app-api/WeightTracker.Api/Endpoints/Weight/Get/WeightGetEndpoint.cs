@@ -1,15 +1,24 @@
-﻿namespace WeightTracker.Api.Endpoints.Weight.Get;
+﻿using WeightTracker.Api.Extensions;
 
-internal sealed class WeightGetEndpoint : Endpoint<WeightGetRequest, WeightGetResponse>
+namespace WeightTracker.Api.Endpoints.Weight.Get;
+
+internal sealed class WeightGetEndpoint : Endpoint<WeightGetRequest, IResult>
 {
     public required CurrentUser CurrentUser { get; init; }
 
-    public override void Configure() => Get("api/weight");
+    public override void Configure()
+    {
+        Get("api/weight");
 
-    public override async Task HandleAsync(WeightGetRequest request, CancellationToken ct)
+        Description(b => b
+            .Produces<WeightGetResponse>()
+            .ProducesCommonProblems());
+    }
+
+    public override async Task<IResult> ExecuteAsync(WeightGetRequest request, CancellationToken ct)
     {
         var command = request.ToCommand(CurrentUser.Id);
-        var data = await command.ExecuteAsync(ct);
-        Response = data.ToResponse();
+        var result = await command.ExecuteAsync(ct);
+        return result.Match(d => TypedResults.Ok(d.ToResponse()), ErrorsService.HandleError);
     }
 }

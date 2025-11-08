@@ -1,13 +1,14 @@
 ﻿namespace WeightTracker.Api.Handlers;
 
-internal sealed record UpdateWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand;
+internal sealed record UpdateWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand<Result>;
 
-internal sealed class UpdateWeightDataHandler(IDataRepository repository) : ICommandHandler<UpdateWeightData>
+internal sealed class UpdateWeightDataHandler(IDataRepository repository) : ICommandHandler<UpdateWeightData, Result>
 {
-    public async Task ExecuteAsync(UpdateWeightData command, CancellationToken ct)
+    public async Task<Result> ExecuteAsync(UpdateWeightData command, CancellationToken ct)
     {
         var (userId, date, weight) = command;
         var data = new WeightData(userId, date, weight);
-        await repository.UpdateAsync(data, ct);
+        var response = await repository.UpdateAsync(data, ct);
+        return ResponseService.HandleResponse(response);
     }
 }
