@@ -20,11 +20,6 @@ def get_weight_data_by_date(date: str, access_token: str) -> dict:
     return _send_request('GET', f'api/weight/{date}', access_token=access_token).json()
 
 
-def get_weight_forecast(date_from: str, date_to: str, access_token: str) -> dict:
-    params = {'dateFrom': date_from, 'dateTo': date_to}
-    return _send_request('GET', 'api/forecast', params=params, access_token=access_token).json()
-
-
 def add_weight_data(date: str | None, weight: float, access_token: str) -> None:
     if date is None:
         date = datetime.now().strftime('%Y-%m-%d')
