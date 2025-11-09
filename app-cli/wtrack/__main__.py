@@ -1,4 +1,4 @@
-from wtrack.commands import app
+from wtrack.cli import app
 
 if __name__ == '__main__':
     app()
