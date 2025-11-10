@@ -17,9 +17,6 @@ on:
 
   workflow_dispatch:
 
-env:
-  DOTNET_VERSION: '9.0.x'
-
 jobs:
   build-infrastructure:
     name: Build Bicep Infrastructure
@@ -46,8 +43,13 @@ jobs:
     name: Build API Project
     runs-on: ubuntu-latest
     env:
-      WORKING_DIRECTORY: app-api
       API_PROJECT_PATH: WeightTracker.Api/WeightTracker.Api.csproj
+      GITHUB_PACKAGES_SOURCE: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      WORKING_DIRECTORY: app-api
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -55,7 +57,8 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          global-json-file: ${{ env.WORKING_DIRECTORY }}/global.json
+          source-url: ${{ env.GITHUB_PACKAGES_SOURCE }}
 
       - name: Restore Dependencies
         working-directory: ${{ env.WORKING_DIRECTORY }}
