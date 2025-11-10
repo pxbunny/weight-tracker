@@ -6,7 +6,7 @@ from msal import PublicClientApplication, SerializableTokenCache
 from .settings import get_auth_config
 
 
-class PersistentTokenCache(SerializableTokenCache):
+class _PersistentTokenCache(SerializableTokenCache):
     def __init__(self) -> None:
         super().__init__()
         self.cache_file = self._get_cache_path()
@@ -44,7 +44,7 @@ class PersistentTokenCache(SerializableTokenCache):
 
 def acquire_token() -> str:
     config = get_auth_config()
-    cache = PersistentTokenCache()
+    cache = _PersistentTokenCache()
     result = None
 
     client_id = config['client_id']
@@ -66,4 +66,4 @@ def acquire_token() -> str:
 
 
 def logout() -> None:
-    PersistentTokenCache().clear_cache()
+    _PersistentTokenCache().clear_cache()

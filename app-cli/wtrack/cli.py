@@ -12,10 +12,9 @@ from .errors import AppError
 from .visualizer import plot_data
 
 WEIGHT_UNIT = 'kg'
+APP_NAME = 'wtrack'
 
-typer.core.rich = None
-
-app = typer.Typer(add_completion=False, no_args_is_help=True)
+app = typer.Typer(name=APP_NAME, add_completion=False, no_args_is_help=True)
 
 console = Console(width=120)
 style = Style(color='bright_cyan', bold=True)
@@ -52,8 +51,7 @@ def show_status() -> None:
         console.print('[deep_pink2]Weight data not added for today.[/]')
 
     missed = response['missedInLast30Days']
-    console.print(f'\n[bold bright_cyan]{missed}[/] entries missed in the last [bold bright_cyan]30 days[/].')
-    console.print()
+    console.print(f'\n[bold bright_cyan]{missed}[/] entries missed in the last [bold bright_cyan]30 days[/].\n')
 
 
 @app.command('add', help='aliases: new, insert')
