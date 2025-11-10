@@ -17,9 +17,7 @@ pyinstaller $root_dir/app-cli/wtrack/__main__.py \
   --distpath $root_dir/app-cli/dist \
   --workpath $root_dir/app-cli/build \
   --log-level=WARN \
-  --exclude-module pyinstaller \
-  --exclude-module isort \
-  --exclude-module pylint
+  --exclude-module pyinstaller
 
 branch_name=$(git rev-parse --abbrev-ref HEAD)
 
