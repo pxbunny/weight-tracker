@@ -45,13 +45,18 @@ def show_status() -> None:
 
     console.print()
 
-    if response['addedForToday']:
-        console.print('[bold]Weight data already added for today.[/]')
+    if response['today']['hasEntry']:
+        console.print(
+            f'[bold bright_cyan]✓[/] [bold]Today:[/] [bold bright_cyan]{response["today"]["weight"]} {WEIGHT_UNIT}[/]'
+        )
     else:
-        console.print('[deep_pink2]Weight data not added for today.[/]')
+        console.print('[bold deep_pink2]✗[/] No entry yet today.')
 
-    missed = response['missedInLast30Days']
-    console.print(f'\n[bold bright_cyan]{missed}[/] entries missed in the last [bold bright_cyan]30 days[/].\n')
+    console.print(
+        f'[bold]Streak:[/] [bold bright_cyan]{response["streak"]["current"]} days[/] (best: [bold bright_cyan]{response["streak"]["longest"]} days[/])'  # noqa: E501
+    )
+    adherence_30_days_window = list(filter(lambda a: a['window'] == 30, response['adherence']))[0]
+    console.print(f'[bold]Adherence (30d):[/] [bold bright_cyan]{adherence_30_days_window["daysMissed"]}[/] missed\n')
 
 
 @app.command('add', help='aliases: new, insert')

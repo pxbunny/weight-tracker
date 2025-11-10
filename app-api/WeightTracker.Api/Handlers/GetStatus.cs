@@ -8,6 +8,6 @@ internal sealed class GetStatusHandler(IRepository repository) : ICommandHandler
     {
         var filter = new WeightDataFilter(command.UserId);
         var dataGroup = await repository.GetAsync(filter, ct);
-        return Status.GetStatus([.. dataGroup.Data]);
+        return Status.Create([.. dataGroup.Data]);
     }
 }
