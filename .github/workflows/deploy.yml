@@ -22,17 +22,17 @@ jobs:
     name: Build Bicep Infrastructure
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate Bicep
+      - name: Validate bicep
         run: |
           cd infra/azure
           az bicep install
           az bicep build -f main.bicep
           az bicep build-params -f main.bicepparam --outfile parameters.json
 
-      - name: Upload Infrastructure Artifact
+      - name: Upload infrastructure artifact
         uses: actions/upload-artifact@v4
         with:
           name: infra
@@ -44,23 +44,28 @@ jobs:
     runs-on: ubuntu-latest
     env:
       API_PROJECT_PATH: WeightTracker.Api/WeightTracker.Api.csproj
-      GITHUB_PACKAGES_SOURCE: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-      NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       WORKING_DIRECTORY: app-api
     permissions:
       contents: read
       packages: read
     steps:
-      - name: Checkout Repo
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           global-json-file: ${{ env.WORKING_DIRECTORY }}/global.json
-          source-url: ${{ env.GITHUB_PACKAGES_SOURCE }}
 
-      - name: Restore Dependencies
+      - name: Set credentials for GitHub source
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+        run: |
+          dotnet nuget update source github \
+            --username "${{ github.repository_owner }}" \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --store-password-in-clear-text
+
+      - name: Restore dependencies
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet restore
 
@@ -76,7 +81,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIRECTORY }}
         run: dotnet publish ${{ env.API_PROJECT_PATH }} --no-build --configuration Release --output webapp
 
-      - name: Upload API Artifact
+      - name: Upload API artifact
         uses: actions/upload-artifact@v4
         with:
           name: webapp
@@ -89,18 +94,18 @@ jobs:
     needs: [build-infrastructure, build-api]
     environment: prod
     steps:
-      - name: Azure Login
+      - name: Azure login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Download Infrastructure Artifact
+      - name: Download infrastructure artifact
         uses: actions/download-artifact@v4
         with:
           name: infra
           path: infra
 
-      - name: Deploy Infrastructure
+      - name: Deploy infrastructure
         run: |
           az deployment group create \
             --resource-group ${{ vars.RESOURCE_GROUP_NAME }} \
@@ -113,12 +118,12 @@ jobs:
     needs: [deploy-infrastructure, build-api]
     environment: prod
     steps:
-      - name: Azure Login
+      - name: Azure login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Download API Artifact
+      - name: Download API artifact
         uses: actions/download-artifact@v4
         with:
           name: webapp
