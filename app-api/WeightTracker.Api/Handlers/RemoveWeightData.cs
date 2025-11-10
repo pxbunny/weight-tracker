@@ -2,7 +2,7 @@
 
 internal sealed record RemoveWeightData(string UserId, DateOnly Date) : ICommand<Result>;
 
-internal sealed class RemoveWeightDataHandler(IDataRepository repository) : ICommandHandler<RemoveWeightData, Result>
+internal sealed class RemoveWeightDataHandler(IRepository repository) : ICommandHandler<RemoveWeightData, Result>
 {
     public async Task<Result> ExecuteAsync(RemoveWeightData command, CancellationToken ct)
     {

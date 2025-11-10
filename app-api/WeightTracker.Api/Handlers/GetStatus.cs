@@ -2,7 +2,7 @@
 
 internal sealed record GetStatus(string UserId) : ICommand<Result<Status>>;
 
-internal sealed class GetStatusHandler(IDataRepository repository) : ICommandHandler<GetStatus, Result<Status>>
+internal sealed class GetStatusHandler(IRepository repository) : ICommandHandler<GetStatus, Result<Status>>
 {
     public async Task<Result<Status>> ExecuteAsync(GetStatus command, CancellationToken ct)
     {

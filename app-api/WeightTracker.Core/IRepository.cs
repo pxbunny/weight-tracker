@@ -4,7 +4,7 @@ using WeightTracker.Core.Models;
 
 namespace WeightTracker.Core;
 
-public interface IDataRepository
+public interface IRepository
 {
     Task<ResponseTuple> AddAsync(WeightData weightData, CancellationToken ct);
 

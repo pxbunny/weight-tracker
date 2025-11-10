@@ -2,7 +2,7 @@
 
 internal sealed record AddWeightData(string UserId, DateOnly Date, decimal Weight) : ICommand<Result>;
 
-internal sealed class AddWeightDataHandler(IDataRepository repository) : ICommandHandler<AddWeightData, Result>
+internal sealed class AddWeightDataHandler(IRepository repository) : ICommandHandler<AddWeightData, Result>
 {
     public async Task<Result> ExecuteAsync(AddWeightData command, CancellationToken ct)
     {

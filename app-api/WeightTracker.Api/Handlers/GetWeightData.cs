@@ -5,7 +5,7 @@ namespace WeightTracker.Api.Handlers;
 internal sealed record GetWeightData(string UserId, DateOnly DateFrom, DateOnly DateTo)
     : ICommand<Result<WeightDataGroup>>;
 
-internal sealed class GetWeightDataHandler(IDataRepository repository)
+internal sealed class GetWeightDataHandler(IRepository repository)
     : ICommandHandler<GetWeightData, Result<WeightDataGroup>>
 {
     public async Task<Result<WeightDataGroup>> ExecuteAsync(GetWeightData command, CancellationToken ct)

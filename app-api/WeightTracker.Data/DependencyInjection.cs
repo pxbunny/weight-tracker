@@ -13,7 +13,7 @@ public static class DependencyInjection
             clientBuilder.AddTableServiceClient(configuration["AzureWebJobsStorage"]);
         });
 
-        services.AddScoped<IDataRepository, Repository>();
+        services.AddScoped<IRepository, Repository>();
 
         return services;
     }
