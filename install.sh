@@ -33,6 +33,10 @@ if [ -z "$CLI_APP_INSTALLATION_DIR" ]; then
   exit 1
 fi
 
+echo "Removing existing installation at $CLI_APP_INSTALLATION_DIR..."
+
+rm -rf $CLI_APP_INSTALLATION_DIR/$CLI_APP_NAME
+
 echo "Copying executable to $CLI_APP_INSTALLATION_DIR..."
 
 cp $root_dir/app-cli/config.prod.yaml $root_dir/app-cli/dist/$CLI_APP_NAME/config.yaml
