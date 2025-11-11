@@ -47,7 +47,7 @@ def show_status() -> None:
 
     console.print()
 
-    if not response['today']['hasEntry']:
+    if response['today']['hasEntry']:
         current_weight = f'{response["today"]["weight"]} {WEIGHT_UNIT}'
         console.print(f'[[bold bright_cyan]✓[/]] Data added: [bold bright_cyan]{current_weight}[/]')
     else:
