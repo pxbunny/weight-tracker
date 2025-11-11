@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using Microsoft.AspNetCore.OutputCaching;
+using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Handlers;
 
@@ -8,10 +10,11 @@ internal sealed class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest, IResu
 {
     public required CurrentUser CurrentUser { get; init; }
 
+    public required IOutputCacheStore Cache { get; init; }
+
     public override void Configure()
     {
         Delete("api/weight/{Date}");
-
         Description(b => b
             .Produces(StatusCodes.Status200OK)
             .ProducesCommonProblems());
@@ -19,10 +22,15 @@ internal sealed class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest, IResu
 
     public override async Task<IResult> ExecuteAsync(WeightDeleteRequest request, CancellationToken ct)
     {
+        if (CurrentUser.Id is null)
+            return Results.Unauthorized();
+
         var command = new RemoveWeightData(
             UserId: CurrentUser.Id,
             Date: DateOnly.Parse(request.Date, CultureInfo.InvariantCulture));
         var result = await command.ExecuteAsync(ct);
+
+        await Cache.EvictByUidAsync(CurrentUser.Id, ct);
         return result.Match(TypedResults.Ok, ErrorsService.HandleError);
     }
 }
