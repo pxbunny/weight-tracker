@@ -8,8 +8,8 @@ internal sealed class ResponseService
         ? Result.Success()
         : request.Code switch
         {
-            HttpStatusCode.BadRequest => Errors.BadRequestError("Bad request"),
-            HttpStatusCode.NotFound => Errors.NotFoundError("Data not found"),
-            _ => Errors.InternalError("Internal server error")
+            HttpStatusCode.BadRequest => Errors.BadRequestError(),
+            HttpStatusCode.NotFound => Errors.NotFoundError(),
+            _ => Errors.InternalError()
         };
 }

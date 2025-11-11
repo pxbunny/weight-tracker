@@ -39,24 +39,39 @@ def logout() -> None:
 @app.command('status', help='aliases: streak')
 @app.command('streak', hidden=True)
 def show_status() -> None:
+    adherence_windows = [30]
+
     with console.status('Checking status...', spinner='arc', spinner_style=style):
         access_token = auth.acquire_token()
         response = api.get_status(access_token)
 
     console.print()
 
-    if response['today']['hasEntry']:
-        console.print(
-            f'[bold bright_cyan]✓[/] [bold]Today:[/] [bold bright_cyan]{response["today"]["weight"]} {WEIGHT_UNIT}[/]'
-        )
+    if not response['today']['hasEntry']:
+        current_weight = f'{response["today"]["weight"]} {WEIGHT_UNIT}'
+        console.print(f'[[bold bright_cyan]✓[/]] Data added: [bold bright_cyan]{current_weight}[/]')
     else:
-        console.print('[bold deep_pink2]✗[/] No entry yet today.')
+        console.print('[[bold deep_pink2]✗[/]] No entry yet today.')
+
+    console.print()
+
+    current_streak = f'{response["streak"]["current"]} {"day" if response["streak"]["current"] == 1 else "days"}'
+    longest_streak = f'{response["streak"]["longest"]} {"day" if response["streak"]["longest"] == 1 else "days"}'
 
     console.print(
-        f'[bold]Streak:[/] [bold bright_cyan]{response["streak"]["current"]} days[/] (best: [bold bright_cyan]{response["streak"]["longest"]} days[/])'  # noqa: E501
+        f'[bold]Streak:[/] [bold bright_cyan]{current_streak}[/] (best: [bold bright_cyan]{longest_streak}[/])'
     )
-    adherence_30_days_window = list(filter(lambda a: a['window'] == 30, response['adherence']))[0]
-    console.print(f'[bold]Adherence (30d):[/] [bold bright_cyan]{adherence_30_days_window["daysMissed"]}[/] missed\n')
+
+    for adherence in response['adherence']:
+        window = adherence['window']
+
+        if window not in adherence_windows:
+            continue
+
+        days_missed = adherence['daysMissed']
+        console.print(f'[bold]Adherence ({window}d):[/] [bold bright_cyan]{days_missed}[/] missed')
+
+    console.print()
 
 
 @app.command('add', help='aliases: new, insert')
@@ -65,7 +80,6 @@ def show_status() -> None:
 def add_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str | None, typer.Option('-d', '--date')] = None,
-    show_stats: Annotated[bool, typer.Option('--stats')] = False,
 ) -> None:
     try:
         with console.status('Adding data...', spinner='arc', spinner_style=style):
@@ -75,34 +89,7 @@ def add_weight_data(
         console.print(e.message)
         return
 
-    console.print('\nData added successfully.')
-
-    if not show_stats:
-        console.print()
-        return
-
-    with console.status('Fetching data...', spinner='arc', spinner_style=style):
-        access_token = auth.acquire_token()
-        response = api.get_weight_data(date, date, access_token)
-
-    weight_data = response['data']
-
-    if not weight_data:
-        console.print('There is a problem with your data.')
-        console.print('Check the data and try again.')
-        return
-
-    max_value = response['max']
-    min_value = response['min']
-    avg_value = response['avg']
-
-    console.print('\n=========================')
-    console.print('Statistics for your data:')
-    console.print('=========================\n')
-
-    _print_date_range(weight_data)
-    _print_weight_stats(max_value, min_value, avg_value)
-    _print_current_weight(weight_data, avg_value)
+    console.print('\nData added successfully.\n')
 
 
 @app.command('report', help='aliases: show, get, list, ls, display')
@@ -206,7 +193,7 @@ def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
 
     table.add_column(Text('Date', justify='center'))
     table.add_column('Weight', justify='right')
-    table.add_column('+/-', justify='right')
+    table.add_column('±', justify='right')
 
     data_chunk = weight_data[-(tail + 1) :]
     is_tail_shorter_than_data = tail < len(weight_data)

@@ -13,6 +13,6 @@ internal sealed class GetWeightDataHandler(IRepository repository)
         var (userId, dateFrom, dateTo) = command;
         var filter = new WeightDataFilter(userId, dateFrom, dateTo);
         var data = await repository.GetAsync(filter, ct);
-        return data.Data.Any() ? data : Errors.NotFoundError("No weight data found");
+        return data.Data.Any() ? data : Errors.NotFoundError();
     }
 }
