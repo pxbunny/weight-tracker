@@ -33,6 +33,6 @@ internal sealed class WeightPutEndpoint : Endpoint<WeightPutRequest, IResult>
         var result = await command.ExecuteAsync(ct);
 
         await Cache.EvictByUidAsync(CurrentUser.Id, ct);
-        return result.Match(TypedResults.Ok, ErrorsService.HandleError);
+        return result.Match(() => Results.Ok(), ErrorsService.HandleError);
     }
 }

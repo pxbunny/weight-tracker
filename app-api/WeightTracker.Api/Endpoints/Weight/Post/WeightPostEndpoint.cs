@@ -30,7 +30,7 @@ internal sealed class WeightPostEndpoint : Endpoint<WeightPostRequest, IResult>
         var result = await command.ExecuteAsync(ct);
 
         await Cache.EvictByUidAsync(CurrentUser.Id, ct);
-        return result.Match(TypedResults.Ok, ErrorsService.HandleError);
+        return result.Match(() => Results.Ok(), ErrorsService.HandleError);
     }
 
     private static DateOnly GetDate(string date)
