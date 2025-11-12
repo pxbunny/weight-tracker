@@ -1,3 +1,5 @@
+import os
+import sys
 from dataclasses import dataclass, field, fields
 
 import yaml
@@ -22,9 +24,16 @@ class Config:
     auth: AuthConfig = field(default_factory=AuthConfig)
 
 
-def load_config(path: str = CONFIG_FILENAME) -> Config:
-    with open(path, encoding='utf-8') as f:
-        d = yaml.safe_load(f)
+def load_config(filename: str = CONFIG_FILENAME) -> Config:
+    if os.path.exists(filename):
+        with open(filename, encoding='utf-8') as f:
+            d = yaml.safe_load(f)
+    else:
+        file_path = os.path.abspath(os.path.dirname(sys.executable))
+        file_path = os.path.join(file_path, filename)
+
+        with open(file_path, encoding='utf-8') as f:
+            d = yaml.safe_load(f)
 
     c = Config()
 
