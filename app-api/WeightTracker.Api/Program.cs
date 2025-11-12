@@ -14,7 +14,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddCustomOutputCache();
 
 builder.Services.AddFastEndpoints();
-builder.Services.SwaggerDocument();
+
+builder.Services.SwaggerDocument(options =>
+{
+    options.ShortSchemaNames = true;
+});
 
 builder.Services.AddScoped<CurrentUser>();
 builder.Services.AddData(builder.Configuration);

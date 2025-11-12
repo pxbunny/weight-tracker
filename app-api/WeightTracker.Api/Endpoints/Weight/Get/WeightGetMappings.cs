@@ -27,6 +27,6 @@ internal static class WeightGetMappings
         Avg = data.AverageWeight,
         Max = data.MaxWeight,
         Min = data.MinWeight,
-        Data = data.Data.Select(d => new WeightDataListItem(d.Date.ToDomainDateString(), d.Weight))
+        Data = data.Data.Select(d => new WeightResponseItem(d.Date.ToDomainDateString(), d.Weight))
     };
 }

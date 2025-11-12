@@ -10,7 +10,7 @@ internal sealed class WeightGetResponse
 
     public decimal? Min { get; init; }
 
-    public IEnumerable<WeightDataListItem> Data { get; init; } = null!;
+    public IEnumerable<WeightResponseItem> Data { get; init; } = null!;
 }
 
-internal sealed record WeightDataListItem(string Date, decimal Weight);
+internal sealed record WeightResponseItem(string Date, decimal Weight);
