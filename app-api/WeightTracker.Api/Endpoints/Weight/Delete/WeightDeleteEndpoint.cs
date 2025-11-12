@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OutputCaching;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
@@ -15,7 +16,8 @@ internal sealed class WeightDeleteEndpoint : Endpoint<WeightDeleteRequest, IResu
     public override void Configure()
     {
         Delete("api/weight/{Date}");
-        Description(b => b
+        Description(builder => builder
+            .WithName("DeleteWeight")
             .Produces(StatusCodes.Status200OK)
             .ProducesCommonProblems());
     }

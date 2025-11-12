@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.OutputCaching;
 using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
@@ -15,7 +16,8 @@ internal sealed class WeightPostEndpoint : Endpoint<WeightPostRequest, IResult>
     public override void Configure()
     {
         Post("api/weight");
-        Description(b => b
+        Description(builder => builder
+            .WithName("AddWeight")
             .Produces(StatusCodes.Status200OK)
             .ProducesCommonProblems());
     }

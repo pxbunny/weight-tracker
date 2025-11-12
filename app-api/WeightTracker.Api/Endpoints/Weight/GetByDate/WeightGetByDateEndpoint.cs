@@ -1,4 +1,5 @@
-﻿using WeightTracker.Api.Cache;
+﻿using Microsoft.AspNetCore.Builder;
+using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
 
 namespace WeightTracker.Api.Endpoints.Weight.GetByDate;
@@ -11,7 +12,8 @@ internal sealed class WeightGetByDateEndpoint : Endpoint<WeightGetByDateRequest,
     {
         Get("api/weight/{Date}");
         Options(builder => builder.SetCustomCache());
-        Description(b => b
+        Description(builder => builder
+            .WithName("GetWeightByDate")
             .Produces<WeightGetByDateResponse>()
             .ProducesCommonProblems());
     }

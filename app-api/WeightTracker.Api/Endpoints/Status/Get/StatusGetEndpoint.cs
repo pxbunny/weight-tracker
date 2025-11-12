@@ -1,4 +1,5 @@
-﻿using WeightTracker.Api.Cache;
+﻿using Microsoft.AspNetCore.Builder;
+using WeightTracker.Api.Cache;
 using WeightTracker.Api.Extensions;
 using WeightTracker.Api.Handlers;
 
@@ -13,6 +14,7 @@ internal sealed class StatusGetEndpoint : EndpointWithoutRequest<IResult>
         Get("api/status");
         Options(builder => builder.SetCustomCache());
         Description(builder => builder
+            .WithName("GetStatus")
             .Produces<StatusGetResponse>()
             .ProducesCommonProblems());
     }
