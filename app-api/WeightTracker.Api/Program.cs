@@ -12,11 +12,11 @@ builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration)
 builder.Services.AddAuthorization();
 
 builder.Services.AddCustomOutputCache();
-
 builder.Services.AddFastEndpoints();
 
 builder.Services.SwaggerDocument(options =>
 {
+    options.AutoTagPathSegmentIndex = 2;
     options.ShortSchemaNames = true;
 });
 
@@ -29,7 +29,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseOutputCache();
-
 app.UseFastEndpoints();
 
 if (app.Environment.IsDevelopment())
