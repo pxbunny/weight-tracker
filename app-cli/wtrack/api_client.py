@@ -4,7 +4,7 @@ import requests
 from requests import Response
 
 from .errors import ApiError, ConfigError
-from .settings import get_api_config
+from .settings import config
 
 
 def get_status(access_token: str) -> dict:
@@ -64,12 +64,10 @@ def _send_request(
         ApiError: When request fails (network or api errors)
     """
 
-    config = get_api_config()
-
     auth_header = {'Authorization': f'Bearer {access_token}'} if access_token else None
 
     try:
-        base_url = config['base_url']
+        base_url = config.api.base_url
     except KeyError as e:
         raise ConfigError("Missing 'base_url' in api configuration") from e
 

@@ -3,7 +3,7 @@ import sys
 
 from msal import PublicClientApplication, SerializableTokenCache
 
-from .settings import get_auth_config
+from .settings import config
 
 
 class _PersistentTokenCache(SerializableTokenCache):
@@ -43,12 +43,11 @@ class _PersistentTokenCache(SerializableTokenCache):
 
 
 def acquire_token() -> str:
-    config = get_auth_config()
     cache = _PersistentTokenCache()
     result = None
 
-    client_id = config['client_id']
-    tenant_id = config['tenant_id']
+    client_id = config.auth.client_id
+    tenant_id = config.auth.tenant_id
     authority = f'https://login.microsoftonline.com/{tenant_id}'
 
     app = PublicClientApplication(client_id, authority=authority, token_cache=cache)
