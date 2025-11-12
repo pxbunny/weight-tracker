@@ -25,6 +25,6 @@ internal sealed class StatusGetEndpoint : EndpointWithoutRequest<IResult>
         var command = new GetStatus(CurrentUser.Id);
         var result = await command.ExecuteAsync(ct);
 
-        return result.Match(d => TypedResults.Ok(d.ToResponse()), ErrorsService.HandleError);
+        return result.Match(d => Results.Ok(d.ToResponse()), ErrorsService.HandleError);
     }
 }

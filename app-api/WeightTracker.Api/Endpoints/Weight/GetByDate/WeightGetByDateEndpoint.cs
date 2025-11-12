@@ -24,6 +24,6 @@ internal sealed class WeightGetByDateEndpoint : Endpoint<WeightGetByDateRequest,
         var command = request.ToCommand(CurrentUser.Id);
         var result = await command.ExecuteAsync(ct);
 
-        return result.Match(d => TypedResults.Ok(d.ToResponse()), ErrorsService.HandleError);
+        return result.Match(d => Results.Ok(d.ToResponse()), ErrorsService.HandleError);
     }
 }
