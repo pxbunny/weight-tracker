@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.ErrorDefinitions;
 
-public sealed class BadRequestError(string message) : ErrorBase(message)
+internal sealed class BadRequestError(string message) : ErrorBase(message)
 {
     private const string DefaultMessage = "The request could not be processed due to invalid input.";
 

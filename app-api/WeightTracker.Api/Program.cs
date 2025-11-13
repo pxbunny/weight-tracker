@@ -18,6 +18,10 @@ builder.Services.SwaggerDocument(options =>
 {
     options.AutoTagPathSegmentIndex = 2;
     options.ShortSchemaNames = true;
+    options.DocumentSettings = settings =>
+    {
+        settings.Title = "Weight Tracker";
+    };
 });
 
 builder.Services.AddScoped<CurrentUser>();

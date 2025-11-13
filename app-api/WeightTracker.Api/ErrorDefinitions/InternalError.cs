@@ -1,6 +1,6 @@
 ﻿namespace WeightTracker.Api.ErrorDefinitions;
 
-public sealed class InternalError(string message) : ErrorBase(message)
+internal sealed class InternalError(string message) : ErrorBase(message)
 {
     private const string DefaultMessage = "An unexpected error occurred on the server.";
 
