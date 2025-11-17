@@ -139,7 +139,7 @@ def show_report(
     _print_weight_stats(stats)
 
     if today['hasEntry']:
-        _print_current_weight(weight_data, avg_value)
+        _print_current_weight(today['weight'], avg_value)
 
     if not plot:
         return
@@ -218,9 +218,7 @@ def _print_weight_stats(stats: dict) -> None:
     console.print(f'Avg: [bold bright_cyan]{stats["avg"]:>6.2f} {WEIGHT_UNIT}[/]\n')
 
 
-def _print_current_weight(today: dict, avg_value: float) -> None:
-    weight = today['weight']
-
+def _print_current_weight(weight: float, avg_value: float) -> None:
     is_lower_than_avg = weight < avg_value
     is_higher_than_avg = weight > avg_value
 
