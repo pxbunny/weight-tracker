@@ -7,7 +7,9 @@ public sealed class WeightDataGroup
 {
     private WeightDataGroup() { }
 
-    public required string UserId { get; set; } = string.Empty;
+    public required string UserId { get; init; } = string.Empty;
+
+    public required Today Today { get; init; }
 
     public decimal? AverageWeight { get; set; }
 
@@ -17,21 +19,20 @@ public sealed class WeightDataGroup
 
     public IEnumerable<WeightData> Data { get; set; } = [];
 
-    public static WeightDataGroup Create(string userId, IEnumerable<WeightData> data)
+    public static WeightDataGroup Create(string userId, IList<WeightData> data)
     {
-        var dataList = data.ToList();
-
         var dataGroup = new WeightDataGroup
         {
             UserId = userId,
-            Data = dataList
+            Today = Today.Create(data),
+            Data = data
         };
 
-        if (dataList.Count == 0) return dataGroup;
+        if (data.Count == 0) return dataGroup;
 
-        dataGroup.AverageWeight = dataList.Average(d => Convert.ToDecimal(d.Weight));
-        dataGroup.MaxWeight = dataList.Max(x => Convert.ToDecimal(x.Weight));
-        dataGroup.MinWeight = dataList.Min(x => Convert.ToDecimal(x.Weight));
+        dataGroup.AverageWeight = data.Average(d => Convert.ToDecimal(d.Weight));
+        dataGroup.MaxWeight = data.Max(x => Convert.ToDecimal(x.Weight));
+        dataGroup.MinWeight = data.Min(x => Convert.ToDecimal(x.Weight));
 
         return dataGroup;
     }

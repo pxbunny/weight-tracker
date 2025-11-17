@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Linq;
 using WeightTracker.Api.Handlers;
+using WeightTracker.Api.SharedContracts;
 
 namespace WeightTracker.Api.Endpoints.Weight.Get;
 
@@ -24,6 +25,7 @@ internal static class WeightGetMappings
     public static WeightGetResponse ToResponse(this WeightDataGroup data) => new()
     {
         UserId = data.UserId,
+        Today = new TodayResponse(data.Today.Date, data.Today.HasEntry, data.Today.Weight),
         Avg = data.AverageWeight,
         Max = data.MaxWeight,
         Min = data.MinWeight,

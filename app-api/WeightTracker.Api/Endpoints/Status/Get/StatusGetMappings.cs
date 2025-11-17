@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using WeightTracker.Api.SharedContracts;
 
 namespace WeightTracker.Api.Endpoints.Status.Get;
 

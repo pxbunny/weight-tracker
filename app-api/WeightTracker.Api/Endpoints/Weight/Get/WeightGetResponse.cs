@@ -1,8 +1,12 @@
-﻿namespace WeightTracker.Api.Endpoints.Weight.Get;
+﻿using WeightTracker.Api.SharedContracts;
+
+namespace WeightTracker.Api.Endpoints.Weight.Get;
 
 internal sealed class WeightGetResponse
 {
     public string UserId { get; init; } = null!;
+
+    public TodayResponse Today { get; init; } = null!;
 
     public decimal? Avg { get; init; }
 

@@ -114,6 +114,7 @@ def show_report(
         response = api.get_weight_data(date_from, date_to, access_token)
 
     weight_data = response['data']
+    today = response['today']
 
     if not weight_data:
         console.print('No data found.')
@@ -136,9 +137,10 @@ def show_report(
     console.print()
 
     _print_date_range(weight_data)
-
     _print_weight_stats(max_value, min_value, avg_value)
-    _print_current_weight(weight_data, avg_value)
+
+    if today['hasEntry']:
+        _print_current_weight(weight_data, avg_value)
 
     if not plot:
         return
@@ -217,11 +219,11 @@ def _print_weight_stats(max_value: float, min_value: float, avg_value: float) ->
     console.print(f'Avg: [bold bright_cyan]{avg_value:>6.2f} {WEIGHT_UNIT}[/]\n')
 
 
-def _print_current_weight(weight_data: list[dict], avg_value: float) -> None:
-    last_weight = weight_data[-1]['weight']
+def _print_current_weight(today: dict, avg_value: float) -> None:
+    weight = today['weight']
 
-    is_lower_than_avg = last_weight < avg_value
-    is_higher_than_avg = last_weight > avg_value
+    is_lower_than_avg = weight < avg_value
+    is_higher_than_avg = weight > avg_value
 
     comparison_str = '[bold bright_cyan]EQUAL[/] to'
 
@@ -230,9 +232,7 @@ def _print_current_weight(weight_data: list[dict], avg_value: float) -> None:
     elif is_higher_than_avg:
         comparison_str = '[bold]HIGHER[/] then'
 
-    console.print(
-        f'Current weight [bold bright_cyan]{last_weight:>.2f} {WEIGHT_UNIT}[/] is {comparison_str} average.\n'
-    )
+    console.print(f'Current weight [bold bright_cyan]{weight:>.2f} {WEIGHT_UNIT}[/] is {comparison_str} average.\n')
 
 
 def _print_date_range(weight_data: list[dict]) -> None:

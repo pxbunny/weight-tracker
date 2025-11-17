@@ -29,7 +29,7 @@ internal sealed class Repository(TableServiceClient tableServiceClient) : IRepos
         var filter = $"PartitionKey eq '{userId}' and RowKey ge '{from}' and RowKey le '{to}'";
         var result = tableClient.Query<Entity>(filter, cancellationToken: ct).ToList();
 
-        var data = result.Select(e => e.ToDomain());
+        var data = result.Select(e => e.ToDomain()).ToList();
         return WeightDataGroup.Create(userId, data);
     }
 
