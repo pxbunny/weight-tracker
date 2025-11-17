@@ -8,13 +8,11 @@ internal sealed class WeightGetResponse
 
     public TodayResponse Today { get; init; } = null!;
 
-    public decimal? Avg { get; init; }
-
-    public decimal? Max { get; init; }
-
-    public decimal? Min { get; init; }
+    public StatsResponse Stats { get; init; } = null!;
 
     public IEnumerable<WeightResponseItem> Data { get; init; } = null!;
 }
+
+internal sealed record StatsResponse(decimal Avg, decimal Max, decimal Min);
 
 internal sealed record WeightResponseItem(string Date, decimal Weight);

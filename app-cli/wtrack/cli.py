@@ -115,14 +115,13 @@ def show_report(
 
     weight_data = response['data']
     today = response['today']
+    stats = response['stats']
+
+    avg_value = stats['avg']
 
     if not weight_data:
         console.print('No data found.')
         return
-
-    max_value = response['max']
-    min_value = response['min']
-    avg_value = response['avg']
 
     table = _create_weight_data_table(weight_data, tail)
 
@@ -137,7 +136,7 @@ def show_report(
     console.print()
 
     _print_date_range(weight_data)
-    _print_weight_stats(max_value, min_value, avg_value)
+    _print_weight_stats(stats)
 
     if today['hasEntry']:
         _print_current_weight(weight_data, avg_value)
@@ -213,10 +212,10 @@ def _create_weight_data_table(weight_data: list[dict], tail: int) -> Table:
     return table
 
 
-def _print_weight_stats(max_value: float, min_value: float, avg_value: float) -> None:
-    console.print(f'Max: [bold bright_cyan]{max_value:>6.2f} {WEIGHT_UNIT}[/]')
-    console.print(f'Min: [bold bright_cyan]{min_value:>6.2f} {WEIGHT_UNIT}[/]')
-    console.print(f'Avg: [bold bright_cyan]{avg_value:>6.2f} {WEIGHT_UNIT}[/]\n')
+def _print_weight_stats(stats: dict) -> None:
+    console.print(f'Max: [bold bright_cyan]{stats["max"]:>6.2f} {WEIGHT_UNIT}[/]')
+    console.print(f'Min: [bold bright_cyan]{stats["min"]:>6.2f} {WEIGHT_UNIT}[/]')
+    console.print(f'Avg: [bold bright_cyan]{stats["avg"]:>6.2f} {WEIGHT_UNIT}[/]\n')
 
 
 def _print_current_weight(today: dict, avg_value: float) -> None:

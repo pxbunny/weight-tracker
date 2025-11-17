@@ -25,10 +25,8 @@ internal static class WeightGetMappings
     public static WeightGetResponse ToResponse(this WeightDataGroup data) => new()
     {
         UserId = data.UserId,
-        Today = new TodayResponse(data.Today.Date, data.Today.HasEntry, data.Today.Weight),
-        Avg = data.AverageWeight,
-        Max = data.MaxWeight,
-        Min = data.MinWeight,
+        Today = new TodayResponse(Date: data.Today.Date, HasEntry: data.Today.HasEntry, Weight: data.Today.Weight),
+        Stats = new StatsResponse(Avg: data.Stats.AverageWeight, Max: data.Stats.MaxWeight, Min: data.Stats.MinWeight),
         Data = data.Data.Select(d => new WeightResponseItem(d.Date.ToDomainDateString(), d.Weight))
     };
 }
