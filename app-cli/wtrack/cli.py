@@ -23,8 +23,12 @@ style = Style(color='bright_cyan', bold=True)
 @app.command('login', help='aliases: signin')
 @app.command('signin', hidden=True)
 def login() -> None:
-    with console.status('Signing in...', spinner='arc', spinner_style=style):
-        auth.acquire_token()
+    try:
+        with console.status('Signing in...', spinner='arc', spinner_style=style):
+            auth.acquire_token()
+    except AppError as e:
+        console.print(e.message)
+        return
 
     console.print('\nSigned in.\n')
 
@@ -41,9 +45,13 @@ def logout() -> None:
 def show_status() -> None:
     adherence_windows = [30]
 
-    with console.status('Checking status...', spinner='arc', spinner_style=style):
-        access_token = auth.acquire_token()
-        response = api.get_status(access_token)
+    try:
+        with console.status('Checking status...', spinner='arc', spinner_style=style):
+            access_token = auth.acquire_token()
+            response = api.get_status(access_token)
+    except AppError as e:
+        console.print(e.message)
+        return
 
     console.print()
 
@@ -105,13 +113,17 @@ def show_report(
     tail: Annotated[int, typer.Option('--tail', help='Show only n last records in table')] = 7,
     plot: Annotated[bool, typer.Option('--plot')] = False,
 ) -> None:
-    if date:
-        _handle_report_for_specific_day(date)
-        return
+    try:
+        if date:
+            _handle_report_for_specific_day(date)
+            return
 
-    with console.status('Fetching data...', spinner='arc', spinner_style=style):
-        access_token = auth.acquire_token()
-        response = api.get_weight_data(date_from, date_to, access_token)
+        with console.status('Fetching data...', spinner='arc', spinner_style=style):
+            access_token = auth.acquire_token()
+            response = api.get_weight_data(date_from, date_to, access_token)
+    except AppError as e:
+        console.print(e.message)
+        return
 
     weight_data = response['data']
     today = response['today']
@@ -154,9 +166,13 @@ def update_weight_data(
     weight: Annotated[float, typer.Argument()],
     date: Annotated[str, typer.Option('-d', '--date')],
 ) -> None:
-    with console.status('Updating data...', spinner='arc', spinner_style=style):
-        access_token = auth.acquire_token()
-        api.update_weight_data(date, weight, access_token)
+    try:
+        with console.status('Updating data...', spinner='arc', spinner_style=style):
+            access_token = auth.acquire_token()
+            api.update_weight_data(date, weight, access_token)
+    except AppError as e:
+        console.print(e.message)
+        return
 
     console.print('\nData updated.\n')
 
@@ -173,9 +189,13 @@ def remove_weight_data(
         console.print('Operation cancelled.')
         return
 
-    with console.status('Removing data...', spinner='arc', spinner_style=style):
-        access_token = auth.acquire_token()
-        api.delete_weight_data(date, access_token)
+    try:
+        with console.status('Removing data...', spinner='arc', spinner_style=style):
+            access_token = auth.acquire_token()
+            api.delete_weight_data(date, access_token)
+    except AppError as e:
+        console.print(e.message)
+        return
 
     console.print('Data removed.\n')
 

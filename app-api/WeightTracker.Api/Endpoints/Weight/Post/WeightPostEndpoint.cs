@@ -38,7 +38,7 @@ internal sealed class WeightPostEndpoint : Endpoint<WeightPostRequest, IResult>
     private static DateOnly GetDate(string date)
     {
         return string.IsNullOrWhiteSpace(date)
-            ? DateOnly.Parse(date, CultureInfo.InvariantCulture)
-            : DateOnly.FromDateTime(DateTime.UtcNow);
+            ? DateOnly.FromDateTime(DateTime.UtcNow)
+            : DateOnly.Parse(date, CultureInfo.InvariantCulture);
     }
 }

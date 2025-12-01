@@ -11,8 +11,8 @@ def get_status(access_token: str) -> dict:
     return _send_request('GET', 'api/status', access_token=access_token).json()
 
 
-def get_weight_data(date_from: str, date_to: str, access_token: str) -> dict:
-    params = {'dateFrom': date_from, 'dateTo': date_to}
+def get_weight_data(date_from: str | None, date_to: str | None, access_token: str) -> dict:
+    params: dict[str, str | None] = {'dateFrom': date_from, 'dateTo': date_to}
     return _send_request('GET', 'api/weight', params=params, access_token=access_token).json()
 
 

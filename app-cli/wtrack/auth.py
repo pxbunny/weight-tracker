@@ -3,6 +3,7 @@ import sys
 
 from msal import PublicClientApplication, SerializableTokenCache
 
+from .errors import AppError
 from .settings import config
 
 
@@ -59,6 +60,14 @@ def acquire_token() -> str:
         result = app.acquire_token_silent(scopes, account=accounts[0])
     else:
         result = app.acquire_token_interactive(scopes, timeout=60)
+
+    if not result or 'access_token' not in result:
+        error_description = 'Unknown authentication error.'
+
+        if isinstance(result, dict):
+            error_description = result.get('error_description') or result.get('error') or error_description
+
+        raise AppError(f'Authentication failed: {error_description}')
 
     cache.persist_cache()
     return result['access_token']
